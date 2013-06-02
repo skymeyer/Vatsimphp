@@ -1,0 +1,31 @@
+=========================================================================
+==       License Notice - https://github.com/skymeyer/Vatsimphp        ==
+=========================================================================
+
+Vatsimphp Library
+
+    Copyright 2013 - Jelle Vink <jelle.vink@gmail.com>
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
+VATSIM
+
+    VATSIM (Virtual Air Traffic Simulation Network) is a non-profit
+    organisation. The development of this software is not directly
+    affiliated to the VATSIM organisation and provided on an "as is"
+    basis as set forward in the above License. This software does
+    not connect to the VATSIM network directly, but rather consumes
+    publically available resources produced by the VATSIM network.
+
+    More information on VATSIM can be found at http://www.vatsim.net.
