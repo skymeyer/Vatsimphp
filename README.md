@@ -1,4 +1,4 @@
-Vatsimphp Library
+Vatsimphp Library [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp)
 =================
 
 Vatsimphp collects and parses the publically available statistics
