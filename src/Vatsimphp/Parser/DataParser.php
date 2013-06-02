@@ -116,7 +116,8 @@ class DataParser extends AbstractParser
             // section headers
             $header = new HeaderFilter($this->rawData);
             $header->setFilter($section);
-            $headerData = array_shift($header->toArray());
+            $headerData = $header->toArray();
+            $headerData = array_shift($headerData);
 
             // skip section if no headers found
             if (empty($headerData)) {
