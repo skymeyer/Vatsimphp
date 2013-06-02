@@ -34,5 +34,6 @@ foreach ($query as $result) {
     echo "Departure -> " . $result['planned_depairport'] . PHP_EOL;
     echo "Arrival   -> " . $result['planned_destairport'] . PHP_EOL;
     echo "Route     -> " . $result['planned_route'] . PHP_EOL;
-    // ... var_dump($result)
+    echo "Altitude  -> " . $result['altitude'] . PHP_EOL;
+    // var_dump($result);
 }
