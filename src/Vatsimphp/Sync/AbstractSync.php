@@ -217,30 +217,67 @@ abstract class AbstractSync
 
     /**
      *
-     * Class validator
-     * @throws UnexpectedValueException
-     * @throws RuntimeException
+     * Validate config wrapper
      */
     protected function validateConfig()
+    {
+        $this->validateUrls();
+        $this->validateRefreshInterval();
+        $this->validateCacheFile();
+        $this->validateFilePath();
+        $this->validateParser();
+        return true;
+    }
+
+    /**
+     *
+     * Validate urls
+     * @throws UnexpectedValueException
+     */
+    protected function validateUrls()
     {
         if (!is_array($this->urls)) {
             throw new UnexpectedValueException(
                 "Invalid url format, expecting array"
             );
         }
+    }
 
+    /**
+     *
+     * Validate refreshInterval
+     * @throws UnexpectedValueException
+     */
+    protected function validateRefreshInterval()
+    {
         if (!is_int($this->refreshInterval)) {
             throw new UnexpectedValueException(
                 "Invalid refresh interval, expecting integer"
             );
         }
+    }
 
+    /**
+     *
+     * Validate cacheFile
+     * @throws UnexpectedValueException
+     */
+    protected function validateCacheFile()
+    {
         if (empty($this->cacheFile)) {
             throw new UnexpectedValueException(
                 "Cache file name not specified"
             );
         }
+    }
 
+    /**
+     *
+     * Validate filePath
+     * @throws RuntimeException
+     */
+    protected function validateFilePath()
+    {
         if (file_exists($this->filePath)) {
             if (!is_writable($this->filePath)) {
                 throw new RuntimeException(
@@ -256,7 +293,15 @@ abstract class AbstractSync
             fclose($fp);
             unlink($this->filePath);
         }
+    }
 
+    /**
+     *
+     * Validate parser
+     * @throws RuntimeException
+     */
+    protected function validateParser()
+    {
         if (!$this->parser instanceof \Vatsimphp\Parser\AbstractParser) {
             throw new RuntimeException(
                 "No valid parser object set"
