@@ -1,5 +1,5 @@
 {
-    "name": "Vatsimphp",
+    "name": "skymeyer/Vatsimphp",
     "description": "PHP library for VATSIM.net",
     "keywords": ["vatsim", "virtual air traffic", "flight simulator", "online flight simulation"],
     "homepage": "http://github.com/skymeyer/Vatsimphp",
