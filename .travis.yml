@@ -22,3 +22,5 @@ after_script:
 
 notifications:
   email: false
+  hipchat:
+    - secure: "er7thyIWhqVBJjCH4A/giLAf9EGoVJKgsFs+LAxqBK2wlxQmynnum/5mJhCU\n/jBNPqtgIyKjshAUBPsKThKGt/Q1GnGa1Db5gmqLmZb+tBEUcvRH4aQ9M3dX\nxJt9xslRBXiJ2By4ZnxHq5V7VLb5FNm3SeZfHQ2e3hopq6UqiLw="
