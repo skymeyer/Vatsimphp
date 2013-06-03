@@ -171,6 +171,16 @@ abstract class AbstractSync
 
     /**
      *
+     * Urls getter
+     * @return array
+     */
+    public function getUrls()
+    {
+        return $this->urls;
+    }
+
+    /**
+     *
      * Return parsed data
      * @throws SyncException
      * @return \Iterator
@@ -179,17 +189,10 @@ abstract class AbstractSync
     {
         $this->filePath = "{$this->cacheDir}/{$this->cacheFile}";
         $this->validateConfig();
-
-        // randomize urls
-        shuffle($this->urls);
-
-        // if local cache exists, shift it on top
-        if (file_exists($this->filePath) && !$this->forceRefresh) {
-            array_unshift($this->urls, $this->filePath);
-        }
+        $urls = $this->prepareUrls($this->filePath, $this->urls);
 
         // we need at least one location
-        if (!count($this->urls)) {
+        if (!count($urls)) {
             throw new SyncException(
                 "No location(s) available to sync from",
                 $this->errors
@@ -197,8 +200,8 @@ abstract class AbstractSync
         }
 
         // cycle urls until valid data is found
-        while (count($this->urls) && empty($validData)) {
-            $nextUrl = array_shift($this->urls);
+        while (count($urls) && empty($validData)) {
+            $nextUrl = array_shift($urls);
             if ($this->getData($nextUrl)) {
                 $validData = true;
             }
@@ -213,6 +216,25 @@ abstract class AbstractSync
         }
 
         return $this->parser->getParsedData();
+    }
+
+    /**
+     *
+     * Prepare order/list of urls for loadData
+     * @param array $urls
+     * @return array
+     */
+    protected function prepareUrls($filePath, $urls, $shuffle = true)
+    {
+        // randomize urls first
+        if ($shuffle) {
+            shuffle($urls);
+        }
+        // if local cache exists, shift it on top
+        if (file_exists($filePath) && !$this->forceRefresh) {
+            array_unshift($urls, $filePath);
+        }
+        return $urls;
     }
 
     /**
@@ -447,7 +469,7 @@ abstract class AbstractSync
     protected function isCacheExpired()
     {
         $ts = filemtime($this->filePath);
-        if (time() - $ts > $this->refreshInterval) {
+        if (time() - $ts >= $this->refreshInterval) {
             $this->log->debug("Cache content {$this->filePath} expired ({$this->refreshInterval})");
             return true;
         }
