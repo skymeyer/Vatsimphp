@@ -21,6 +21,8 @@
 
 namespace Vatsimphp\Sync;
 
+use \Vatsimphp\Exception\RuntimeException;
+
 /**
  *
  * Base synchronization class for all secondary data
@@ -41,13 +43,13 @@ abstract class BaseSync extends AbstractSync
      */
     public function registerUrlFromStatus(\Vatsimphp\Sync\StatusSync $sync, $type)
     {
-        try {
-            $urls = $sync->loadData()->get($type)->toArray();
-            $this->registerUrl($urls, true);
-        } catch (Exception $e) {
-            throw new \Vatsimphp\Exception\RuntimeException(
+        $urls = $sync->loadData()->get($type)->toArray();
+        if (empty($urls)) {
+            throw new RuntimeException(
                 'Error loading urls from StatusSync'
             );
         }
+        $this->registerUrl($urls, true);
+        return true;
     }
 }
