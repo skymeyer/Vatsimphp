@@ -23,38 +23,14 @@ namespace Vatsimphp\Sync;
 
 /**
  *
- * Retrieve data file from VATSIM
+ * Sync interface
  *
  */
-class DataSync extends BaseSync
+interface SyncInterface
 {
     /**
      *
-     * @see Vatsimphp\Parser.DataParser::dataExpire
-     * @var integer
+     * Set defaults
      */
-    public $dataExpire = 3600;
-
-    /**
-     *
-     * @see Vatsimphp\Sync.SyncInterface::setDefaults()
-     */
-    public function setDefaults()
-    {
-        $this->setParser('Data');
-        $this->cacheFile = 'vatsim-data.txt';
-        $this->refreshInterval = 180;
-    }
-
-    /**
-     * Override to support timestamp expiration check
-     * if enabled using $this->dataExpire
-     *
-     * @see Vatsimphp\Sync.AbstractSync::isDataValid()
-     */
-    protected function isDataValid($data)
-    {
-        $this->parser->dataExpire = $this->dataExpire;
-        return parent::isDataValid($data);
-    }
+    public function setDefaults();
 }

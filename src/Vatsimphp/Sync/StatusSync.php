@@ -30,11 +30,10 @@ class StatusSync extends AbstractSync
 {
     /**
      *
-     * Ctor - set defaults
+     * @see Vatsimphp\Sync.SyncInterface::setDefaults()
      */
-    public function __construct()
+    public function setDefaults()
     {
-        parent::__construct();
         $this->setParser('Status');
         $this->registerUrl('http://status.vatsim.net/status.txt');
         $this->cacheFile = 'status.txt';

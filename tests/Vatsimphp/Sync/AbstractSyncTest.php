@@ -44,6 +44,18 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
+     * Test inheritance
+     */
+    public function testImplements()
+    {
+        $class = $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $this->assertInstanceOf('Vatsimphp\Sync\SyncInterface', $class);
+    }
+
+    /**
+     *
      * Test default settings
      * @covers Vatsimphp\Sync\AbstractSync::__construct
      */
@@ -521,12 +533,12 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerTestPrepareUrls
      * @covers Vatsimphp\Sync\AbstractSync::prepareUrls
      */
-    public function testPrepareUrls($filePath, $urls, $shuffle, $expectedResult)
+    public function testPrepareUrls($filePath, $urls, $refresh, $shuffle, $expectedResult)
     {
         $class = $this->getMockAbstractySync();
         $prepare = new \ReflectionMethod($class, 'prepareUrls');
         $prepare->setAccessible(true);
-        $result = $prepare->invoke($class, $filePath, $urls, $shuffle);
+        $result = $prepare->invoke($class, $filePath, $urls, $refresh, $shuffle);
 
         // on shuffle we just count
         if ($shuffle) {
@@ -543,27 +555,48 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
                 'build/tests/notexist',
                 array('http://link'),
                 false,
+                false,
                 array('http://link'),
             ),
             array(
                 'build/tests/notexist',
                 array('http://link1', 'http://link2'),
                 false,
+                false,
                 array('http://link1', 'http://link2'),
             ),
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
                 false,
+                false,
                 array('build/tests/writeable.test', 'http://link1', 'http://link2'),
+            ),
+            // force refresh
+            array(
+                'build/tests/writeable.test',
+                array('http://link1', 'http://link2'),
+                true,
+                false,
+                array('http://link1', 'http://link2'),
             ),
             // shuffle test
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
+                false,
                 true,
                 3,
             ),
+            // shuffle test and force refresh
+            array(
+                'build/tests/writeable.test',
+                array('http://link1', 'http://link2'),
+                true,
+                true,
+                2,
+            ),
+
         );
     }
 

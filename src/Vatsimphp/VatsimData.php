@@ -116,6 +116,7 @@ class VatsimData
     public function loadData()
     {
         $status = new StatusSync();
+        $status->setDefaults();
         $status->cacheDir = $this->config['cacheDir'];
         $status->refreshInterval = $this->config['statusRefresh'];
 
@@ -125,6 +126,7 @@ class VatsimData
 
         try {
             $data = new DataSync();
+            $data->setDefaults();
             $data->cacheDir = $this->config['cacheDir'];
             $data->dataExpire = $this->config['dataExpire'];
             $data->refreshInterval = $this->config['dataRefresh'];

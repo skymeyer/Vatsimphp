@@ -34,7 +34,7 @@ use Vatsimphp\Log\LoggerFactory;
  * external calls are only issued when needed.
  *
  */
-abstract class AbstractSync
+abstract class AbstractSync implements SyncInterface
 {
     /**
      *
@@ -189,7 +189,7 @@ abstract class AbstractSync
     {
         $this->filePath = "{$this->cacheDir}/{$this->cacheFile}";
         $this->validateConfig();
-        $urls = $this->prepareUrls($this->filePath, $this->urls);
+        $urls = $this->prepareUrls($this->filePath, $this->urls, $this->forceRefresh);
 
         // we need at least one location
         if (!count($urls)) {
@@ -221,17 +221,20 @@ abstract class AbstractSync
     /**
      *
      * Prepare order/list of urls for loadData
+     * @param string $filePath
      * @param array $urls
+     * @param boolean $forceRefresh
+     * @param boolean $shuffle
      * @return array
      */
-    protected function prepareUrls($filePath, $urls, $shuffle = true)
+    protected function prepareUrls($filePath, $urls, $forceRefresh, $shuffle = true)
     {
         // randomize urls first
         if ($shuffle) {
             shuffle($urls);
         }
         // if local cache exists, shift it on top
-        if (file_exists($filePath) && !$this->forceRefresh) {
+        if (file_exists($filePath) && !$forceRefresh) {
             array_unshift($urls, $filePath);
         }
         return $urls;

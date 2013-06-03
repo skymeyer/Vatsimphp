@@ -37,11 +37,10 @@ class MetarSync extends BaseSync
 
     /**
      *
-     * Ctor - set default
+     * @see Vatsimphp\Sync.SyncInterface::setDefaults()
      */
-    public function __construct()
+    public function setDefaults()
     {
-        parent::__construct();
         $this->setParser('Metar');
         $this->loadUrls('metarUrls');
         $this->refreshInterval = 600;
