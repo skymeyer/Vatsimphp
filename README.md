@@ -1,4 +1,4 @@
-Vatsimphp Library [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp) [![Coverage Status](https://coveralls.io/repos/skymeyer/Vatsimphp/badge.png?branch=master)](https://coveralls.io/r/skymeyer/Vatsimphp?branch=master)
+Vatsimphp Library [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp) [![Coverage Status](https://coveralls.io/repos/skymeyer/Vatsimphp/badge.png?branch=master)](https://coveralls.io/r/skymeyer/Vatsimphp?branch=master) [![Dependency Status](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd/badge.png)](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd)
 =================
 
 Vatsimphp collects and parses the publically available statistics
