@@ -49,6 +49,45 @@ class DataSyncTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
+     * Test data validation based on expire setting
+     * @dataProvider providerTestIsDataValid
+     * @covers Vatsimphp\Sync\DataSync::isDataValid
+     */
+    public function testIsDataValid($expire)
+    {
+        $class = $this->getMockDataSync();
+        $class->dataExpire = $expire;
+
+        // attach mocked parser objects
+        $parser = $this->getMockBuilder('Vatsimphp\Parser\DataParser')
+            ->disableOriginalConstructor()
+            ->setMethods(array('setData', 'parseData'))
+            ->getMock();
+
+        $parserProp = new \ReflectionProperty($class, 'parser');
+        $parserProp->setAccessible(true);
+        $parserProp->setValue($class, $parser);
+
+        $isDataValid = new \ReflectionMethod($class, 'isDataValid');
+        $isDataValid->setAccessible(true);
+        $isDataValid->invoke($class, 'bogus_data');
+
+        // expire flag should be passed to parser
+        $this->assertEquals($expire, $parserProp->getValue($class)->dataExpire);
+
+    }
+
+    public function providerTestIsDataValid()
+    {
+        return array(
+            array(0),
+            array(1),
+            array(999),
+        );
+    }
+
+    /**
+     *
      * Return mock for DataSync with silent logger
      */
     protected function getMockDataSync()
