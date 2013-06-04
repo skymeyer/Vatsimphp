@@ -1,4 +1,6 @@
-Vatsimphp Library [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp) [![Coverage Status](https://coveralls.io/repos/skymeyer/Vatsimphp/badge.png?branch=master)](https://coveralls.io/r/skymeyer/Vatsimphp?branch=master)
+Vatsimphp Library
+[![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp)
+[![Coverage Status](https://coveralls.io/repos/skymeyer/Vatsimphp/badge.png?branch=master)](https://coveralls.io/r/skymeyer/Vatsimphp?branch=master)
 =================
 
 Vatsimphp collects and parses the publically available statistics
@@ -19,6 +21,9 @@ VATSIM network or if live connections are not applicable.
 Vatsimphp can be easily plugged into existing PHP systems to
 query VATSIM data or feed the parsed results into a database
 backend of your choice.
+
+[![HipChat](https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash4/211042_170554734635_3177812_q.jpg)](https://www.hipchat.com/gcbN8D1yF)
+[HipChat Dev & notification room](https://www.hipchat.com/gcbN8D1yF)
 
 Basic usage
 -----------
