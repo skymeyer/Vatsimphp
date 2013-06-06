@@ -28,10 +28,13 @@ class ResultContainerTest extends \PHPUnit_Framework_TestCase
     /**
      *
      * Empty/countable interface
+     * @covers Vatsimphp\Result\ResultContainer::__construct
+     * @covers Vatsimphp\Result\ResultContainer::count
      */
     public function testCountable()
     {
         $rc = $this->getMockBuilder('Vatsimphp\Result\ResultContainer')
+            ->setMethods(null)
             ->getMock();
         $this->assertCount(0, $rc);
     }
@@ -101,6 +104,124 @@ class ResultContainerTest extends \PHPUnit_Framework_TestCase
                 array('test3'),
             ),
 
+        );
+    }
+
+    /**
+     * Test serach interface
+     * @dataProvider providerTestSearch
+     * @covers Vatsimphp\Result\ResultContainer::search
+     */
+    public function testSearch($header, $data, $query, $expectedResult)
+    {
+        $class = $this->getMockBuilder('Vatsimphp\Result\ResultContainer')
+            ->setMethods(null)
+            ->getMock();
+
+        $class->append('test_header', $header);
+        $class->append('test', $data);
+        $resultIterator = $class->search('test', $query);
+        $this->assertInstanceOf('Vatsimphp\Filter\Iterator', $resultIterator);
+        $this->assertEquals($expectedResult, $resultIterator->toArray());
+
+    }
+
+    public function providerTestSearch()
+    {
+        // default test header/data
+        $header =  array('cid', 'callsign', 'realname');
+        $data = array(
+            array(
+                'cid' => '123456',
+                'callsign' => 'SWA3437',
+                'realname' => 'Jelle Vink - KSJC'
+            ),
+            array(
+                'cid' => '7890',
+                'callsign' => 'AAL123',
+                'realname' => 'Foo Vink - EBBR'
+            ),
+        );
+
+        return array(
+            // full field match
+            array(
+                $header,
+                $data,
+                array('cid' => '123456'),
+                array(
+                    array(
+                        'cid' => '123456',
+                        'callsign' => 'SWA3437',
+                        'realname' => 'Jelle Vink - KSJC'
+                    ),
+                ),
+            ),
+            // partial field match
+            array(
+                $header,
+                $data,
+                array('realname' => 'Vink'),
+                array(
+                    array(
+                        'cid' => '123456',
+                        'callsign' => 'SWA3437',
+                        'realname' => 'Jelle Vink - KSJC'
+                    ),
+                    array(
+                        'cid' => '7890',
+                        'callsign' => 'AAL123',
+                        'realname' => 'Foo Vink - EBBR'
+                    ),
+                ),
+            ),
+            // no field match
+            array(
+                $header,
+                $data,
+                array('realname' => 'NotExist'),
+                array(),
+            ),
+            // invalid column
+            array(
+                $header,
+                $data,
+                array('notexist' => '345'),
+                array(),
+            ),
+        );
+    }
+
+    /**
+     * Test if an object is searchable - needs matching _header object
+     * @dataProvider providerTestIsSearchable
+     * @covers Vatsimphp\Result\ResultContainer::isSearchable
+     */
+    public function testIsSearchable($header, $data)
+    {
+        $class = $this->getMockBuilder('Vatsimphp\Result\ResultContainer')
+            ->setMethods(null)
+            ->getMock();
+
+        if ($header) {
+            $class->append('test_header', $header);
+            $expectedResult = true;
+        } else {
+            $expectedResult = false;
+        }
+
+        $class->append('test', $data);
+
+        $searchable = new \ReflectionMethod($class, 'isSearchable');
+        $searchable->setAccessible(true);
+        $this->assertSame($expectedResult, $searchable->invoke($class, 'test'));
+    }
+
+    public function providerTestIsSearchable()
+    {
+        return array(
+            array(array('col1', 'col2'), array('data1', 'data2')),
+            array(false, array('data1', 'data2')),
         );
     }
 }

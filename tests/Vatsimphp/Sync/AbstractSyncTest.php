@@ -486,19 +486,20 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
         $class = $this->attachMockedLogger($class);
 
+         // stub getData
+        $class->expects($this->any())
+            ->method('getData')
+            ->will($this->returnValue(true));
+
+        // parser mock
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
             ->disableOriginalConstructor()
-            ->setMethods(array('isValid', 'getData', 'getParsedData'))
+            ->setMethods(array('isValid', 'getParsedData'))
             ->getMockForAbstractClass();
 
         // stub isValid
         $parser->expects($this->any())
             ->method('isValid')
-            ->will($this->returnValue(true));
-
-        // stub getData
-        $parser->expects($this->any())
-            ->method('getData')
             ->will($this->returnValue(true));
 
         // stub getParsedData
