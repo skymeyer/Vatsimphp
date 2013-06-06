@@ -5,5 +5,7 @@ api
 phpunit.xml
 composer.lock
 .project
+.buildpath
+.settings
 examples/status.txt
 examples/vatsim-data.txt
