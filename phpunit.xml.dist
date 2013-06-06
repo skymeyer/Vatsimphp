@@ -6,9 +6,6 @@
         </testsuite>
     </testsuites>
     <filter>
-        <blaclist>
-            <directory suffix=".php">src/Vatsimphp/Exception/</directory>
-        </blaclist>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src/Vatsimphp/</directory>
         </whitelist>
