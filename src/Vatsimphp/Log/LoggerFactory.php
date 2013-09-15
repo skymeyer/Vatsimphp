@@ -80,6 +80,7 @@ class LoggerFactory
     public static function register($channel, \Psr\Log\LoggerInterface $logger)
     {
         self::$loggers[$channel] = $logger;
+        return $logger;
     }
 
     /**
