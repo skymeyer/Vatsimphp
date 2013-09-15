@@ -38,7 +38,7 @@ class VatsimData
      * @var array
      */
     protected $config = array(
-        'cacheDir' => '.',
+        'cacheDir' => '../Cache',
         'statusUrl' => '',
         'statusRefresh' => 86400,
         'dataRefresh' => 180,
