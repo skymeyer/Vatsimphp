@@ -16,6 +16,7 @@ use Vatsimphp\VatsimData;
 require_once '../vendor/autoload.php';
 
 $vatsim = new VatsimData();
+$vatsim->setConfig('cacheDir', '../../../examples');
 if (!$vatsim->loadData()) {
     // handle error - something went wrong !
 }

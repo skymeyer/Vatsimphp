@@ -74,7 +74,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array(), $propUrls->getValue($class));
 
         // public properties
-        $this->assertSame('.', $class->cacheDir);
+        $this->assertSame('../Cache', $class->cacheDir);
         $this->assertFalse($class->forceRefresh);
         $this->assertFalse($class->cacheOnly);
     }

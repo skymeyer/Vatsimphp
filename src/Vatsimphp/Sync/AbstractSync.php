@@ -41,7 +41,7 @@ abstract class AbstractSync implements SyncInterface
      * Cache directory
      * @var string
      */
-    public $cacheDir = '.';
+    public $cacheDir = '../Cache';
 
     /**
      *
@@ -187,7 +187,7 @@ abstract class AbstractSync implements SyncInterface
      */
     public function loadData()
     {
-        $this->filePath = "{$this->cacheDir}/{$this->cacheFile}";
+        $this->filePath = __DIR__."/{$this->cacheDir}/{$this->cacheFile}";
         $this->validateConfig();
         $urls = $this->prepareUrls($this->filePath, $this->urls, $this->forceRefresh);
 
