@@ -343,6 +343,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
                     'filePath' => 'build/tests/writeable.test',
                     'parser' => $parser,
                 ),
+            ),
+            array(
                 array(
                     'urls' => array('http://link'),
                     'refreshInterval' => 30,

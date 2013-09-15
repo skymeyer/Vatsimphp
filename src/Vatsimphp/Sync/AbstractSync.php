@@ -310,7 +310,7 @@ abstract class AbstractSync implements SyncInterface
                 );
             }
         } else {
-            if (!is_writable($this->filePath)) {
+            if (!is_writable(dirname($this->filePath))) {
                 throw new RuntimeException(
                     "File '{$this->filePath}' is not writable"
                 );
