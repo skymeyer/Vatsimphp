@@ -104,7 +104,7 @@ class VatsimData
     public function getConfig($key)
     {
         if (isset($this->config[$key])) {
-            return $this->config[$key] = $value;
+            return $this->config[$key];
         }
     }
 
