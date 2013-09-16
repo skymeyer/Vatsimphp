@@ -373,6 +373,7 @@ abstract class AbstractSync implements SyncInterface
         $this->initCurl();
         curl_setopt($this->curl, CURLOPT_URL, $url);
         $data = curl_exec($this->curl);
+        $data = iconv('ISO-8859-15', 'UTF-8', $data);
 
         // check for curl errors
         if (curl_errno($this->curl)) {
