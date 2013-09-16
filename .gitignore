@@ -7,5 +7,5 @@ composer.lock
 .project
 .buildpath
 .settings
-examples/status.txt
-examples/vatsim-data.txt
+src/Vatsimphp/Cache/status.txt
+src/Vatsimphp/Cache/vatsim-data.txt
