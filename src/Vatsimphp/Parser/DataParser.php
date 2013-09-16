@@ -75,6 +75,9 @@ class DataParser extends AbstractParser
         $this->parseSections();
         $this->parseGeneral();
 
+        // append raw data too
+        $this->results->append('raw', $this->rawData);
+
         // valid if we have a valid update timestamp
         if ($this->general['update']) {
             $this->valid = true;
@@ -83,6 +86,7 @@ class DataParser extends AbstractParser
 
         // optional check on actual data timestamp
         if ($this->timestampHasExpired($this->general['update'], $this->dataExpire)) {
+            $this->log->debug("Data with timestamp {$this->general['update']} has expired");
             $this->valid = false;
         }
     }
