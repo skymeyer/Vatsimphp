@@ -75,7 +75,7 @@ class SectionFilterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $class->setFilter($section);
-        $this->assertSame($expectedResult, array_values($class->toArray()));
+        $this->assertSame($expectedResult, array_values($class->toArray(false, false)));
     }
 
     public function providerTestApplyFilter()
@@ -89,6 +89,7 @@ class SectionFilterTest extends \PHPUnit_Framework_TestCase
             ';',
             '!VOICE SERVERS:',
             'rw.liveatc.net:North America, USA, California:Liveatc:1:R:',
+            "\r\n",
             ';',
         );
 
