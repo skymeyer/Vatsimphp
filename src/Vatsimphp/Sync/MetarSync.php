@@ -24,7 +24,7 @@ namespace Vatsimphp\Sync;
 /**
  *
  * TODO: Retrieve METAR information
- *
+ * @codeCoverageIgnore
  */
 class MetarSync extends BaseSync
 {
