@@ -184,7 +184,7 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerTestIteratorToArray
      * @covers Vatsimphp\Filter\AbstractFilter::toArray
      */
-    public function testIteratorToArray($data, $filter, $retainKeys, $expectedResult)
+    public function testIteratorToArray($data, $retainKeys, $expectedResult)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\AbstractFilter')
             ->setConstructorArgs(array($data))
@@ -196,7 +196,7 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
             ->method('applyFilter')
             ->will($this->returnValue(true));
 
-        $this->assertSame($expectedResult, $class->toArray($filter, $retainKeys));
+        $this->assertSame($expectedResult, $class->toArray($retainKeys));
     }
 
     public function providerTestIteratorToArray()
@@ -211,21 +211,7 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
         );
 
         return array(
-            array($data, true, true,
-                array(
-                     0  => 'zero',
-                     1  => array('one'),
-                    'f' => 'five',
-                )
-            ),
-             array($data, true, false,
-                array(
-                     0  => 'zero',
-                     1  =>  array('one'),
-                     5 => 'five',
-                )
-            ),
-             array($data, false, true,
+             array($data, true,
                 array(
                      0  => 'zero',
                      1  => array('one'),
@@ -235,7 +221,7 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
                     'f' => 'five',
                 )
             ),
-             array($data, false, false,
+             array($data, false,
                 array(
                      0  => 'zero',
                      1  => array('one'),
