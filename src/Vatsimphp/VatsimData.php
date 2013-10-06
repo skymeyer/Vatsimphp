@@ -101,8 +101,11 @@ class VatsimData
      * @param string $key
      * @return mixed(string|boolean|integer)
      */
-    public function getConfig($key)
+    public function getConfig($key = null)
     {
+        if (empty($key)) {
+            return $this->config;
+        }
         if (isset($this->config[$key])) {
             return $this->config[$key];
         }
@@ -115,7 +118,7 @@ class VatsimData
      */
     public function loadData()
     {
-        $status = new StatusSync();
+        $status = $this->getStatusSync();
         $status->setDefaults();
         $status->cacheDir = $this->config['cacheDir'];
         $status->refreshInterval = $this->config['statusRefresh'];
@@ -125,7 +128,7 @@ class VatsimData
         }
 
         try {
-            $data = new DataSync();
+            $data = $this->getDataSync();
             $data->setDefaults();
             $data->cacheDir = $this->config['cacheDir'];
             $data->dataExpire = $this->config['dataExpire'];
@@ -136,7 +139,7 @@ class VatsimData
             // auto register urls from status
             $data->registerUrlFromStatus($status, 'dataUrls');
             $this->results = $data->loadData();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->exceptionStack[] = $e;
             return false;
         }
@@ -184,5 +187,31 @@ class VatsimData
     public function getIterator($objectType)
     {
         return $this->results->get($objectType);
+    }
+
+    /**
+     *
+     * Return exception stack
+     * @return array
+     */
+    public function getExceptionStack()
+    {
+        return $this->exceptionStack;
+    }
+
+    /**
+     * @return Vatsimphp\Sync\StatusSync
+     */
+    protected function getStatusSync()
+    {
+        return new StatusSync();
+    }
+
+    /**
+     * @return Vatsimphp\Sync\DataSync
+     */
+    protected function getDataSync()
+    {
+        return new DataSync();
     }
 }
