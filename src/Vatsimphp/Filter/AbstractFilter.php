@@ -134,7 +134,7 @@ abstract class AbstractFilter extends \FilterIterator implements FilterInterface
      */
     protected function isComment($line)
     {
-        if (is_string($line) && (substr($line, 0, 1) == ';' || substr($line, 0, 2) == "\r\n")) {
+        if (is_string($line) && (substr($line, 0, 1) == ';' || trim($line) == '')) {
             return true;
         }
         return false;

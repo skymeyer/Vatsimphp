@@ -89,7 +89,7 @@ class SectionFilterTest extends \PHPUnit_Framework_TestCase
             ';',
             '!VOICE SERVERS:',
             'rw.liveatc.net:North America, USA, California:Liveatc:1:R:',
-            "\r\n",
+            '',
             ';',
         );
 
