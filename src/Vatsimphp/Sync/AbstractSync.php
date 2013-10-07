@@ -220,6 +220,16 @@ abstract class AbstractSync implements SyncInterface
 
     /**
      *
+     * Return error stack
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     *
      * Prepare order/list of urls for loadData
      * @param string $filePath
      * @param array $urls
@@ -369,6 +379,7 @@ abstract class AbstractSync implements SyncInterface
      */
     protected function loadFromUrl($url)
     {
+        $url = $this->overrideUrl($url);
         $this->log->debug("Load from url $url");
         $this->initCurl();
         curl_setopt($this->curl, CURLOPT_URL, $url);
@@ -505,11 +516,12 @@ abstract class AbstractSync implements SyncInterface
 
     /**
      *
-     * Return error stack
-     * @return array
+     * Provide url override for extension class
+     * @param string $url
+     * @return string
      */
-    public function getErrors()
+    protected function overrideUrl($url)
     {
-        return $this->errors;
+        return $url;
     }
 }

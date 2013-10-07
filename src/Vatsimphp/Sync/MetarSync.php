@@ -21,12 +21,12 @@
 
 namespace Vatsimphp\Sync;
 
+use Vatsimphp\Exception\RuntimeException;
+
 /**
  *
  * Retrieve METAR information
  */
-use Vatsimphp\Exception\RuntimeException;
-
 class MetarSync extends BaseSync
 {
     /**
@@ -50,6 +50,7 @@ class MetarSync extends BaseSync
      *
      * Set airport - cache file is based on this
      * @param string $icao
+     * @throws Vatsimphp\Exception\RuntimeException
      */
     public function setAirport($icao)
     {
@@ -61,12 +62,11 @@ class MetarSync extends BaseSync
     }
 
     /**
-     * Override url
-     * @see Vatsimphp\Sync.AbstractSync::loadFromUrl()
+     * Append url parameters
+     * @see Vatsimphp\Sync.AbstractSync::overrideUrl()
      */
-    protected function loadFromUrl($url)
+    protected function overrideUrl($url)
     {
-        $url = $url . "?id={$this->icao}";
-        return parent::loadFromUrl($url);
+        return $url . "?id={$this->icao}";
     }
 }
