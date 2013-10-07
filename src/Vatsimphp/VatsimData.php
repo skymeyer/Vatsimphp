@@ -23,6 +23,7 @@ namespace Vatsimphp;
 
 use Vatsimphp\Sync\StatusSync;
 use Vatsimphp\Sync\DataSync;
+use Vatsimphp\Sync\MetarSync;
 
 /**
  *
@@ -38,13 +39,23 @@ class VatsimData
      * @var array
      */
     protected $config = array(
+
+        // cache settings
         'cacheDir' => '../Cache',
+        'cacheOnly' => false,
+
+        // vatsim status file
         'statusUrl' => '',
         'statusRefresh' => 86400,
+
+        // vatsim data file
         'dataRefresh' => 180,
         'dataExpire' => 3600,
-        'forceRefresh' => false,
-        'cacheOnly' => false,
+        'forceDataRefresh' => false,
+
+        // metar settings
+        'metarRefresh' => 600,
+        'forceMetarRefresh' => false,
     );
 
     /**
@@ -60,6 +71,20 @@ class VatsimData
      * @var array
      */
     protected $exceptionStack = array();
+
+    /**
+     *
+     * Status Sync object
+     * @var \Vatsimphp\Sync\StatusSync
+     */
+    protected $statusSync;
+
+    /**
+     *
+     * Metar Sync object
+     * @var \Vatsimphp\Sync\MetarSync
+     */
+    protected $metarSync;
 
     /**
      *
@@ -118,25 +143,15 @@ class VatsimData
      */
     public function loadData()
     {
-        $status = $this->getStatusSync();
-        $status->setDefaults();
-        $status->cacheDir = $this->config['cacheDir'];
-        $status->refreshInterval = $this->config['statusRefresh'];
-
-        if (!empty($this->config['statusUrl'])) {
-            $status->registerUrl($this->config['statusUrl'], true);
-        }
-
         try {
+            $status = $this->prepareSync();
             $data = $this->getDataSync();
             $data->setDefaults();
             $data->cacheDir = $this->config['cacheDir'];
+            $data->cacheOnly = $this->config['cacheOnly'];
             $data->dataExpire = $this->config['dataExpire'];
             $data->refreshInterval = $this->config['dataRefresh'];
-            $data->forceRefresh = $this->config['forceRefresh'];
-            $data->cacheOnly = $this->config['cacheOnly'];
-
-            // auto register urls from status
+            $data->forceRefresh = $this->config['forceDataRefresh'];
             $data->registerUrlFromStatus($status, 'dataUrls');
             $this->results = $data->loadData();
         } catch (\Exception $e) {
@@ -144,6 +159,41 @@ class VatsimData
             return false;
         }
         return true;
+    }
+
+    /**
+     *
+     * Load METAR data for given airport
+     * @param string $icao
+     * @return boolean
+     */
+    public function loadMetar($icao)
+    {
+        try {
+            $metar = $this->prepareMetarSync();
+            $metar->setAirport($icao);
+            $this->results = $metar->loadData();
+        } catch (\Exception $e) {
+            $this->exceptionStack[] = $e;
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     * Easy METAR wrapper
+     * @param string $icao
+     * @return string
+     */
+    public function getMetar($icao)
+    {
+        if ($this->loadMetar($icao)) {
+            $result = $this->metar->toArray();
+            if (!empty($result[0])) {
+                return $result[0];
+            }
+        }
     }
 
     /**
@@ -200,6 +250,46 @@ class VatsimData
     }
 
     /**
+     *
+     * Prepare StatusSync object for reusage
+     * @return Vatsimphp\Sync\StatusSync
+     */
+    protected function prepareSync()
+    {
+        if (! empty($this->statusSync)) {
+            return $this->statusSync;
+        }
+        $this->statusSync = $this->getStatusSync();
+        $this->statusSync->setDefaults();
+        $this->statusSync->cacheDir = $this->config['cacheDir'];
+        $this->statusSync->refreshInterval = $this->config['statusRefresh'];
+        if (!empty($this->config['statusUrl'])) {
+            $this->statusSync->registerUrl($this->config['statusUrl'], true);
+        }
+        return $this->statusSync;
+    }
+
+    /**
+     *
+     * Prepare MetarSync object for reusage
+     * @return Vatsimphp\Sync\MetarSync
+     */
+    protected function prepareMetarSync()
+    {
+        if (! empty($this->metarSync)) {
+            return $this->metarSync;
+        }
+        $this->metarSync = $this->getMetarSync();
+        $this->metarSync->setDefaults();
+        $this->metarSync->cacheDir = $this->config['cacheDir'];
+        $this->metarSync->cacheOnly = $this->config['cacheOnly'];
+        $this->metarSync->refreshInterval = $this->config['metarRefresh'];
+        $this->metarSync->forceRefresh = $this->config['forceMetarRefresh'];
+        $this->metarSync->registerUrlFromStatus($this->prepareSync(), 'metarUrls');
+        return $this->metarSync;
+    }
+
+    /**
      * @return Vatsimphp\Sync\StatusSync
      */
     protected function getStatusSync()
@@ -213,5 +303,13 @@ class VatsimData
     protected function getDataSync()
     {
         return new DataSync();
+    }
+
+    /**
+     * @return Vatsimphp\Sync\MetarSync
+     */
+    protected function getMetarSync()
+    {
+        return new MetarSync();
     }
 }

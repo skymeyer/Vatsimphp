@@ -23,9 +23,10 @@ namespace Vatsimphp\Sync;
 
 /**
  *
- * TODO: Retrieve METAR information
- * @codeCoverageIgnore
+ * Retrieve METAR information
  */
+use Vatsimphp\Exception\RuntimeException;
+
 class MetarSync extends BaseSync
 {
     /**
@@ -42,7 +43,6 @@ class MetarSync extends BaseSync
     public function setDefaults()
     {
         $this->setParser('Metar');
-        $this->loadUrls('metarUrls');
         $this->refreshInterval = 600;
     }
 
@@ -51,9 +51,22 @@ class MetarSync extends BaseSync
      * Set airport - cache file is based on this
      * @param string $icao
      */
-    public function selectAirport($icao)
+    public function setAirport($icao)
     {
-        $this->icao = $icao;
-        $this->filePath = "./metar-{$icao}.txt";
+        if (strlen($icao) != 4) {
+            throw new RuntimeException('invalid ICAO code');
+        }
+        $this->icao = strtoupper($icao);
+        $this->cacheFile = "metar-{$this->icao}.txt";
+    }
+
+    /**
+     * Override url
+     * @see Vatsimphp\Sync.AbstractSync::loadFromUrl()
+     */
+    protected function loadFromUrl($url)
+    {
+        $url = $url . "?id={$this->icao}";
+        return parent::loadFromUrl($url);
     }
 }
