@@ -372,17 +372,12 @@ abstract class AbstractSync implements SyncInterface
         $this->log->debug("Load from url $url");
         $this->initCurl();
         curl_setopt($this->curl, CURLOPT_URL, $url);
-        $data = curl_exec($this->curl);
-        $data = iconv('ISO-8859-15', 'UTF-8', $data);
-
-        // check for curl errors
-        if (curl_errno($this->curl)) {
-            $this->errors[] = array(
-                'url' => $url,
-                'msg' => curl_error($this->curl),
-            );
+        if (! $data = $this->getDataFromCurl()) {
             return false;
         }
+
+        // fix encoding
+        $data = iconv('ISO-8859-15', 'UTF-8', $data);
 
         // validate data through parser
         if (!$this->isDataValid($data)) {
@@ -400,6 +395,25 @@ abstract class AbstractSync implements SyncInterface
 
     /**
      *
+     * Load data from curl resource
+     * @codeCoverageIgnore
+     * @return mixed(boolean|string)
+     */
+    protected function getDataFromCurl()
+    {
+        $data = curl_exec($this->curl);
+        if (curl_errno($this->curl)) {
+            $this->errors[] = array(
+                'url' => $url,
+                'msg' => curl_error($this->curl),
+            );
+            return false;
+        }
+        return $data;
+    }
+
+    /**
+     *
      * Load data from file and pass it to the parser
      * Fails if content is expired
      * @param string $file
@@ -408,7 +422,7 @@ abstract class AbstractSync implements SyncInterface
     protected function loadFromCache()
     {
         $this->log->debug("Load from cache file {$this->filePath}");
-        $data = file_get_contents($this->filePath);
+        $data = $this->getDataFromFile();
         if ($data === false) {
             $data = array();
         }
@@ -431,6 +445,17 @@ abstract class AbstractSync implements SyncInterface
             return false;
         }
         return true;
+    }
+
+    /**
+     *
+     * Load data from file resource
+     * @codeCoverageIgnore
+     * @return mixed(boolean|string)
+     */
+    protected function getDataFromFile()
+    {
+        return file_get_contents($this->filePath);
     }
 
     /**
@@ -476,5 +501,15 @@ abstract class AbstractSync implements SyncInterface
             return true;
         }
         return false;
+    }
+
+    /**
+     *
+     * Return error stack
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

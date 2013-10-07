@@ -605,11 +605,107 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
+     * Test load from url
+     * @dataProvider providerTestLoadFromUrl
+     * @covers Vatsimphp\Sync\AbstractSync::loadFromUrl
+     * @covers Vatsimphp\Sync\AbstractSync::getErrors
+     */
+    public function testLoadFromUrl($curlData, $valid, $expected, $errorCount)
+    {
+        $mockedMethods = array(
+            'getDataFromCurl',
+            'isDataValid',
+            'saveToCache',
+        );
+        $sync = $this->getMockAbstractySync($mockedMethods);
+
+        // mock getDataFromCurl
+        $sync->expects($this->once())
+            ->method('getDataFromCurl')
+            ->will($this->returnValue($curlData));
+
+        // mock isDataValid
+        $sync->expects($this->any())
+            ->method('isDataValid')
+            ->will($this->returnValue($valid));
+
+        // mock saveToCache
+        $sync->expects($this->any())
+            ->method('saveToCache')
+            ->with($this->equalTo($curlData));
+
+        // execute test
+        $reflection = new \ReflectionMethod($sync, 'loadFromUrl');
+        $reflection->setAccessible(true);
+        $this->assertEquals($expected, $reflection->invoke($sync, 'http://bogus'));
+        $this->assertCount($errorCount, $sync->getErrors());
+    }
+
+    public function providerTestLoadFromUrl()
+    {
+        return array(
+            array('dataok', true, true, 0),
+            array(false, false, false, 0), // error count still 0 because mocked curl
+            array('dataok', false, false, 1),
+        );
+    }
+
+    /**
+     *
+     * Test load from cache
+     * @dataProvider providerTestLoadFromCache
+     * @covers Vatsimphp\Sync\AbstractSync::loadFromCache
+     * @covers Vatsimphp\Sync\AbstractSync::getErrors
+     */
+    public function testLoadFromCache($fileData, $valid, $expired, $expected, $errorCount)
+    {
+        $mockedMethods = array(
+            'getDataFromFile',
+            'isDataValid',
+            'isCacheExpired',
+        );
+        $sync = $this->getMockAbstractySync($mockedMethods);
+
+        // mock getDataFromFile
+        $sync->expects($this->once())
+            ->method('getDataFromFile')
+            ->will($this->returnValue($fileData));
+
+        // mock isDataValid
+        $sync->expects($this->once())
+            ->method('isDataValid')
+            ->will($this->returnValue($valid));
+
+        // mock isCacheExpired
+        $sync->expects($this->any())
+            ->method('isCacheExpired')
+            ->will($this->returnValue($expired));
+
+        // execute test
+        $reflection = new \ReflectionMethod($sync, 'loadFromCache');
+        $reflection->setAccessible(true);
+        $this->assertEquals($expected, $reflection->invoke($sync));
+        $this->assertCount($errorCount, $sync->getErrors());
+    }
+
+    public function providerTestLoadFromCache()
+    {
+        return array(
+            array('dataok',  true, false,  true, 0), // normal
+            array('dataok',  true,  true, false, 1), // expired valid content
+            array(false,    false, false, false, 1), // not valid not expired
+            array(false,    false,  true, false, 1), // not valid and expired
+        );
+    }
+
+    /**
+     *
      * Return mocked AbstractSync with mocked silent logger
      */
-    protected function getMockAbstractySync()
+    protected function getMockAbstractySync($setMethods = array())
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
+            ->setMethods($setMethods)
             ->getMockForAbstractClass();
         return $this->attachMockedLogger($class);
     }
