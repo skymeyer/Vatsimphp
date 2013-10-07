@@ -48,7 +48,7 @@ class DataParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseData($data, $expectedStatus, $expectedData, $expire = 0)
     {
-        $class = $this->getMockParser('Data', $expire);
+        $class = $this->getMockParser('Data');
 
         // parse data
         $class->dataExpire = $expire;
