@@ -40,12 +40,14 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
 
         // available config keys
         $this->assertArrayHasKey('cacheDir', $data->getConfig());
+        $this->assertArrayHasKey('cacheOnly', $data->getConfig());
         $this->assertArrayHasKey('statusUrl', $data->getConfig());
         $this->assertArrayHasKey('statusRefresh', $data->getConfig());
         $this->assertArrayHasKey('dataRefresh', $data->getConfig());
         $this->assertArrayHasKey('dataExpire', $data->getConfig());
-        $this->assertArrayHasKey('forceRefresh', $data->getConfig());
-        $this->assertArrayHasKey('cacheOnly', $data->getConfig());
+        $this->assertArrayHasKey('forceDataRefresh', $data->getConfig());
+        $this->assertArrayHasKey('metarRefresh', $data->getConfig());
+        $this->assertArrayHasKey('forceMetarRefresh', $data->getConfig());
 
         // not accepting unknown keys
         $data->setConfig('foo', 'bar');
@@ -141,6 +143,7 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
     /**
      *
      * @covers Vatsimphp\VatsimData::loadData
+     * @covers Vatsimphp\VatsimData::prepareSync
      */
     public function testLoadData()
     {
@@ -195,6 +198,7 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
      * Exception stack test
      * @covers Vatsimphp\VatsimData::loadData
      * @covers Vatsimphp\VatsimData::getExceptionStack
+     * @covers Vatsimphp\VatsimData::prepareSync
      */
     public function testLoadDataException()
     {
@@ -228,6 +232,7 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
      *
      * @covers Vatsimphp\VatsimData::getStatusSync
      * @covers Vatsimphp\VatsimData::getDataSync
+     * @covers Vatsimphp\VatsimData::getMetarSync
      */
     public function testSyncGetters()
     {
@@ -242,7 +247,13 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
         $reflection = new \ReflectionMethod($data, 'getDataSync');
         $reflection->setAccessible(true);
         $this->assertInstanceOf('Vatsimphp\Sync\DataSync', $reflection->invoke($data));
+
+        // data sync
+        $reflection = new \ReflectionMethod($data, 'getMetarSync');
+        $reflection->setAccessible(true);
+        $this->assertInstanceOf('Vatsimphp\Sync\MetarSync', $reflection->invoke($data));
     }
+
 
     /**
      *
