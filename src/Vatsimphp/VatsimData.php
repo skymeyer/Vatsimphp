@@ -86,6 +86,9 @@ class VatsimData
      */
     protected $metarSync;
 
+
+    /*** EASY API ***/
+
     /**
      *
      * Search for a callsign
@@ -98,43 +101,22 @@ class VatsimData
 
     /**
      *
-     * Expose search on result container
-     * @param string $objectType
-     * @param array $query
+     * Get METAR
+     * @param string $icao
+     * @return string
      */
-    public function search($objectType, $query)
+    public function getMetar($icao)
     {
-        return $this->results->search($objectType, $query);
-    }
-
-    /**
-     *
-     * Override default config settings
-     * @param string $key
-     * @param mixed(string|boolean|integer) $value
-     */
-    public function setConfig($key, $value)
-    {
-        if (isset($this->config[$key])) {
-            $this->config[$key] = $value;
+        if ($this->loadMetar($icao)) {
+            $result = $this->metar->toArray();
+            if (!empty($result[0])) {
+                return $result[0];
+            }
         }
     }
 
-    /**
-     *
-     * Return config key
-     * @param string $key
-     * @return mixed(string|boolean|integer)
-     */
-    public function getConfig($key = null)
-    {
-        if (empty($key)) {
-            return $this->config;
-        }
-        if (isset($this->config[$key])) {
-            return $this->config[$key];
-        }
-    }
+
+    /*** ADVANCED API ***/
 
     /**
      *
@@ -182,18 +164,13 @@ class VatsimData
 
     /**
      *
-     * Easy METAR wrapper
-     * @param string $icao
-     * @return string
+     * Expose search on result container
+     * @param string $objectType
+     * @param array $query
      */
-    public function getMetar($icao)
+    public function search($objectType, $query)
     {
-        if ($this->loadMetar($icao)) {
-            $result = $this->metar->toArray();
-            if (!empty($result[0])) {
-                return $result[0];
-            }
-        }
+        return $this->results->search($objectType, $query);
     }
 
     /**
@@ -248,6 +225,38 @@ class VatsimData
     {
         return $this->exceptionStack;
     }
+
+    /**
+     *
+     * Override default config settings
+     * @param string $key
+     * @param mixed(string|boolean|integer) $value
+     */
+    public function setConfig($key, $value)
+    {
+        if (isset($this->config[$key])) {
+            $this->config[$key] = $value;
+        }
+    }
+
+    /**
+     *
+     * Return config key
+     * @param string $key
+     * @return mixed(string|boolean|integer)
+     */
+    public function getConfig($key = null)
+    {
+        if (empty($key)) {
+            return $this->config;
+        }
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+    }
+
+
+    /*** INTERNAL METHODS ***/
 
     /**
      *
