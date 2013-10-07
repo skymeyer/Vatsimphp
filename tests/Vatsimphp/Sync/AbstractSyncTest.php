@@ -699,6 +699,18 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Override url provider for extension classes
+     * @covers Vatsimphp\Sync\AbstractSync::overrideUrl
+     */
+    public function testOverrideUrl()
+    {
+        $sync = $this->getMockAbstractySync();
+        $override = new \ReflectionMethod($sync, 'overrideUrl');
+        $override->setAccessible(true);
+        $this->assertEquals('doingnothing', $override->invoke($sync, 'doingnothing'));
+    }
+
+    /**
      *
      * Return mocked AbstractSync with mocked silent logger
      */
