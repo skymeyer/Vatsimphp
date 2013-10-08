@@ -1,3 +1,21 @@
+### 1.0.0-RC2 (2013-10-08)
+
+  * Feature: Add METAR support
+  * Feature: Add easy public api wrappers
+  * Feature: Add decent default logger
+  * Fix: Filter empty lines in results
+  * Fix: Parse data timestamp timezone issue
+  * Doc: Added "easy" API code samples
+  * Doc: Added custom logger code sample
+
+### 1.0.0-RC1 (2013-10-02)
+
+  * Feature: Expose raw vatsim data results
+  * Fix: Encoding issue for downloaded data
+  * Fix: Create cache files if not exist
+  * Fix: Cache directory location
+  * Fix: Return options for public api
+
 ### 1.0.0-beta1 (2013-06-01)
 
   * First release
