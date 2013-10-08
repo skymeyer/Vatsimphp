@@ -54,7 +54,7 @@ class VatsimData
     protected $config = array(
 
         // cache settings
-        'cacheDir' => '../Cache',
+        'cacheDir' => '../../../app/cache',
         'cacheOnly' => false,
 
         // vatsim status file
