@@ -68,7 +68,7 @@ class VarFilterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $class->setFilter($filter);
-        $this->assertSame($expectedResult, $class->toArray(true));
+        $this->assertSame($expectedResult, $class->toArray());
     }
 
     public function providerTestIterator()
