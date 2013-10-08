@@ -52,28 +52,13 @@ class StatusSyncTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * Return mock for StatusSync with silent logger
+     * Return mock for StatusSync
      */
     protected function getMockStatusSync()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\StatusSync')
-            ->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();
-        return $this->attachMockedLogger($class);
-    }
-
-    /**
-     *
-     * Attach mocked silent logger
-     */
-    protected function attachMockedLogger($class)
-    {
-        $silentLogger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->getMock();
-        $logger = new \ReflectionProperty($class, 'log');
-        $logger->setAccessible(true);
-        $logger->setValue($class, $silentLogger);
         return $class;
     }
 }

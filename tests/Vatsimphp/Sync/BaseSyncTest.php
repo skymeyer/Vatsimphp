@@ -82,27 +82,12 @@ class BaseSyncTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * Return mock for abstract BaseSync with silent logger
+     * Return mock for abstract BaseSync
      */
     protected function getMockBaseSync()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\BaseSync')
-            ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        return $this->attachMockedLogger($class);
-    }
-
-    /**
-     *
-     * Attach mocked silent logger
-     */
-    protected function attachMockedLogger($class)
-    {
-        $silentLogger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->getMock();
-        $logger = new \ReflectionProperty($class, 'log');
-        $logger->setAccessible(true);
-        $logger->setValue($class, $silentLogger);
         return $class;
     }
 

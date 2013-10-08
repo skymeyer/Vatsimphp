@@ -63,18 +63,12 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     {
         $class = $this->getMockAbstractySync();
 
-        // protected log
-        $propLog = new \ReflectionProperty($class, 'log');
-        $propLog->setAccessible(true);
-        $this->assertInstanceOf('Psr\Log\LoggerInterface', $propLog->getValue($class));
-
         // protected urls
         $propUrls = new \ReflectionProperty($class, 'urls');
         $propUrls->setAccessible(true);
         $this->assertSame(array(), $propUrls->getValue($class));
 
         // public properties
-        $this->assertSame('../Cache', $class->cacheDir);
         $this->assertFalse($class->forceRefresh);
         $this->assertFalse($class->cacheOnly);
     }
@@ -179,7 +173,6 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function testGetData()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->disableOriginalConstructor()
             ->setMethods(array('loadFromUrl', 'loadFromCache'))
             ->getMockForAbstractClass();
 
@@ -209,7 +202,6 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function testIsDataValid()
     {
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
-            ->disableOriginalConstructor()
             ->setMethods(array('isValid'))
             ->getMockForAbstractClass();
 
@@ -331,7 +323,6 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function providerTestValidateConfig()
     {
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
-            ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
         return array(
@@ -433,7 +424,6 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function testLoadDataNoLocations()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->disableOriginalConstructor()
             ->setMethods(array('validateConfig'))
             ->getMockForAbstractClass();
 
@@ -452,14 +442,10 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function testLoadDataNoDownload()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->disableOriginalConstructor()
             ->setMethods(array('validateConfig', 'getData'))
             ->getMockForAbstractClass();
 
-        $class = $this->attachMockedLogger($class);
-
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
-            ->disableOriginalConstructor()
             ->setMethods(array('isValid'))
             ->getMockForAbstractClass();
 
@@ -482,11 +468,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function testLoadData($cacheDir, $cacheFile, $urls)
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->disableOriginalConstructor()
             ->setMethods(array('validateConfig', 'getData'))
             ->getMockForAbstractClass();
-
-        $class = $this->attachMockedLogger($class);
 
          // stub getData
         $class->expects($this->any())
@@ -495,7 +478,6 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
         // parser mock
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
-            ->disableOriginalConstructor()
             ->setMethods(array('isValid', 'getParsedData'))
             ->getMockForAbstractClass();
 
@@ -712,27 +694,13 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * Return mocked AbstractSync with mocked silent logger
+     * Return mocked AbstractSync
      */
     protected function getMockAbstractySync($setMethods = array())
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
             ->setMethods($setMethods)
             ->getMockForAbstractClass();
-        return $this->attachMockedLogger($class);
-    }
-
-    /**
-     *
-     * Attach mocked silent logger
-     */
-    protected function attachMockedLogger($class)
-    {
-        $silentLogger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->getMock();
-        $logger = new \ReflectionProperty($class, 'log');
-        $logger->setAccessible(true);
-        $logger->setValue($class, $silentLogger);
         return $class;
     }
 }

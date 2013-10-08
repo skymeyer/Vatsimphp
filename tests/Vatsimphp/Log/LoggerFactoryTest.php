@@ -35,7 +35,6 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = $this->getMockFactory();
         $logger = $factory::get($channel);
         $this->assertInstanceOf('Vatsimphp\Log\Logger', $logger);
-        $this->assertSame($expectedPrefix, $logger->getPrefix());
         $this->assertTrue($factory::channelExists($expectedPrefix));
     }
 

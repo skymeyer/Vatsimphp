@@ -21,9 +21,12 @@
 
 namespace Vatsimphp;
 
+use Vatsimphp\Log\LoggerFactory;
+
 use Vatsimphp\Sync\StatusSync;
 use Vatsimphp\Sync\DataSync;
 use Vatsimphp\Sync\MetarSync;
+use Vatsimphp\Log\Logger;
 
 /**
  *
@@ -53,8 +56,12 @@ class VatsimData
      */
     protected $config = array(
 
+        // log settings
+        'logFile' => '',
+        'logLevel' => Logger::DEBUG,
+
         // cache settings
-        'cacheDir' => '../../../app/cache',
+        'cacheDir' => '',
         'cacheOnly' => false,
 
         // vatsim status file
@@ -98,6 +105,16 @@ class VatsimData
      * @var \Vatsimphp\Sync\MetarSync
      */
     protected $metarSync;
+
+    /**
+     *
+     * Constructor - default log and cache path
+     */
+    public function __construct()
+    {
+        $this->setConfig('logFile', __DIR__ . '/../../app/logs/vatsimphp.log');
+        $this->setConfig('cacheDir', __DIR__ . '/../../app/cache');
+    }
 
 
     /*** EASY API ***/
@@ -361,6 +378,7 @@ class VatsimData
         if (! empty($this->statusSync)) {
             return $this->statusSync;
         }
+        LoggerFactory::$file = $this->config['logFile'];
         $this->statusSync = $this->getStatusSync();
         $this->statusSync->setDefaults();
         $this->statusSync->cacheDir = $this->config['cacheDir'];

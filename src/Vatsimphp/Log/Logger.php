@@ -21,83 +21,73 @@
 
 namespace Vatsimphp\Log;
 
-use Psr\Log\AbstractLogger;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger as BaseLogger;
 
 /**
  *
  * Simple base logger
  *
  */
-class Logger extends AbstractLogger
+class Logger extends BaseLogger
 {
+    const FORMAT = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
+
     /**
      *
-     * Log prefix
-     * @var string
+     * Shared stream handler
+     * @var \Monolog\Handler\StreamHandler
      */
-    protected $prefix;
+    protected static $handler;
 
     /**
      *
      * Ctor
-     * @param string $prefix
+     * @param string $name
+     * @param string $file
+     * @param integer $level
      */
-    public function __construct($prefix = '')
+    public function __construct($name, $file, $level)
     {
-        $this->prefix = $prefix;
+        parent::__construct($name);
+        $this->pushHandler($this->getHandler($file, $level));
     }
 
     /**
      *
-     * Return prefix (channel name)
-     * @return string
+     * Get streamhandler
+     * @param string $file
+     * @param integer $level
+     * @return \Monolog\Handler\StreamHandler
      */
-    public function getPrefix()
+    protected function getHandler($file, $level)
     {
-        return $this->prefix;
-    }
-
-    /**
-     * Simple logger implementation
-     * @see Psr\Log.LoggerInterface::log()
-     * @return string
-     */
-    public function log($level, $message, Array $context = array())
-    {
-        if (!empty($this->prefix)) {
-            $message = "$this->prefix: $message";
+        if (empty(self::$handler)) {
+            $handler = new StreamHandler($file, $level);
+            $handler->setFormatter($this->getCustomFormatter());
+            self::$handler = $handler;
         }
-        $message = "[".strtoupper($level)."] $message";
-
-        if ($context = $this->getContext($context)) {
-            $message = $message . PHP_EOL . $context;
-        }
-        $this->logStdErr($message);
-        return $message;
+        return self::$handler;
     }
 
     /**
      *
-     * Convert array to key/value string
-     * @param array $context
-     * @return string
+     * Get formatter
+     * @return \Monolog\Formatter\LineFormatter
      */
-    protected function getContext($context)
+    protected function getCustomFormatter()
     {
-        $result = array();
-        foreach ($context as $key => $value) {
-            if (is_string($value)) {
-                $result[] = "$key: $value";
-            }
-        }
-        return implode(PHP_EOL, $result);
+        return new LineFormatter(self::FORMAT);
     }
 
     /**
+     *
+     * Reset handler
      * @codeCoverageIgnore
      */
-    protected function logStdErr($message)
+    public static function resetHandler()
     {
-        error_log($message);
+        self::$handler = null;
     }
 }

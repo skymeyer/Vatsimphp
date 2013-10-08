@@ -93,21 +93,13 @@ class StatusParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * Mock parser object with silent Logger
+     * Mock parser object with
      */
     protected function getMockParser($name)
     {
         $class = $this->getMockBuilder('Vatsimphp\Parser\\'.$name.'Parser')
             ->setMethods(null)
             ->getMock();
-
-        // mock logger to be quiet
-        $silentLogger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->getMock();
-        $logger = new \ReflectionProperty($class, 'log');
-        $logger->setAccessible(true);
-        $logger->setValue($class, $silentLogger);
-
         return $class;
     }
 }

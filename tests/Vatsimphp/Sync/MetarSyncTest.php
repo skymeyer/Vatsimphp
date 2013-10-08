@@ -109,28 +109,13 @@ class MetarSyncTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * Return mock for DataSync with silent logger
+     * Return mock for DataSync
      */
     protected function getMockMetarSync($setMethods = null)
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\MetarSync')
-            ->disableOriginalConstructor()
             ->setMethods($setMethods)
             ->getMock();
-        return $this->attachMockedLogger($class);
-    }
-
-    /**
-     *
-     * Attach mocked silent logger
-     */
-    protected function attachMockedLogger($class)
-    {
-        $silentLogger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->getMock();
-        $logger = new \ReflectionProperty($class, 'log');
-        $logger->setAccessible(true);
-        $logger->setValue($class, $silentLogger);
         return $class;
     }
 }

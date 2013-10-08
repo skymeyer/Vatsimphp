@@ -21,78 +21,49 @@
 
 namespace Vatsimphp;
 
+use Vatsimphp\Log\Logger;
+
 class LoggerTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        Logger::resetHandler();
+        $dir = 'build/tests';
+        @mkdir($dir);
+    }
+
+    protected function tearDown()
+    {
+        Logger::resetHandler();
+        $dir = 'build/tests';
+        @unlink($dir.'/file.log');
+    }
+
     /**
      *
-     * Prefix getter
-     * @dataProvider providerTestPrefix
-     * @covers Vatsimphp\Log\Logger::getPrefix
-     * @covers Vatsimphp\Log\Logger::__construct
+     * Test inheritance
      */
-    public function testPrefix($prefix)
+    public function testImplements()
+    {
+        $class = $this->getMockBuilder('Vatsimphp\Log\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->assertInstanceOf('Psr\Log\LoggerInterface', $class);
+    }
+
+    /**
+     *
+     * @covers Vatsimphp\Log\Logger::__construct
+     * @covers Vatsimphp\Log\Logger::getHandler
+     * @covers Vatsimphp\Log\Logger::getCustomFormatter
+     */
+    public function testLogger()
     {
         $logger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->setConstructorArgs(array($prefix))
+            ->setConstructorArgs(array('foo', 'build/tests/file.log', Logger::CRITICAL))
             ->setMethods(null)
             ->getMock();
-        $this->assertEquals($prefix, $logger->getPrefix());
-    }
-
-    public function providerTestPrefix()
-    {
-        return array(
-            array(null),
-            array(''),
-            array('notempty'),
-        );
-    }
-
-    /**
-     *
-     * Send message to log
-     * @dataProvider providerTestLog
-     * @covers Vatsimphp\Log\Logger::log
-     * @covers Vatsimphp\Log\Logger::getContext
-     */
-    public function testLog($prefix, $level, $message, $context, $result)
-    {
-        $logger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->setConstructorArgs(array($prefix))
-            ->setMethods(array('logStdErr'))
-            ->getMock();
-        $msg = $logger->log($level, $message, $context);
-        $this->assertEquals($result, $msg);
-    }
-
-    public function providerTestLog()
-    {
-        return array(
-            array(
-                '',
-                'debug',
-                'log this',
-                array(),
-                '[DEBUG] log this',
-            ),
-            array(
-                'Prefix',
-                'debug',
-                'log this',
-                array(),
-                '[DEBUG] Prefix: log this',
-            ),
-            array(
-                'Prefix',
-                'debug',
-                'log this',
-                array(
-                    'k1' => 'v1',
-                    'k2' => array('bogus'),
-                    'k3' => 'v3',
-                ),
-                '[DEBUG] Prefix: log this'.PHP_EOL.'k1: v1'.PHP_EOL.'k3: v3',
-            ),
-        );
+        $this->assertEquals('foo', $logger->getName());
+        $this->assertTrue($logger->critical('logthis'));
     }
 }

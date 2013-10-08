@@ -46,6 +46,20 @@ class LoggerFactory
 
     /**
      *
+     * Log level
+     * @var integer
+     */
+    public static $level = Logger::DEBUG;
+
+    /**
+     *
+     * Log file name
+     * @var string
+     */
+    public static $file;
+
+    /**
+     *
      * Load logger object
      * @param mixed(string|object) $channel
      * @return \Psr\Log\LoggerInterface
@@ -65,7 +79,8 @@ class LoggerFactory
             if (self::channelExists(self::DEFAULT_LOGGER)) {
                 self::$loggers[$channel] = self::$loggers[self::DEFAULT_LOGGER];
             } else {
-                self::$loggers[$channel] = new Logger($channel);
+                $file = empty(self::$file) ? __DIR__ . '/../../../app/logs/vatsimphp.log' : self::$file;
+                self::$loggers[$channel] = new Logger($channel, $file, self::$level);
             }
         }
         return self::$loggers[$channel];

@@ -434,7 +434,6 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
     protected function getDataMock($setMethods = null)
     {
         return $this->getMockBuilder('Vatsimphp\VatsimData')
-            ->disableOriginalConstructor()
             ->setMethods($setMethods)
             ->getMock();
     }
@@ -478,22 +477,6 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array())
             ->getMock();
-        return $this->attachMockedLogger($sync);
-    }
-
-    /**
-     *
-     * Attach mocked silent logger
-     * @param string $class
-     * @return Vatsimphp\Sync\AbstractSync
-     */
-    protected function attachMockedLogger($class)
-    {
-        $silentLogger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->getMock();
-        $logger = new \ReflectionProperty($class, 'log');
-        $logger->setAccessible(true);
-        $logger->setValue($class, $silentLogger);
-        return $class;
+        return $sync;
     }
 }
