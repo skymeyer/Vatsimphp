@@ -192,10 +192,6 @@ abstract class AbstractSync implements SyncInterface
         $this->validateConfig();
         $urls = $this->prepareUrls($this->filePath, $this->urls, $this->forceRefresh);
 
-        if ($this->forceRefresh) {
-            $this->log->debug("Refresh forced, skipping cache content");
-        }
-
         // we need at least one location
         if (!count($urls)) {
             throw new SyncException(
@@ -249,8 +245,12 @@ abstract class AbstractSync implements SyncInterface
             shuffle($urls);
         }
         // if local cache exists, shift it on top
-        if (file_exists($filePath) && !$forceRefresh) {
-            array_unshift($urls, $filePath);
+        if (file_exists($filePath)) {
+            if ($forceRefresh) {
+                $this->log->debug("Refresh forced, skipping cached content from $filePath");
+            } else {
+                array_unshift($urls, $filePath);
+            }
         }
         return $urls;
     }
