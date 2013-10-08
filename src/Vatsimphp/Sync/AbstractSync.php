@@ -191,6 +191,10 @@ abstract class AbstractSync implements SyncInterface
         $this->validateConfig();
         $urls = $this->prepareUrls($this->filePath, $this->urls, $this->forceRefresh);
 
+        if ($this->forceRefresh) {
+            $this->log->debug("Refresh forced, skipping cache content");
+        }
+
         // we need at least one location
         if (!count($urls)) {
             throw new SyncException(
