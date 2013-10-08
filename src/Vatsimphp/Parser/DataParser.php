@@ -207,6 +207,11 @@ class DataParser extends AbstractParser
         $h = (int)substr($str, 8, 2);
         $i = (int)substr($str, 10, 2);
         $s = (int)substr($str, 12, 2);
-        return mktime($h, $i, $s, $m, $d, $y);
+
+        $dt = new \DateTime();
+        $dt->setTimezone(new \DateTimeZone('UTC'));
+        $dt->setDate($y, $m, $d);
+        $dt->setTime($h, $i, $s);
+        return $dt->getTimestamp();
     }
 }
