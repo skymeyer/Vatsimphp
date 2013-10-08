@@ -29,7 +29,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         Logger::resetHandler();
         $dir = 'build/tests';
-        @mkdir($dir);
+        @mkdir($dir, 0777, true);
     }
 
     protected function tearDown()

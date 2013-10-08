@@ -26,7 +26,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $dir = 'build/tests';
-        @mkdir($dir);
+        @mkdir($dir, 0777, true);
         touch($dir.'/writeable.test');
         touch($dir.'/unwriteable.test');
         chmod($dir.'/unwriteable.test', 0400);
