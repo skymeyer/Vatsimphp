@@ -428,6 +428,17 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
+     * @covers Vatsimphp\VatsimData::__construct
+     */
+    public function testConstruct()
+    {
+        $data = $this->getDataMock();
+        $this->assertNotEmpty($data->getConfig('logFile'));
+        $this->assertNotEmpty($data->getConfig('cacheDir'));
+    }
+
+    /**
+     *
      * @param mixed $setMethods To be passed into setMethods mock builder
      * @return Vatsimphp\VatsimData
      */
