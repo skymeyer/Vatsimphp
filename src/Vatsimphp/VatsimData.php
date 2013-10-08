@@ -291,7 +291,7 @@ class VatsimData
         $this->metarSync = $this->getMetarSync();
         $this->metarSync->setDefaults();
         $this->metarSync->cacheDir = $this->config['cacheDir'];
-        $this->metarSync->cacheOnly = $this->config['cacheOnly'];
+        $this->metarSync->cacheOnly = false;
         $this->metarSync->refreshInterval = $this->config['metarRefresh'];
         $this->metarSync->forceRefresh = $this->config['forceMetarRefresh'];
         $this->metarSync->registerUrlFromStatus($this->prepareSync(), 'metarUrls');
