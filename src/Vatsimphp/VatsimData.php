@@ -203,9 +203,9 @@ class VatsimData
     public function getMetar($icao)
     {
         if ($this->loadMetar($icao)) {
-            return count($this->metar) ? array_shift($this->metar->toArray()) : '';
+            $metar = $this->metar->toArray();
         }
-        return '';
+        return (empty($metar)) ? '' : array_shift($metar);
     }
 
 
