@@ -20,8 +20,9 @@ require_once '../vendor/autoload.php';
 
 // Create custom logger based on Monolog (note: every PSR-3 compliant logger will work)
 // see https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
+$logFile = __DIR__ . '/../app/logs/vatsimphp_custom.log';
 $logger = new Logger('vatsimphp');
-$logger->pushHandler(new StreamHandler('vatsim.log', Logger::DEBUG));
+$logger->pushHandler(new StreamHandler($logFile, Logger::DEBUG));
 
 // Register custom logger
 LoggerFactory::register("_DEFAULT_", $logger);
@@ -29,4 +30,4 @@ LoggerFactory::register("_DEFAULT_", $logger);
 $vatsim = new VatsimData();
 $vatsim->loadData();
 
-// see vatsim.log for the result
+// see app/logs/vatsimphp_custom.log for the result
