@@ -119,7 +119,6 @@ class ResultContainer implements \Countable
         $results = array();
         if ($this->isSearchable($objectType)) {
             foreach ($this->get($objectType) as $line) {
-                $hit = false;
                 foreach ($query as $field => $needle) {
                     if (isset($line[$field])) {
                         if (stripos($line[$field], $needle) !== false) {
