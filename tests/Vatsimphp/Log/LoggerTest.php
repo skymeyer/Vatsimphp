@@ -59,9 +59,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $logger = $this->getMockBuilder('Vatsimphp\Log\Logger')
             ->setConstructorArgs(array($prefix))
-            ->setMethods(null)
+            ->setMethods(array('logStdErr'))
             ->getMock();
-        $logger->inUnitTest = true;
         $msg = $logger->log($level, $message, $context);
         $this->assertEquals($result, $msg);
     }

@@ -39,13 +39,6 @@ class Logger extends AbstractLogger
 
     /**
      *
-     * Suppress during unit test runs
-     * @var boolean
-     */
-    public $inUnitTest = false;
-
-    /**
-     *
      * Ctor
      * @param string $prefix
      */
@@ -79,13 +72,7 @@ class Logger extends AbstractLogger
         if ($context = $this->getContext($context)) {
             $message = $message . PHP_EOL . $context;
         }
-
-        // @codeCoverageIgnoreStart
-        if (!$this->inUnitTest) {
-            error_log($message);
-        }
-        // @codeCoverageIgnoreEnd
-
+        $this->logStdErr($message);
         return $message;
     }
 
@@ -104,5 +91,13 @@ class Logger extends AbstractLogger
             }
         }
         return implode(PHP_EOL, $result);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    protected function logStdErr($message)
+    {
+        error_log($message);
     }
 }
