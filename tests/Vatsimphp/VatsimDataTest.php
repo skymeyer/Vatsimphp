@@ -66,7 +66,7 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testSearch()
     {
-        $container = $this->getContainerMock();
+        $container = $this->getContainerMock(array('search'));
         $container->expects($this->once())
             ->method('search')
             ->with($this->equalTo('general'), $this->equalTo('query'));
@@ -91,11 +91,29 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
+     * @covers Vatsimphp\VatsimData::getMetar
+     */
+    public function testGetMetar()
+    {
+        $data = $this->getDataMock(array('loadMetar'));
+        $data->expects($this->once())
+            ->method('loadMetar')
+            ->will($this->returnValue(true));
+
+        $container = $this->getContainerMock();
+        $container->append('metar', array('KSFO stuff'));
+        $data = $this->attachContainer($data, $container);
+
+        $this->assertEquals('KSFO stuff', $data->getMetar('KSFO'));
+    }
+
+    /**
+     *
      * @covers Vatsimphp\VatsimData::getObjectTypes
      */
     public function testGetObjectTypes()
     {
-        $container = $this->getContainerMock();
+        $container = $this->getContainerMock(array('getList'));
         $container->expects($this->once())
             ->method('getList');
         $data = $this->attachContainer($this->getDataMock(), $container);
@@ -143,54 +161,27 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
     /**
      *
      * @covers Vatsimphp\VatsimData::loadData
-     * @covers Vatsimphp\VatsimData::prepareSync
      */
     public function testLoadData()
     {
-        /* STATUS SYNC */
         $statusSync = $this->getSyncMock('status');
 
-        // setting defaults
-        $statusSync->expects($this->once())
-            ->method('setDefaults');
-
-        // registering url
-        $statusSync->expects($this->once())
-            ->method('registerUrl')
-            ->with($this->equalTo('custom_status_url'));
-
-
-        /* DATA SYNC */
         $dataSync   = $this->getSyncMock('data');
-
-        // setting defaults
         $dataSync->expects($this->once())
             ->method('setDefaults');
-
-        // registering urls
         $dataSync->expects($this->once())
             ->method('registerUrlFromStatus');
-
-        // data load
         $dataSync->expects($this->once())
             ->method('loadData');
 
-
-        /* VATSIM DATA */
-        $data = $this->getDataMock(array('getStatusSync', 'getDataSync'));
-
-        // mock status sync
+        $data = $this->getDataMock(array('prepareSync', 'getDataSync'));
         $data->expects($this->once())
-            ->method('getStatusSync')
+            ->method('prepareSync')
             ->will($this->returnValue($statusSync));
-
-        // mock data sync
         $data->expects($this->once())
             ->method('getDataSync')
             ->will($this->returnValue($dataSync));
 
-        // testing ...
-        $data->setConfig('statusUrl', 'custom_status_url');
         $this->assertTrue($data->loadData());
     }
 
@@ -198,29 +189,24 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
      * Exception stack test
      * @covers Vatsimphp\VatsimData::loadData
      * @covers Vatsimphp\VatsimData::getExceptionStack
-     * @covers Vatsimphp\VatsimData::prepareSync
      */
     public function testLoadDataException()
     {
         $statusSync = $this->getSyncMock('status');
+
         $dataSync   = $this->getSyncMock('data');
         $dataSync->expects($this->once())
             ->method('loadData')
             ->will($this->throwException(new \Exception));
 
-        $data = $this->getDataMock(array('getStatusSync', 'getDataSync'));
-
-        // mock status sync
+        $data = $this->getDataMock(array('prepareSync', 'getDataSync'));
         $data->expects($this->once())
-            ->method('getStatusSync')
+            ->method('prepareSync')
             ->will($this->returnValue($statusSync));
-
-        // mock data sync
         $data->expects($this->once())
             ->method('getDataSync')
             ->will($this->returnValue($dataSync));
 
-        // testing ...
         $this->assertFalse($data->loadData());
         $stack = $data->getExceptionStack();
         $this->assertCount(1, $stack);
@@ -230,30 +216,159 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
+     * @covers Vatsimphp\VatsimData::loadMetar
+     */
+    public function testLoadMetar()
+    {
+        $metarSync = $this->getSyncMock('metar');
+        $metarSync->expects($this->once())
+            ->method('setAirport')
+            ->with($this->equalTo('KSFO'));
+        $metarSync->expects($this->once())
+            ->method('loadData');
+
+        $data = $this->getDataMock(array('prepareMetarSync'));
+        $data->expects($this->once())
+            ->method('prepareMetarSync')
+            ->will($this->returnValue($metarSync));
+
+        $this->assertTrue($data->loadMetar('KSFO'));
+    }
+
+    /**
+     * Exception stack test
+     * @covers Vatsimphp\VatsimData::loadMetar
+     * @covers Vatsimphp\VatsimData::getExceptionStack
+     */
+    public function testLoadMetarException()
+    {
+        $metarSync = $this->getSyncMock('metar');
+        $metarSync->expects($this->once())
+            ->method('loadData')
+            ->will($this->throwException(new \Exception));
+
+        $data = $this->getDataMock(array('prepareMetarSync'));
+        $data->expects($this->once())
+            ->method('prepareMetarSync')
+            ->will($this->returnValue($metarSync));
+
+        $this->assertFalse($data->loadMetar('KSFO'));
+        $stack = $data->getExceptionStack();
+        $this->assertCount(1, $stack);
+        $this->assertArrayHasKey(0, $stack);
+        $this->assertInstanceOf('\Exception', $stack[0]);
+    }
+
+    /**
+     *
+     * @covers Vatsimphp\VatsimData::prepareSync
+     */
+    public function testPrepareSync()
+    {
+        $statusSync = $this->getSyncMock('status');
+        $statusSync->expects($this->once())
+            ->method('setDefaults');
+        $statusSync->expects($this->once())
+            ->method('registerUrl')
+            ->with($this->equalTo('custom_url'), $this->equalTo(true));
+
+        $data = $this->getDataMock(array('getStatusSync'));
+        $data->setConfig('statusUrl', 'custom_url');
+        $data->expects($this->once())
+            ->method('getStatusSync')
+            ->will($this->returnValue($statusSync));
+
+        $prepare = new \ReflectionMethod($data, 'prepareSync');
+        $prepare->setAccessible(true);
+        $this->assertInstanceOf('Vatsimphp\Sync\StatusSync', $prepare->invoke($data));
+
+    }
+
+    /**
+     *
+     * @covers Vatsimphp\VatsimData::prepareMetarSync
+     */
+    public function testPrepareMetarSync()
+    {
+        $statusSync = $this->getSyncMock('status');
+        $metarSync = $this->getSyncMock('metar');
+        $metarSync->expects($this->once())
+            ->method('setDefaults');
+        $metarSync->expects($this->once())
+            ->method('registerUrlFromStatus')
+            ->with($this->isInstanceOf('Vatsimphp\Sync\StatusSync'), $this->equalTo('metarUrls'));
+
+        $data = $this->getDataMock(array('prepareSync', 'getMetarSync'));
+        $data->expects($this->once())
+            ->method('prepareSync')
+            ->will($this->returnValue($statusSync));
+        $data->expects($this->once())
+            ->method('getMetarSync')
+            ->will($this->returnValue($metarSync));
+
+        $prepare = new \ReflectionMethod($data, 'prepareMetarSync');
+        $prepare->setAccessible(true);
+        $this->assertInstanceOf('Vatsimphp\Sync\MetarSync', $prepare->invoke($data));
+
+    }
+
+    /**
+     *
+     * Test proper return of cached objects to avoid multiple invocations
+     *
+     * @dataProvider providerTestCachedObjects
+     * @covers Vatsimphp\VatsimData::prepareSync
+     * @covers Vatsimphp\VatsimData::prepareMetarSync
+     */
+    public function testCachedObjects($name, $cacheProp, $notCallFunction, $class, $testMethod)
+    {
+        $object = $this->getSyncMock($name);
+
+        $data = $this->getDataMock(array($notCallFunction));
+        $data->expects($this->never())
+            ->method($notCallFunction);
+
+        $cache = new \ReflectionProperty($data, $cacheProp);
+        $cache->setAccessible(true);
+        $cache->setValue($data, $object);
+
+        $test = new \ReflectionMethod($data, $testMethod);
+        $test->setAccessible(true);
+        $this->assertInstanceOf($class, $test->invoke($data));
+    }
+
+    public function providerTestCachedObjects()
+    {
+        return array(
+            array('status', 'statusSync', 'getStatusSync', 'Vatsimphp\Sync\StatusSync', 'prepareSync'),
+            array('metar', 'metarSync', 'getMetarSync', 'Vatsimphp\Sync\MetarSync', 'prepareMetarSync'),
+        );
+    }
+
+    /**
+     * @dataProvider providerTestSyncGetters
      * @covers Vatsimphp\VatsimData::getStatusSync
      * @covers Vatsimphp\VatsimData::getDataSync
      * @covers Vatsimphp\VatsimData::getMetarSync
      */
-    public function testSyncGetters()
+    public function testSyncGetters($name)
     {
         $data = $this->getDataMock();
-
-        // status sync
-        $reflection = new \ReflectionMethod($data, 'getStatusSync');
+        $getMethod = "get{$name}Sync";
+        $classname = "Vatsimphp\\Sync\\{$name}Sync";
+        $reflection = new \ReflectionMethod($data, $getMethod);
         $reflection->setAccessible(true);
-        $this->assertInstanceOf('Vatsimphp\Sync\StatusSync', $reflection->invoke($data));
-
-        // data sync
-        $reflection = new \ReflectionMethod($data, 'getDataSync');
-        $reflection->setAccessible(true);
-        $this->assertInstanceOf('Vatsimphp\Sync\DataSync', $reflection->invoke($data));
-
-        // data sync
-        $reflection = new \ReflectionMethod($data, 'getMetarSync');
-        $reflection->setAccessible(true);
-        $this->assertInstanceOf('Vatsimphp\Sync\MetarSync', $reflection->invoke($data));
+        $this->assertInstanceOf($classname, $reflection->invoke($data));
     }
 
+    public function providerTestSyncGetters()
+    {
+        return array(
+            array('Status'),
+            array('Data'),
+            array('Metar'),
+        );
+    }
 
     /**
      *
@@ -272,11 +387,10 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
      *
      * @return Vatsimphp\Result\ResultContainer
      */
-    protected function getContainerMock()
+    protected function getContainerMock($setMethods = null)
     {
         return $this->getMockBuilder('Vatsimphp\Result\ResultContainer')
-            ->disableOriginalConstructor()
-            ->setMethods(array())
+            ->setMethods($setMethods)
             ->getMock();
     }
 
