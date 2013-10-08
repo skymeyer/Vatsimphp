@@ -75,36 +75,92 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests for "easy" api calls using VatsimData::search
      *
+     * @dataProvider providerTestEasySearch
      * @covers Vatsimphp\VatsimData::searchCallsign
+     * @covers Vatsimphp\VatsimData::searchVatsimId
+     * @covers Vatsimphp\VatsimData::getPilots
+     * @covers Vatsimphp\VatsimData::getControllers
      */
-    public function testSearchCallsign()
+    public function testEasySearch($method, $object, $field, $term)
     {
         $data = $this->getDataMock(array('search'));
         $container = $this->getContainerMock();
         $data = $this->attachContainer($data, $container);
         $data->expects($this->once())
             ->method('search')
-            ->with($this->equalTo('clients'), $this->equalTo(array('callsign' => 'SWA3437')));
-        $data->searchCallsign('SWA3437');
+            ->with($this->equalTo($object), $this->equalTo(array($field => $term)));
+        $data->$method($term);
+    }
+
+    public function providerTestEasySearch()
+    {
+        return array(
+            array('searchCallsign', 'clients', 'callsign', 'SWA3437'),
+            array('searchVatsimId', 'clients', 'cid', '123456'),
+            array('getPilots', 'clients', 'clienttype', 'PILOT'),
+            array('getControllers', 'clients', 'clienttype', 'ATC'),
+        );
+    }
+
+    /**
+     * Tests for "easy" api calls using VatsimData::getIterator
+     *
+     * @dataProvider providerTestEasyIterator
+     * @covers Vatsimphp\VatsimData::getGeneralInfo
+     * @covers Vatsimphp\VatsimData::getClients
+     * @covers Vatsimphp\VatsimData::getServers
+     * @covers Vatsimphp\VatsimData::getVoiceServers
+     * @covers Vatsimphp\VatsimData::getPrefile
+     */
+    public function testEasyIterator($method, $object)
+    {
+        $data = $this->getDataMock(array('getIterator'));
+        $container = $this->getContainerMock();
+        $data = $this->attachContainer($data, $container);
+        $data->expects($this->once())
+            ->method('getIterator')
+            ->with($this->equalTo($object));
+        $data->$method();
+    }
+
+    public function providerTestEasyIterator()
+    {
+        return array(
+            array('getGeneralInfo', 'general'),
+            array('getClients', 'clients'),
+            array('getServers', 'servers'),
+            array('getVoiceServers', 'voice_servers'),
+            array('getPrefile', 'prefile'),
+        );
     }
 
     /**
      *
+     * @dataProvider providerTestGetMetar
      * @covers Vatsimphp\VatsimData::getMetar
      */
-    public function testGetMetar()
+    public function testGetMetar($loadData, $metar, $expected)
     {
         $data = $this->getDataMock(array('loadMetar'));
         $data->expects($this->once())
             ->method('loadMetar')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue($loadData));
 
         $container = $this->getContainerMock();
-        $container->append('metar', array('KSFO stuff'));
+        $container->append('metar', array($metar));
         $data = $this->attachContainer($data, $container);
 
-        $this->assertEquals('KSFO stuff', $data->getMetar('KSFO'));
+        $this->assertEquals($expected, $data->getMetar('KSFO'));
+    }
+
+    public function providerTestGetMetar()
+    {
+        return array(
+            array(true, 'metar content', 'metar content'),
+            array(false, 'metar content', ''),
+        );
     }
 
     /**

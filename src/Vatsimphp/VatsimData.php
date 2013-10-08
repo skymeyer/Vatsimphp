@@ -33,6 +33,19 @@ use Vatsimphp\Sync\MetarSync;
  */
 class VatsimData
 {
+    const OBJ_GENERAL = 'general';
+    const OBJ_CLIENT = 'clients';
+    const OBJ_SERVER = 'servers';
+    const OBJ_VOICE = 'voice_servers';
+    const OBJ_PREFILE = 'prefile';
+    const OBJ_METAR = 'metar';
+
+    const HEADER_CLIENT_TYPE = 'clienttype';
+    const HEADER_CLIENT_CID = 'cid';
+    const HEADER_CLIENT_CALLSIGN = 'callsign';
+    const CLIENT_TYPE_PILOT = 'PILOT';
+    const CLIENT_TYPE_ATC = 'ATC';
+
     /**
      *
      * Default configuration
@@ -91,12 +104,94 @@ class VatsimData
 
     /**
      *
+     * General section from vatsim-data.txt
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function getGeneralInfo()
+    {
+        return $this->getIterator(self::OBJ_GENERAL);
+    }
+
+    /**
+     *
+     * Return all online pilots
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function getPilots()
+    {
+        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_TYPE => self::CLIENT_TYPE_PILOT));
+    }
+
+    /**
+     *
+     * Return all online controllers
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function getControllers()
+    {
+        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_TYPE => self::CLIENT_TYPE_ATC));
+    }
+
+    /**
+     *
+     * Return all online clients (pilots + controllers)
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function getClients()
+    {
+        return $this->getIterator(self::OBJ_CLIENT);
+    }
+
+    /**
+     *
+     * Return current server list
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function getServers()
+    {
+        return $this->getIterator(self::OBJ_SERVER);
+    }
+
+    /**
+     *
+     * Return current voice server list
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function getVoiceServers()
+    {
+        return $this->getIterator(self::OBJ_VOICE);
+    }
+
+    /**
+     *
+     * Return all prefile entries
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function getPrefile()
+    {
+        return $this->getIterator(self::OBJ_PREFILE);
+    }
+
+    /**
+     *
      * Search for a callsign
      * @param string $callsign
+     * @return \Vatsimphp\Filter\Iterator
      */
     public function searchCallsign($callsign)
     {
-        return $this->search('clients', array('callsign' => $callsign));
+        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_CALLSIGN => $callsign));
+    }
+
+    /**
+     *
+     * Search for given vatsim ID
+     * @param string $id
+     * @return \Vatsimphp\Filter\Iterator
+     */
+    public function searchVatsimId($cid)
+    {
+        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_CID => $cid));
     }
 
     /**
@@ -108,11 +203,9 @@ class VatsimData
     public function getMetar($icao)
     {
         if ($this->loadMetar($icao)) {
-            $result = $this->metar->toArray();
-            if (!empty($result[0])) {
-                return $result[0];
-            }
+            return count($this->metar) ? array_shift($this->metar->toArray()) : '';
         }
+        return '';
     }
 
 
