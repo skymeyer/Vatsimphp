@@ -21,12 +21,11 @@
 
 namespace Vatsimphp;
 
-use Vatsimphp\Log\LoggerFactory;
-
 use Vatsimphp\Sync\StatusSync;
 use Vatsimphp\Sync\DataSync;
 use Vatsimphp\Sync\MetarSync;
 use Vatsimphp\Log\Logger;
+use Vatsimphp\Log\LoggerFactory;
 
 /**
  *
@@ -379,6 +378,7 @@ class VatsimData
             return $this->statusSync;
         }
         LoggerFactory::$file = $this->config['logFile'];
+        LoggerFactory::$level = $this->config['logLevel'];
         $this->statusSync = $this->getStatusSync();
         $this->statusSync->setDefaults();
         $this->statusSync->cacheDir = $this->config['cacheDir'];

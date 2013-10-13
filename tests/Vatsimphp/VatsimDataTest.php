@@ -21,6 +21,8 @@
 
 namespace Vatsimphp;
 
+use Vatsimphp\Log\Logger;
+use Vatsimphp\Log\LoggerFactory;
 use Vatsimphp\Filter\Iterator;
 use Vatsimphp\VatsimData;
 use Vatsimphp\Result\ResultContainer;
@@ -328,8 +330,13 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
             ->method('registerUrl')
             ->with($this->equalTo('custom_url'), $this->equalTo(true));
 
+        LoggerFactory::$level = Logger::DEBUG;
+        LoggerFactory::$file = null;
+
         $data = $this->getDataMock(array('getStatusSync'));
         $data->setConfig('statusUrl', 'custom_url');
+        $data->setConfig('logLevel', Logger::CRITICAL);
+        $data->setConfig('logFile', 'test.log');
         $data->expects($this->once())
             ->method('getStatusSync')
             ->will($this->returnValue($statusSync));
@@ -338,6 +345,8 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
         $prepare->setAccessible(true);
         $this->assertInstanceOf('Vatsimphp\Sync\StatusSync', $prepare->invoke($data));
 
+        $this->assertEquals(Logger::CRITICAL, LoggerFactory::$level);
+        $this->assertEquals('test.log', LoggerFactory::$file);
     }
 
     /**
@@ -439,7 +448,7 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * @param mixed $setMethods To be passed into setMethods mock builder
+     * @param array $setMethods To be passed into setMethods mock builder
      * @return Vatsimphp\VatsimData
      */
     protected function getDataMock($setMethods = null)
