@@ -518,12 +518,12 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerTestPrepareUrls
      * @covers Vatsimphp\Sync\AbstractSync::prepareUrls
      */
-    public function testPrepareUrls($filePath, $urls, $refresh, $shuffle, $expectedResult)
+    public function testPrepareUrls($filePath, $urls, $refresh, $cacheOnly, $shuffle, $expectedResult)
     {
         $class = $this->getMockAbstractySync();
         $prepare = new \ReflectionMethod($class, 'prepareUrls');
         $prepare->setAccessible(true);
-        $result = $prepare->invoke($class, $filePath, $urls, $refresh, $shuffle);
+        $result = $prepare->invoke($class, $filePath, $urls, $refresh, $cacheOnly, $shuffle);
 
         // on shuffle we just count
         if ($shuffle) {
@@ -541,6 +541,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
                 array('http://link'),
                 false,
                 false,
+                false,
                 array('http://link'),
             ),
             array(
@@ -548,11 +549,13 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
                 array('http://link1', 'http://link2'),
                 false,
                 false,
+                false,
                 array('http://link1', 'http://link2'),
             ),
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
+                false,
                 false,
                 false,
                 array('build/tests/writeable.test', 'http://link1', 'http://link2'),
@@ -563,12 +566,14 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
                 array('http://link1', 'http://link2'),
                 true,
                 false,
+                false,
                 array('http://link1', 'http://link2'),
             ),
             // shuffle test
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
+                false,
                 false,
                 true,
                 3,
@@ -578,10 +583,37 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
                 true,
+                false,
                 true,
                 2,
             ),
-
+            // cache only test
+            array(
+                'build/tests/writeable.test',
+                array('http://link1', 'http://link2'),
+                false,
+                true,
+                false,
+                array('build/tests/writeable.test'),
+            ),
+            // cache only force refresh test
+            array(
+                'build/tests/writeable.test',
+                array('http://link1', 'http://link2'),
+                true,
+                true,
+                false,
+                array('build/tests/writeable.test'),
+            ),
+            // cache only with non existing cache file
+            array(
+                'build/tests/notexist',
+                array('http://link1', 'http://link2'),
+                false,
+                true,
+                false,
+                array(),
+            ),
         );
     }
 

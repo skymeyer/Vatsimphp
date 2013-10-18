@@ -190,7 +190,7 @@ abstract class AbstractSync implements SyncInterface
     {
         $this->filePath = "{$this->cacheDir}/{$this->cacheFile}";
         $this->validateConfig();
-        $urls = $this->prepareUrls($this->filePath, $this->urls, $this->forceRefresh);
+        $urls = $this->prepareUrls($this->filePath, $this->urls, $this->forceRefresh, $this->cacheOnly);
 
         // we need at least one location
         if (!count($urls)) {
@@ -235,10 +235,11 @@ abstract class AbstractSync implements SyncInterface
      * @param string $filePath
      * @param array $urls
      * @param boolean $forceRefresh
+     * @param boolean $cacheOnly
      * @param boolean $shuffle
      * @return array
      */
-    protected function prepareUrls($filePath, $urls, $forceRefresh, $shuffle = true)
+    protected function prepareUrls($filePath, $urls, $forceRefresh, $cacheOnly = false, $shuffle = true)
     {
         // randomize urls first
         if ($shuffle) {
@@ -246,10 +247,19 @@ abstract class AbstractSync implements SyncInterface
         }
         // if local cache exists, shift it on top
         if (file_exists($filePath)) {
-            if ($forceRefresh) {
-                $this->log->debug("Refresh forced, skipping cached content from $filePath");
+            if ($cacheOnly) {
+                $urls = array($filePath);
+                $this->log->debug("Cache only mode enabled, only loading content from $filePath");
             } else {
-                array_unshift($urls, $filePath);
+                if ($forceRefresh) {
+                    $this->log->debug("Refresh forced, skipping cached content from $filePath");
+                } else {
+                    array_unshift($urls, $filePath);
+                }
+            }
+        } else {
+            if ($cacheOnly) {
+                return array();
             }
         }
         return $urls;
