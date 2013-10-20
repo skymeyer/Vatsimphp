@@ -20,9 +20,6 @@
         "phpunit/phpunit": "~3.7",
         "satooshi/php-coveralls": "dev-master"
     },
-    "suggest": {
-        "monolog/monolog": "Solid PSR-3 logging library"
-    },
     "autoload": {
         "psr-0": {
             "Vatsimphp": "src/"
