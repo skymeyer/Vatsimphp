@@ -1,8 +1,15 @@
+### 1.0.1 (2013-11-11)
+
+  * Fix: Properly pass custom log file location
+  * Fix: Do not expire local cache in cacheOnly mode
+  * Doc: Adding tutorial
+  * Doc: Misc updates
+
 ### 1.0.0 (2013-11-11)
 
   * Feature: Add cacheOnly mode
-  * Doc: update base documentation
-  * Doc: update API documentation
+  * Doc: Update base documentation
+  * Doc: Update API documentation
 
 ### 1.0.0-RC2 (2013-10-08)
 
