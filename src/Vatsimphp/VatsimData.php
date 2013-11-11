@@ -235,6 +235,8 @@ class VatsimData
     public function loadData()
     {
         try {
+            LoggerFactory::$file = $this->config['logFile'];
+            LoggerFactory::$level = $this->config['logLevel'];
             $data = $this->getDataSync();
             $data->setDefaults();
             $data->cacheDir = $this->config['cacheDir'];
@@ -405,6 +407,8 @@ class VatsimData
         if (! empty($this->metarSync)) {
             return $this->metarSync;
         }
+        LoggerFactory::$file = $this->config['logFile'];
+        LoggerFactory::$level = $this->config['logLevel'];
         $this->metarSync = $this->getMetarSync();
         $this->metarSync->setDefaults();
         $this->metarSync->cacheDir = $this->config['cacheDir'];
