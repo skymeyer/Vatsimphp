@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <title>Vatsimphp</title>
+  <parser>
+    <target>build/api</target>
+    <extensions>
+      <extension>php</extension>
+    </extensions>
+    <markers>
+      <item>TODO</item>
+      <item>FIXME</item>
+    </markers>
+  </parser>
+  <transformer>
+    <target>build/api</target>
+  </transformer>
+  <transformations>
+    <template name="responsive" />
+  </transformations>
+  <files>
+    <directory>src/*</directory>
+  </files>
+</phpdoc>
