@@ -189,7 +189,7 @@ $ php cron.php
 
 When you look at the first terminal you will see something like this:
 
-```bash
+```
 [2013-11-11 08:02:34] StatusSync.DEBUG: Registered url -> http://status.vatsim.net/status.txt []
 [2013-11-11 08:02:34] StatusSync.DEBUG: Load from cache file /home/batman/demo/vendor/skymeyer/vatsimphp/src/Vatsimphp/../../app/cache/status.txt []
 [2013-11-11 08:02:34] StatusParser.DEBUG: Data validated - dataUrls available []
