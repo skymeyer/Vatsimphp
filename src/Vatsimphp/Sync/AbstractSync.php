@@ -209,7 +209,7 @@ abstract class AbstractSync implements SyncInterface
         }
 
         // we should have valid data at this point
-        if (! $this->parser->isValid()) {
+        if (! $this->parser->isValid() || empty($validData)) {
             throw new SyncException(
                 "Unable to download data or data invalid",
                 $this->errors
@@ -239,30 +239,30 @@ abstract class AbstractSync implements SyncInterface
      * @param boolean $shuffle
      * @return array
      */
-    protected function prepareUrls($filePath, $urls, $forceRefresh, $cacheOnly = false, $shuffle = true)
+    protected function prepareUrls($filePath, array $urls = array(), $forceRefresh = false, $cacheOnly = false, $shuffle = true)
     {
-        // randomize urls first
-        if ($shuffle) {
-            shuffle($urls);
-        }
-        // if local cache exists, shift it on top
-        if (file_exists($filePath)) {
-            if ($cacheOnly) {
-                $urls = array($filePath);
-                $this->log->debug("Cache only mode enabled, only loading content from $filePath");
-            } else {
-                if ($forceRefresh) {
-                    $this->log->debug("Refresh forced, skipping cached content from $filePath");
-                } else {
-                    array_unshift($urls, $filePath);
-                }
-            }
-        } else {
-            if ($cacheOnly) {
+        $fileExists = file_exists($filePath);
+
+        if ($cacheOnly) {
+            if (!$fileExists) {
+                $this->log->debug("Cache only mode enabled, but $filePath does not exist !");
                 return array();
             }
+            $this->log->debug("Cache only mode enabled, only loading content from $filePath");
+            return array($filePath);
+
+        } else {
+            if ($shuffle) shuffle($urls);
+
+            if ($forceRefresh) {
+                $this->log->debug("Refresh forced, skipping cached content from $filePath");
+                return $urls;
+            }
+            if ($fileExists) {
+                array_unshift($urls, $filePath);
+            }
+            return $urls;
         }
-        return $urls;
     }
 
     /**

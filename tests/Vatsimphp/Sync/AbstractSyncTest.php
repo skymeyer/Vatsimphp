@@ -518,100 +518,80 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerTestPrepareUrls
      * @covers Vatsimphp\Sync\AbstractSync::prepareUrls
      */
-    public function testPrepareUrls($filePath, $urls, $refresh, $cacheOnly, $shuffle, $expectedResult)
+    public function testPrepareUrls($filePath, $urls, $refresh, $cacheOnly, $expectedResult)
     {
         $class = $this->getMockAbstractySync();
         $prepare = new \ReflectionMethod($class, 'prepareUrls');
         $prepare->setAccessible(true);
-        $result = $prepare->invoke($class, $filePath, $urls, $refresh, $cacheOnly, $shuffle);
-
-        // on shuffle we just count
-        if ($shuffle) {
-            $this->assertCount($expectedResult, $result);
-        } else {
-            $this->assertSame($expectedResult, $result);
-        }
+        $result = $prepare->invoke($class, $filePath, $urls, $refresh, $cacheOnly, false);
+        $this->assertSame($expectedResult, $result);
     }
 
     public function providerTestPrepareUrls()
     {
         return array(
+            // invalid cache file, one link
             array(
                 'build/tests/notexist',
                 array('http://link'),
                 false,
                 false,
-                false,
                 array('http://link'),
             ),
+            // invalid cache file, multi link
             array(
                 'build/tests/notexist',
                 array('http://link1', 'http://link2'),
                 false,
                 false,
-                false,
                 array('http://link1', 'http://link2'),
             ),
+            // valid cache file, multi link
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
-                false,
                 false,
                 false,
                 array('build/tests/writeable.test', 'http://link1', 'http://link2'),
             ),
-            // force refresh
+            // valid cache file, multi link - forceRefresh
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
                 true,
-                false,
                 false,
                 array('http://link1', 'http://link2'),
             ),
-            // shuffle test
-            array(
-                'build/tests/writeable.test',
-                array('http://link1', 'http://link2'),
-                false,
-                false,
-                true,
-                3,
-            ),
-            // shuffle test and force refresh
-            array(
-                'build/tests/writeable.test',
-                array('http://link1', 'http://link2'),
-                true,
-                false,
-                true,
-                2,
-            ),
-            // cache only test
+            // valid cache file, multi link - cacheOnly
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
                 false,
                 true,
-                false,
                 array('build/tests/writeable.test'),
             ),
-            // cache only force refresh test
+            // valid cache file, multi link - forceRefresh/cacheOnly
             array(
                 'build/tests/writeable.test',
                 array('http://link1', 'http://link2'),
                 true,
                 true,
-                false,
                 array('build/tests/writeable.test'),
             ),
-            // cache only with non existing cache file
+            // invalid cache file, multi link - cacheOnly
             array(
                 'build/tests/notexist',
                 array('http://link1', 'http://link2'),
                 false,
                 true,
-                false,
+                array(),
+            ),
+            // invalid cache file, multi link - forceRefresh/cacheOnly
+            array(
+                'build/tests/notexist',
+                array('http://link1', 'http://link2'),
+                true,
+                true,
                 array(),
             ),
         );
