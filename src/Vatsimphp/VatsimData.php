@@ -235,7 +235,6 @@ class VatsimData
     public function loadData()
     {
         try {
-            $status = $this->prepareSync();
             $data = $this->getDataSync();
             $data->setDefaults();
             $data->cacheDir = $this->config['cacheDir'];
@@ -243,8 +242,15 @@ class VatsimData
             $data->dataExpire = $this->config['dataExpire'];
             $data->refreshInterval = $this->config['dataRefresh'];
             $data->forceRefresh = $this->config['forceDataRefresh'];
-            $data->registerUrlFromStatus($status, 'dataUrls');
+
+            // use statussync for non-cache mode
+            if (!$data->cacheOnly) {
+                $status = $this->prepareSync();
+                $data->registerUrlFromStatus($status, 'dataUrls');
+            }
+
             $this->results = $data->loadData();
+
         } catch (\Exception $e) {
             $this->exceptionStack[] = $e;
             return false;
