@@ -1,3 +1,9 @@
+### 1.0.0 (2013-11-11)
+
+  * Feature: Add cacheOnly mode
+  * Doc: update base documentation
+  * Doc: update API documentation
+
 ### 1.0.0-RC2 (2013-10-08)
 
   * Feature: Add METAR support
