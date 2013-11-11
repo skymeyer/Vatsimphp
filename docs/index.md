@@ -3,9 +3,6 @@ Vatsimphp Documentation
 
 ## Installation
 
-The easiest way to install and use this library is throught [composer](http://getcomposer.org/). Checkout the [composer installation section](http://getcomposer.org/doc/00-intro.md#installation-nix) to get up and running.
-
-
 Assuming you have already installed composer, run:
 
 ``` bash
@@ -22,24 +19,23 @@ Or add vatsimphp manually to your composer.json of your current project:
 }
 ```
 
-That's it !
+## Tutorial
 
+We have compiled a full tutorial for newbie users covering the installation process and some real life examples on how to make use of vatsimphp. This tutorial is mostly targetted for novice users, however it contains valuable information about the vatsimphp design for everyone.
 
-## Usage scenarios
-
-To be added
+[Vatsimphp tutorial](https://github.com/skymeyer/Vatsimphp/blob/master/docs/tutorial.md)
 
 
 ## Easy API usage
 
-To be added
-
-See [examples](https://github.com/skymeyer/Vatsimphp/blob/master/examples/easy_api_examples.php)
+The *easy API* is mostly covered in the above tutorial. For a reference checkout our
+[examples](https://github.com/skymeyer/Vatsimphp/blob/master/examples/easy_api_examples.php).
 
 
 ## Advanced usage
 
 - [Custom logger example](https://github.com/skymeyer/Vatsimphp/blob/master/examples/custom_logger.php)
+- [Custom url mangler - coming for v1.1.0]()
 
 
 ## Additional resources
