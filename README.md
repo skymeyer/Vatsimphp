@@ -25,8 +25,8 @@ backend of your choice.
 Documentation
 -------------
 
-[Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md)
-[Browse examples](https://github.com/skymeyer/Vatsimphp/tree/master/examples)
+- [Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md)
+- [Browse examples](https://github.com/skymeyer/Vatsimphp/tree/master/examples)
 
 
 About
