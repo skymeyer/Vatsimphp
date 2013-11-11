@@ -522,7 +522,7 @@ abstract class AbstractSync implements SyncInterface
     protected function isCacheExpired()
     {
         $ts = filemtime($this->filePath);
-        if (time() - $ts >= $this->refreshInterval) {
+        if (!$this->cacheOnly && time() - $ts >= $this->refreshInterval) {
             $this->log->debug("Cache content {$this->filePath} expired ({$this->refreshInterval})");
             return true;
         }
