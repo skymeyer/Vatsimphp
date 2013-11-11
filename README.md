@@ -1,4 +1,4 @@
-Vatsimphp Library [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp) [![Coverage Status](https://coveralls.io/repos/skymeyer/Vatsimphp/badge.png?branch=master)](https://coveralls.io/r/skymeyer/Vatsimphp?branch=master) [![Dependency Status](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd/badge.png)](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd)
+Vatsimphp [![Latest Stable Version](https://poser.pugx.org/skymeyer/vatsimphp/v/stable.png)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp) [![Coverage Status](https://coveralls.io/repos/skymeyer/Vatsimphp/badge.png?branch=master)](https://coveralls.io/r/skymeyer/Vatsimphp?branch=master) [![Dependency Status](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd/badge.png)](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd)
 =================
 
 Vatsimphp collects and parses the publically available statistics
@@ -6,13 +6,13 @@ from the [VATSIM.net](http://www.vatsim.net) network. It provides
 iterators for the available data and basic search/filtering
 capabilities without using a database backend.
 
-It also uses an intelligent local file cache to avoid consuming
+Vatsimphp uses an intelligent local file cache to avoid consuming
 unnecessary bandwidth from the public data servers. The software
 comes with sensible default settings, but can be changed if
 required. Vatsimphp can be dropped into your crontab very easily
 to avoid inline data updates in your web application.
 
-Vatsimphp also supports local-file-only mode if another process
+A "cache only" node is available if another process
 is already responsible to retrieve the raw data files from the
 VATSIM network or if live connections are not applicable.
 
@@ -20,25 +20,14 @@ Vatsimphp can be easily plugged into existing PHP systems to
 query VATSIM data or feed the parsed results into a database
 backend of your choice.
 
-[![HipChat](https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash4/211042_170554734635_3177812_q.jpg)](https://www.hipchat.com/gcbN8D1yF)
-[HipChat Dev & notification room](https://www.hipchat.com/gcbN8D1yF)
+[Get in touch through HipChat](https://www.hipchat.com/gcbN8D1yF)
 
-Basic usage
------------
+Documentation
+-------------
 
-For almost all use cases the only class to use is VatsimData().
-This is an example how to retrieve all South West Airlines (SWA) pilots:
+[Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md)
+[Browse examples](https://github.com/skymeyer/Vatsimphp/tree/master/examples)
 
-```php
-<?php
-
-use Vatsimphp\VatsimData;
-$vatsim = new VatsimData();
-$vatsim->loadData();
-$swaPilots = $vatsim->searchCallsign('SWA');
-```
-
-For more information and examples see the `docs` and `examples` directories.
 
 About
 =====

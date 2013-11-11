@@ -21,8 +21,8 @@
 
 /**
  * Consult the documentation for more details at:
- * https://github.com/skymeyer/Vatsimphp/tree/master/docs
- **/
+ * https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md
+ */
 
 use Vatsimphp\VatsimData;
 
