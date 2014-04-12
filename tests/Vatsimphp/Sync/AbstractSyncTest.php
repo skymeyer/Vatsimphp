@@ -260,7 +260,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerTestIsCacheExpired
      * @covers Vatsimphp\Sync\AbstractSync::isCacheExpired
      */
-    public function testIsCacheExpired($refreshInterval, $status)
+    public function testIsCacheExpired($refreshInterval, $cacheOnly, $status)
     {
         // test file
         $testFile = 'build/tests/expire.test';
@@ -278,6 +278,11 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         $refresh->setAccessible(true);
         $refresh->setValue($class, $refreshInterval);
 
+        // set cacheOnly
+        $cache = new \ReflectionProperty($class, 'cacheOnly');
+        $cache->setAccessible(true);
+        $cache->setValue($class, $cacheOnly);
+
         // isCacheExpired
         $expired = new \ReflectionMethod($class, 'isCacheExpired');
         $expired->setAccessible(true);
@@ -288,8 +293,10 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function providerTestIsCacheExpired()
     {
         return array(
-            array(0, true),
-            array(30, false),
+            array(0, false, true),
+            array(30, false, false),
+            array(0, true, false),
+            array(30, true, false),
         );
     }
 
