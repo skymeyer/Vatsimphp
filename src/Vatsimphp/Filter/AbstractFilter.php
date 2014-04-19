@@ -86,7 +86,6 @@ abstract class AbstractFilter extends \FilterIterator implements FilterInterface
     public function toArray($retainKeys = true)
     {
         return $array = iterator_to_array($this, $retainKeys);
-        return ($filter) ? array_filter($array) : $array;
     }
 
     /**
