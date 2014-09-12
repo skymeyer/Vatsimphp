@@ -1,3 +1,8 @@
+### 1.0.2 (2014-09-11)
+
+  * Update: Change to PSR-4 autoloader
+  * Test: Stable php 5.6 support
+
 ### 1.0.1 (2013-11-11)
 
   * Fix: Properly pass custom log file location
