@@ -21,8 +21,8 @@
         "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Vatsimphp": "src/"
+        "psr-4": {
+            "Vatsimphp\\": "src/Vatsimphp"
         }
     },
     "extra": {

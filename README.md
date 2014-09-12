@@ -20,8 +20,6 @@ Vatsimphp can be easily plugged into existing PHP systems to
 query VATSIM data or feed the parsed results into a database
 backend of your choice.
 
-[Get in touch through HipChat](https://www.hipchat.com/gcbN8D1yF)
-
 Documentation
 -------------
 
@@ -35,7 +33,7 @@ About
 Requirements
 ------------
 
-- From PHP 5.3 and above
+- From PHP 5.3.29 and above
 - PHPUnit 3.7 or higher for test suite execution
 
 Bugs and feature requests
