@@ -434,7 +434,7 @@ abstract class AbstractSync implements SyncInterface
      *
      * Load data from curl resource
      * @codeCoverageIgnore
-     * @return boolean|string
+     * @return false|string
      */
     protected function getDataFromCurl()
     {
@@ -473,11 +473,6 @@ abstract class AbstractSync implements SyncInterface
             return false;
         }
         return true;
-    }
-
-    protected function registerError()
-    {
-
     }
 
     /**

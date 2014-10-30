@@ -25,6 +25,8 @@ namespace Vatsimphp\Sync;
  *
  * Retrieve data file from VATSIM
  *
+ * @property \Vatsimphp\Parser\DataParser parser
+ *
  */
 class DataSync extends BaseSync
 {
