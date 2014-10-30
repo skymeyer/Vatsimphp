@@ -41,7 +41,7 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      *
      * Invalid parser
-     * @expectedException Exception
+     * @expectedException Vatsimphp\Exception\RuntimeException
      * @covers Vatsimphp\Parser\ParserFactory::getParser
      */
     public function testGetParserFail()

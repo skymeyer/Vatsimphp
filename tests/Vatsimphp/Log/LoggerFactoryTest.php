@@ -74,9 +74,6 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRegisterDeregister($channel, $logger)
     {
         $factory = $this->getMockFactory();
-        if (!$logger) {
-            $this->markTestSkipped("Logger class unavailable");
-        }
 
         $factory::register($channel, $logger);
         $this->assertTrue($factory::channelExists($channel));
@@ -106,9 +103,6 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($factory::channelExists($factory::DEFAULT_LOGGER));
         $default = $this->getMockLog($class);
-        if (!$default) {
-            $this->markTestSkipped("Logger class unavailable");
-        }
 
         $factory::register($factory::DEFAULT_LOGGER, $default);
         $this->assertTrue($factory::channelExists($factory::DEFAULT_LOGGER));
@@ -123,18 +117,6 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
             array('Monolog\Logger'),
             array('Vatsimphp\Log\Logger'),
         );
-    }
-
-    /**
-     * Try loading non-PSR log compliant logger
-     * @expectedException Exception
-     * @covers Vatsimphp\Log\LoggerFactory::register
-     */
-    public function testPsrLogCompliance()
-    {
-        $factory = $this->getMockFactory();
-        $nonPsr = $this->getMock('\stdClass');
-        $factory::register('fail', $nonPsr);
     }
 
     /**
@@ -178,9 +160,6 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockLog($class)
     {
-        if (!class_exists($class, true)) {
-            return false;
-        }
         return $this->getMockBuilder($class)
             ->disableOriginalConstructor()
             ->getMock();
