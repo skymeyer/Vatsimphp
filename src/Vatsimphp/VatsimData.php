@@ -360,7 +360,7 @@ class VatsimData
      *
      * Return config key
      * @param string $key
-     * @return string
+     * @return mixed
      */
     public function getConfig($key = null)
     {
