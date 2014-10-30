@@ -1,3 +1,9 @@
+### Development branch
+
+  * Fix: Minor refactoring and doc bloc updates
+  * Test: Integrate Scrutinizer
+  * Test: Refactor and cleanup factory tests
+
 ### 1.0.2 (2014-09-11)
 
   * Update: Change to PSR-4 autoloader
