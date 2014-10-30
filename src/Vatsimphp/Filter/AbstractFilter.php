@@ -52,7 +52,7 @@ abstract class AbstractFilter extends \FilterIterator implements FilterInterface
     /**
      *
      * Ctor
-     * @param mixed(array|\Iterator) $iterator
+     * @param array|\Iterator $iterator
      */
     public function __construct($iterator)
     {
@@ -85,7 +85,7 @@ abstract class AbstractFilter extends \FilterIterator implements FilterInterface
      */
     public function toArray($retainKeys = true)
     {
-        return $array = iterator_to_array($this, $retainKeys);
+        return iterator_to_array($this, $retainKeys);
     }
 
     /**

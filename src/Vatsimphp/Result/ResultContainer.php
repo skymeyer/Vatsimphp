@@ -51,7 +51,7 @@ class ResultContainer implements \Countable
      *
      * Append/overwrite a new result set
      * @param string $name
-     * @param mixed(array|\Vatsimphp\Filter\AbstractFilter) $data
+     * @param array|\Vatsimphp\Filter\AbstractFilter $data
      */
     public function append($name, $data)
     {

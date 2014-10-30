@@ -41,7 +41,7 @@ class SyncException extends \RuntimeException implements ExceptionInterface
      * @param string $msg
      * @param array $errors
      */
-    public function __construct($msg, Array $errors)
+    public function __construct($msg, array $errors)
     {
         $this->errors = $errors;
         parent::__construct($msg);

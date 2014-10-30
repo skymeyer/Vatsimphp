@@ -61,7 +61,7 @@ class LoggerFactory
     /**
      *
      * Load logger object
-     * @param mixed(string|object) $channel
+     * @param string|object $channel
      * @return \Psr\Log\LoggerInterface
      */
     public static function get($channel)

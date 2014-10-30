@@ -34,7 +34,7 @@ abstract class AbstractParser implements ParserInterface
     /**
      *
      * Raw data
-     * @var string
+     * @var array
      */
     protected $rawData;
 

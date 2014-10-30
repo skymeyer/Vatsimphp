@@ -219,7 +219,7 @@ class VatsimData
     public function getMetar($icao)
     {
         if ($this->loadMetar($icao)) {
-            $metar = $this->metar->toArray();
+            $metar = $this->getArray('metar');
         }
         return (empty($metar)) ? '' : array_shift($metar);
     }
@@ -347,7 +347,7 @@ class VatsimData
      *
      * Override default config settings
      * @param string $key
-     * @param mixed(string|boolean|integer) $value
+     * @param mixed $value
      */
     public function setConfig($key, $value)
     {
@@ -360,7 +360,7 @@ class VatsimData
      *
      * Return config key
      * @param string $key
-     * @return mixed(string|boolean|integer)
+     * @return string
      */
     public function getConfig($key = null)
     {

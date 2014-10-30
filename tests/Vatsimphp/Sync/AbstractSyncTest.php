@@ -610,6 +610,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerTestLoadFromUrl
      * @covers Vatsimphp\Sync\AbstractSync::loadFromUrl
      * @covers Vatsimphp\Sync\AbstractSync::getErrors
+     * @covers Vatsimphp\Sync\AbstractSync::addError
      */
     public function testLoadFromUrl($curlData, $valid, $expected, $errorCount)
     {

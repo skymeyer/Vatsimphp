@@ -105,7 +105,7 @@ abstract class AbstractSync implements SyncInterface
     /**
      *
      * Curl resource
-     * @var curl
+     * @var resource
      */
     protected $curl;
 
@@ -151,7 +151,7 @@ abstract class AbstractSync implements SyncInterface
     /**
      *
      * Add url(s)
-     * @param mixed (string|array) $url
+     * @param string|array $url
      * @param boolean $flush
      */
     public function registerUrl($url, $flush = false)
@@ -227,6 +227,20 @@ abstract class AbstractSync implements SyncInterface
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     *
+     * Add an error to the stack
+     * @param string $url
+     * @param string $msg
+     */
+    protected function addError($url, $msg)
+    {
+        $this->errors[] = array(
+            'url' => $url,
+            'msg' => $msg,
+        );
     }
 
     /**
@@ -407,10 +421,7 @@ abstract class AbstractSync implements SyncInterface
 
         // validate data through parser
         if (!$this->isDataValid($data)) {
-            $this->errors[] = array(
-                'url' => $url,
-                'msg' => 'Data not valid according to parser',
-            );
+            $this->addError($url, 'Data not valid according to parser');
             return false;
         }
 
@@ -423,16 +434,13 @@ abstract class AbstractSync implements SyncInterface
      *
      * Load data from curl resource
      * @codeCoverageIgnore
-     * @return mixed(boolean|string)
+     * @return boolean|string
      */
     protected function getDataFromCurl()
     {
         $data = curl_exec($this->curl);
         if (curl_errno($this->curl)) {
-            $this->errors[] = array(
-                'url' => $url,
-                'msg' => curl_error($this->curl),
-            );
+            $this->addError(curl_getinfo($this->curl, CURLINFO_EFFECTIVE_URL), curl_error($this->curl));
             return false;
         }
         return $data;
@@ -450,34 +458,33 @@ abstract class AbstractSync implements SyncInterface
         $this->log->debug("Load from cache file {$this->filePath}");
         $data = $this->getDataFromFile();
         if ($data === false) {
-            $data = array();
+            $data = '';
         }
 
         // validate data through parser
         if (!$this->isDataValid($data)) {
-            $this->errors[] = array(
-                'url' => $this->filePath,
-                'msg' => 'Data not valid according to parser',
-            );
+            $this->addError($this->filePath, 'Data not valid according to parser');
             return false;
         }
 
         // verify if local cache is expired
         if ($this->isCacheExpired()) {
-            $this->errors[] = array(
-                'url' => $this->filePath,
-                'msg' => 'Local cache is expired',
-            );
+            $this->addError($this->filePath, 'Local cache is expired');
             return false;
         }
         return true;
+    }
+
+    protected function registerError()
+    {
+
     }
 
     /**
      *
      * Load data from file resource
      * @codeCoverageIgnore
-     * @return mixed(boolean|string)
+     * @return boolean|string
      */
     protected function getDataFromFile()
     {
