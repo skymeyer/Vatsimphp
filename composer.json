@@ -1,6 +1,6 @@
 {
     "name": "skymeyer/vatsimphp",
-    "description": "PHP library for VATSIM.net",
+    "description": "VATSIM data parser",
     "keywords": ["vatsim", "virtual air traffic", "flight simulator", "online flight simulation"],
     "homepage": "http://github.com/skymeyer/Vatsimphp",
     "type": "library",
