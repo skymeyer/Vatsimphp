@@ -10,11 +10,13 @@ php:
   - 5.5
   - 5.6
   - hhvm
+  - 7
 
 matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
+    - php: 7
 
 before_script:
   - composer self-update
@@ -24,12 +26,9 @@ script:
   - mkdir -p build/logs
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
-after_script:
-  - vendor/bin/coveralls -v
+after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
 notifications:
   email: false
-  hipchat:
-    - secure: "er7thyIWhqVBJjCH4A/giLAf9EGoVJKgsFs+LAxqBK2wlxQmynnum/5mJhCU\n/jBNPqtgIyKjshAUBPsKThKGt/Q1GnGa1Db5gmqLmZb+tBEUcvRH4aQ9M3dX\nxJt9xslRBXiJ2By4ZnxHq5V7VLb5FNm3SeZfHQ2e3hopq6UqiLw="
