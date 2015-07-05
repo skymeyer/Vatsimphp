@@ -1,5 +1,10 @@
-Vatsimphp [![Latest Stable Version](https://poser.pugx.org/skymeyer/vatsimphp/v/stable.png)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp) [![Dependency Status](https://www.versioneye.com/php/skymeyer:vatsimphp/dev-master/badge.svg)](https://www.versioneye.com/php/skymeyer:vatsimphp/dev-master) [![Code Coverage](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master) [![Code Quality](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master) [![Join the chat at https://gitter.im/skymeyer/Vatsimphp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/skymeyer/Vatsimphp)
-=================
+# Vatsimphp [![Build Status](https://img.shields.io/travis/skymeyer/Vatsimphp.svg)](https://travis-ci.org/skymeyer/Vatsimphp) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master) [![Code Quality](https://img.shields.io/scrutinizer/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master)
+
+[![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp)
+[![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp)
+[![Dependency Status](https://img.shields.io/versioneye/d/php/skymeyer:vatsimphp.svg)](https://www.versioneye.com/php/skymeyer:vatsimphp/dev-master)
+[![Join the chat at https://gitter.im/skymeyer/Vatsimphp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/skymeyer/Vatsimphp)
+
 
 Vatsimphp collects and parses the publically available statistics
 from the [VATSIM.net](http://www.vatsim.net) network. It provides
