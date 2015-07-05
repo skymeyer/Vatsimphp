@@ -141,7 +141,6 @@ abstract class AbstractSync implements SyncInterface
      *
      * Set parser
      * @param string $parserName
-     * @param array  $params
      */
     public function setParser($parserName)
     {
@@ -184,7 +183,7 @@ abstract class AbstractSync implements SyncInterface
      *
      * Return parsed data
      * @throws SyncException
-     * @return \Iterator
+     * @return \Vatsimphp\Result\ResultContainer
      */
     public function loadData()
     {
@@ -450,7 +449,6 @@ abstract class AbstractSync implements SyncInterface
      *
      * Load data from file and pass it to the parser
      * Fails if content is expired
-     * @param string $file
      * @return boolean
      */
     protected function loadFromCache()

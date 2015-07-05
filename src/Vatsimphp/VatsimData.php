@@ -202,7 +202,7 @@ class VatsimData
     /**
      *
      * Search for given vatsim ID
-     * @param string $id
+     * @param string $cid
      * @return \Vatsimphp\Filter\Iterator
      */
     public function searchVatsimId($cid)
@@ -378,7 +378,7 @@ class VatsimData
     /**
      *
      * Prepare StatusSync object for reusage
-     * @return Vatsimphp\Sync\StatusSync
+     * @return StatusSync
      */
     protected function prepareSync()
     {
@@ -400,7 +400,7 @@ class VatsimData
     /**
      *
      * Prepare MetarSync object for reusage
-     * @return Vatsimphp\Sync\MetarSync
+     * @return MetarSync
      */
     protected function prepareMetarSync()
     {
@@ -428,7 +428,7 @@ class VatsimData
     }
 
     /**
-     * @return Vatsimphp\Sync\DataSync
+     * @return DataSync
      */
     protected function getDataSync()
     {
@@ -436,7 +436,7 @@ class VatsimData
     }
 
     /**
-     * @return Vatsimphp\Sync\MetarSync
+     * @return MetarSync
      */
     protected function getMetarSync()
     {
