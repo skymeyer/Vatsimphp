@@ -1,6 +1,8 @@
 Vatsimphp [![Latest Stable Version](https://poser.pugx.org/skymeyer/vatsimphp/v/stable.png)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.org/skymeyer/Vatsimphp.png)](https://travis-ci.org/skymeyer/Vatsimphp) [![Coverage Status](https://coveralls.io/repos/skymeyer/Vatsimphp/badge.png?branch=master)](https://coveralls.io/r/skymeyer/Vatsimphp?branch=master) [![Dependency Status](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd/badge.png)](https://www.versioneye.com/user/projects/51adb7faaffe34000200d0cd)
 =================
 
+[![Join the chat at https://gitter.im/skymeyer/Vatsimphp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/skymeyer/Vatsimphp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Vatsimphp collects and parses the publically available statistics
 from the [VATSIM.net](http://www.vatsim.net) network. It provides
 iterators for the available data and basic search/filtering
