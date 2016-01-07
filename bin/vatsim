@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+ini_set('max_execution_time', 0);
+ini_set('memory_limit', '128M');
+
+$autoload = __DIR__ . '/../vendor/autoload.php';
+
+if (!file_exists($autoload)) {
+    $rootDir = realpath(__DIR__ . '/..');
+    die('You need to run `composer install` first in ' . $rootDir . PHP_EOL);
+}
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$app = new Vatsimphp\Console\Application();
+$app->run();
+
