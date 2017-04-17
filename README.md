@@ -6,6 +6,8 @@
 [![Join the chat at https://gitter.im/skymeyer/Vatsimphp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/skymeyer/Vatsimphp)
 
 
+[![Join the chat at https://gitter.im/skymeyer/Vatsimphp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/skymeyer/Vatsimphp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Vatsimphp collects and parses the publically available statistics
 from the [VATSIM.net](http://www.vatsim.net) network. It provides
 iterators for the available data and basic search/filtering
