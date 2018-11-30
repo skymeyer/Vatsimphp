@@ -22,6 +22,8 @@
 namespace Vatsimphp;
 
 use PHPUnit\Framework\TestCase;
+use Vatsimphp\Result\ResultContainer;
+use Vatsimphp\Filter\Iterator;
 
 class ResultContainerTest extends TestCase
 {
@@ -35,9 +37,7 @@ class ResultContainerTest extends TestCase
      */
     public function testCountable()
     {
-        $rc = $this->getMockBuilder('Vatsimphp\Result\ResultContainer')
-            ->setMethods(null)
-            ->getMock();
+        $rc = new ResultContainer();
         $this->assertCount(0, $rc);
     }
 
@@ -49,9 +49,7 @@ class ResultContainerTest extends TestCase
      */
     public function testNonExistingResult()
     {
-        $rc = $this->getMockBuilder('Vatsimphp\Result\ResultContainer')
-            ->setMethods(null)
-            ->getMock();
+        $rc = new ResultContainer();
         $this->assertInstanceOf($this->resultClass, $rc->get('doesnotexist'));
         $this->assertInstanceOf($this->resultClass, $rc->doesnotexist);
     }
@@ -67,9 +65,7 @@ class ResultContainerTest extends TestCase
      */
     public function testAppendArray($test1, $data1, $test2, $data2, $count, $list)
     {
-        $rc = $this->getMockBuilder('Vatsimphp\Result\ResultContainer')
-            ->setMethods(null)
-            ->getMock();
+        $rc = new ResultContainer();
         $rc->append($test1, $data1);
         $rc->append($test2, $data2);
 
@@ -84,16 +80,12 @@ class ResultContainerTest extends TestCase
 
     public function providerTestAppendArray()
     {
-        $iterator = $this->getMockBuilder('Vatsimphp\Filter\Iterator')
-            ->setConstructorArgs(array(array('column2' => 'value2')))
-            ->getMock();
-
         return array(
             array(
                 'test1',
                 array('column1' => 'value1'),
                 'test2',
-                $iterator,
+                new Iterator(array('column2' => 'value2')),
                 2,
                 array('test1', 'test2'),
             ),

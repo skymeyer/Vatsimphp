@@ -186,7 +186,7 @@ class VatsimDataTest extends TestCase
      */
     public function testGetIterator()
     {
-        $container = $this->getContainerMock();
+        $container = $this->getContainerMock(array('get'));
         $container->expects($this->any())
             ->method('get')
             ->with($this->equalTo('general'));
