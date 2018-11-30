@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
 class StatusParserTest extends TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -38,8 +37,8 @@ class StatusParserTest extends TestCase
     }
 
     /**
+     * Parse data test.
      *
-     * Parse data test
      * @dataProvider providerTestParseData
      * @covers Vatsimphp\Parser\StatusParser::parseData
      * @covers Vatsimphp\Parser\AbstractParser::getParsedData
@@ -74,34 +73,34 @@ class StatusParserTest extends TestCase
 
     public function providerTestParseData()
     {
-        return array(
-            array(
+        return [
+            [
                 "url0=aaa\nurl0=bbb\nurl1=ccc\nmetar0=ddd\natis0=eee",
                 true,
-                array(
-                    'dataUrls' => array('aaa', 'bbb'),
-                    'serverUrls' => array('ccc'),
-                    'metarUrls' => array('ddd'),
-                    'atisUrls' => array('eee'),
-                ),
-            ),
-            array(
+                [
+                    'dataUrls'   => ['aaa', 'bbb'],
+                    'serverUrls' => ['ccc'],
+                    'metarUrls'  => ['ddd'],
+                    'atisUrls'   => ['eee'],
+                ],
+            ],
+            [
                 "nurl3=aaa\nurl3=bbb\nurl1=ccc\nmetar0=ddd\natis0=eee",
                 false,
-                array(),
-            ),
-        );
+                [],
+            ],
+        ];
     }
 
     /**
-     *
-     * Mock parser object with
+     * Mock parser object with.
      */
     protected function getMockParser($name)
     {
         $class = $this->getMockBuilder('Vatsimphp\Parser\\'.$name.'Parser')
             ->setMethods(null)
             ->getMock();
+
         return $class;
     }
 }

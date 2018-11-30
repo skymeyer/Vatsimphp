@@ -21,40 +21,38 @@
 
 namespace Vatsimphp\Filter;
 
-use FilterIterator;
 use Countable;
+use FilterIterator;
 
 /**
- *
- * Abstract filter class based on SPL FilterIterator
- *
+ * Abstract filter class based on SPL FilterIterator.
  */
 abstract class AbstractFilter extends FilterIterator implements FilterInterface, Countable
 {
     /**
+     * Filter to be applied.
      *
-     * Filter to be applied
      * @var string
      */
     protected $filter = '';
 
     /**
+     * Filter comment or empty lines.
      *
-     * Filter comment or empty lines
-     * @var boolean
+     * @var bool
      */
     protected $skipComments = true;
 
     /**
+     * Negative filtering.
      *
-     * Negative filtering
-     * @var boolean
+     * @var bool
      */
     protected $negate = false;
 
     /**
+     * Ctor.
      *
-     * Ctor
      * @param array|\Iterator $iterator
      */
     public function __construct($iterator)
@@ -66,14 +64,15 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
     }
 
     /**
+     * Set filter.
      *
-     * Set filter
      * @param string $filter
      */
     public function setFilter($filter)
     {
         if (is_string($filter)) {
             $this->filter = $filter;
+
             return true;
         } else {
             return false;
@@ -81,9 +80,10 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
     }
 
     /**
+     * Return array for this iterator.
      *
-     * Return array for this iterator
-     * @param boolean $retainKeys
+     * @param bool $retainKeys
+     *
      * @return array
      */
     public function toArray($retainKeys = true)
@@ -92,9 +92,9 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
     }
 
     /**
-     *
      * @see    \Countable
-     * @return integer
+     *
+     * @return int
      */
     public function count()
     {
@@ -102,9 +102,9 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
     }
 
     /**
-     *
      * @see FilterIterator::accept()
-     * @return boolean
+     *
+     * @return bool
      */
     final public function accept()
     {
@@ -113,11 +113,11 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
         if ($this->skipComments && $this->isComment($line)) {
             return false;
         }
+
         return $this->negate xor $this->applyFilter();
     }
 
     /**
-     *
      * @see FilterIterator::current()
      */
     public function current()
@@ -126,28 +126,32 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
         if (is_string($value)) {
             $value = trim($value);
         }
+
         return $value;
     }
 
     /**
+     * Check if current element is a comment.
      *
-     * Check if current element is a comment
      * @params mixed $line
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isComment($line)
     {
         if (is_string($line) && (substr($line, 0, 1) == ';' || trim($line) == '')) {
             return true;
         }
+
         return false;
     }
 
     /**
+     * Helper function to convert string to array.
      *
-     * Helper function to convert string to array
      * @param string $data
      * @param string $sep
+     *
      * @return array
      */
     protected function convertToArray($data, $sep)

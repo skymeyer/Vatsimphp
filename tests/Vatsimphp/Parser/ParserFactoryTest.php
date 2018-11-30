@@ -26,8 +26,8 @@ use PHPUnit\Framework\TestCase;
 class ParserFactoryTest extends TestCase
 {
     /**
+     * Base factory.
      *
-     * Base factory
      * @covers Vatsimphp\Parser\ParserFactory::getParser
      */
     public function testGetParser()
@@ -41,8 +41,8 @@ class ParserFactoryTest extends TestCase
     }
 
     /**
+     * Invalid parser.
      *
-     * Invalid parser
      * @expectedException Vatsimphp\Exception\RuntimeException
      * @covers Vatsimphp\Parser\ParserFactory::getParser
      */

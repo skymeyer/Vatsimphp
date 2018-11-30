@@ -22,16 +22,14 @@
 namespace Vatsimphp\Filter;
 
 /**
- *
- * Filter interator interface
- *
+ * Filter interator interface.
  */
 interface FilterInterface
 {
     /**
+     * Logic to apply the filter.
      *
-     * Logic to apply the filter
-     * @return boolean
+     * @return bool
      */
     public function applyFilter();
 }

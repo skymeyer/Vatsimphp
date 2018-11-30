@@ -22,18 +22,15 @@
 namespace Vatsimphp\Filter;
 
 /**
- *
- * Filter class to get specific variables like:
+ * Filter class to get specific variables like:.
  *
  * url0=http://www.pcflyer.net/DataFeed/vatsim-data.txt
  * url0=http://www.klain.net/sidata/vatsim-data.txt
  * ...
- *
  */
 class VarFilter extends StartOfLineFilter
 {
     /**
-     *
      * @see Vatsimphp\Filter.AbstractFilter::setFilter()
      */
     public function setFilter($filter)
@@ -42,12 +39,12 @@ class VarFilter extends StartOfLineFilter
     }
 
     /**
-     *
      * @see Vatsimphp\Filter.AbstractFilter::current()
      */
     public function current()
     {
         $value = parent::current();
+
         return trim(substr($value, strlen($this->filter)));
     }
 }

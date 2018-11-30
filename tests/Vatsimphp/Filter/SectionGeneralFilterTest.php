@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
 class SectionGeneralFilterTest extends TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -38,14 +37,14 @@ class SectionGeneralFilterTest extends TestCase
     }
 
     /**
+     * Filter test.
      *
-     * Filter test
      * @covers Vatsimphp\Filter\SectionGeneralFilter::__construct
      */
     public function testCtor()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\SectionGeneralFilter')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 

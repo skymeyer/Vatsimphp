@@ -32,8 +32,8 @@ class LoggerFactoryTest extends TestCase
     }
 
     /**
+     * Base factory test using built-in logger.
      *
-     * Base factory test using built-in logger
      * @dataProvider providerTestBaseFactory
      * @covers Vatsimphp\Log\LoggerFactory::get
      * @covers Vatsimphp\Log\LoggerFactory::channelExists
@@ -47,16 +47,16 @@ class LoggerFactoryTest extends TestCase
 
     public function providerTestBaseFactory()
     {
-        return array(
-            array('', ''),
-            array('channel1', 'channel1'),
-            array(new \stdClass(), 'stdClass'),
-        );
+        return [
+            ['', ''],
+            ['channel1', 'channel1'],
+            [new \stdClass(), 'stdClass'],
+        ];
     }
 
     /**
+     * Check for non-existing channel.
      *
-     * Check for non-existing channel
      * @covers Vatsimphp\Log\LoggerFactory::channelExists
      */
     public function testChannelNotExists()
@@ -65,8 +65,8 @@ class LoggerFactoryTest extends TestCase
     }
 
     /**
+     * Register custom log objects.
      *
-     * Register custom log objects
      * @dataProvider providerTestRegisterChannel
      * @covers Vatsimphp\Log\LoggerFactory::register
      * @covers Vatsimphp\Log\LoggerFactory::deregister
@@ -81,15 +81,15 @@ class LoggerFactoryTest extends TestCase
 
     public function providerTestRegisterChannel()
     {
-        return array(
-            array('channel1', $this->getMockLog('Vatsimphp\Log\Logger')),
-            array('channel2', $this->getMockLog('Monolog\Logger')),
-        );
+        return [
+            ['channel1', $this->getMockLog('Vatsimphp\Log\Logger')],
+            ['channel2', $this->getMockLog('Monolog\Logger')],
+        ];
     }
 
     /**
+     * Test override of default logger.
      *
-     * Test override of default logger
      * @dataProvider providerTestRegisterCustomDefault
      * @covers Vatsimphp\Log\LoggerFactory::register
      * @covers Vatsimphp\Log\LoggerFactory::get
@@ -110,15 +110,15 @@ class LoggerFactoryTest extends TestCase
 
     public function providerTestRegisterCustomDefault()
     {
-        return array(
-            array('Monolog\Logger'),
-            array('Vatsimphp\Log\Logger'),
-        );
+        return [
+            ['Monolog\Logger'],
+            ['Vatsimphp\Log\Logger'],
+        ];
     }
 
     /**
+     * Deregister all log channels.
      *
-     * Deregister all log channels
      * @covers Vatsimphp\Log\LoggerFactory::deregister
      */
     public function testDeregisterAll()
@@ -127,8 +127,8 @@ class LoggerFactoryTest extends TestCase
     }
 
     /**
+     * Deregister non-existing log channel.
      *
-     * Deregister non-existing log channel
      * @covers Vatsimphp\Log\LoggerFactory::deregister
      */
     public function testDeregiserNonExisting()
@@ -137,9 +137,10 @@ class LoggerFactoryTest extends TestCase
     }
 
     /**
+     * Return mocked logger object.
      *
-     * Return mocked logger object
      * @param string $class
+     *
      * @return \Psr\Log\LoggerInterface
      */
     protected function getMockLog($class)

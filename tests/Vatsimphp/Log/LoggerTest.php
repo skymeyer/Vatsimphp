@@ -21,8 +21,8 @@
 
 namespace Vatsimphp;
 
-use Vatsimphp\Log\Logger;
 use PHPUnit\Framework\TestCase;
+use Vatsimphp\Log\Logger;
 
 class LoggerTest extends TestCase
 {
@@ -41,8 +41,7 @@ class LoggerTest extends TestCase
     }
 
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -53,7 +52,6 @@ class LoggerTest extends TestCase
     }
 
     /**
-     *
      * @covers Vatsimphp\Log\Logger::__construct
      * @covers Vatsimphp\Log\Logger::getHandler
      * @covers Vatsimphp\Log\Logger::getCustomFormatter
@@ -61,7 +59,7 @@ class LoggerTest extends TestCase
     public function testLogger()
     {
         $logger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->setConstructorArgs(array('foo', 'build/tests/file.log', Logger::CRITICAL))
+            ->setConstructorArgs(['foo', 'build/tests/file.log', Logger::CRITICAL])
             ->setMethods(null)
             ->getMock();
         $this->assertEquals('foo', $logger->getName());

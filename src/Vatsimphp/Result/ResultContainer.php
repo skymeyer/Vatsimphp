@@ -24,33 +24,30 @@ namespace Vatsimphp\Result;
 use Vatsimphp\Filter\Iterator;
 
 /**
- *
  * Result Container used to register all iterators
  * returned by the parsers. This will be the main
  * backend object to source/query data from.
- *
  */
 class ResultContainer implements \Countable
 {
     /**
+     * Results container.
      *
-     * Results container
      * @var array
      */
-    protected $container = array();
+    protected $container = [];
 
     /**
-     *
-     * Ctor
+     * Ctor.
      */
     public function __construct()
     {
     }
 
     /**
+     * Append/overwrite a new result set.
      *
-     * Append/overwrite a new result set
-     * @param string $name
+     * @param string                                 $name
      * @param array|\Vatsimphp\Filter\AbstractFilter $data
      */
     public function append($name, $data)
@@ -63,9 +60,10 @@ class ResultContainer implements \Countable
     }
 
     /**
+     * Overload method for direct result object access.
      *
-     * Overload method for direct result object access
      * @param string $name
+     *
      * @return \Vatsimphp\Filter\AbstractFilter
      */
     public function __get($name)
@@ -74,9 +72,10 @@ class ResultContainer implements \Countable
     }
 
     /**
+     * Get result object from container.
      *
-     * Get result object from container
      * @param string $name
+     *
      * @return \Vatsimphp\Filter\AbstractFilter
      */
     public function get($name)
@@ -84,13 +83,13 @@ class ResultContainer implements \Countable
         if (isset($this->container[$name])) {
             return $this->container[$name];
         } else {
-            return new Iterator(array());
+            return new Iterator([]);
         }
     }
 
     /**
+     * List registered result names.
      *
-     * List registered result names
      * @return array
      */
     public function getList()
@@ -99,7 +98,6 @@ class ResultContainer implements \Countable
     }
 
     /**
-     *
      * @see Countable::count()
      */
     public function count()
@@ -108,15 +106,16 @@ class ResultContainer implements \Countable
     }
 
     /**
+     * Base search functionality.
      *
-     * Base search functionality
      * @param string $objectType
-     * @param array $query
+     * @param array  $query
+     *
      * @return \Vatsimphp\Filter\Iterator
      */
-    public function search($objectType, $query = array())
+    public function search($objectType, $query = [])
     {
-        $results = array();
+        $results = [];
         if ($this->isSearchable($objectType)) {
             foreach ($this->get($objectType) as $line) {
                 foreach ($query as $field => $needle) {
@@ -128,18 +127,20 @@ class ResultContainer implements \Countable
                 }
             }
         }
+
         return new Iterator($results);
     }
 
     /**
-     *
      * Check if given result set is searchable. To be true
      * a matching header result set is required.
+     *
      * @param string $objectType
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isSearchable($objectType)
     {
-        return (boolean)count($this->get("{$objectType}_header"));
+        return (bool) count($this->get("{$objectType}_header"));
     }
 }

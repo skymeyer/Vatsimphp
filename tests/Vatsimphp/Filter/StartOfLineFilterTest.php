@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
 class StartOfLineFilterTest extends TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -38,15 +37,15 @@ class StartOfLineFilterTest extends TestCase
     }
 
     /**
+     * Apply filter test.
      *
-     * Apply filter test
      * @dataProvider providerTestApplyFilter
      * @covers Vatsimphp\Filter\StartOfLineFilter::applyFilter
      */
     public function testApplyFilter($startOfLine, $line, $status)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\StartOfLineFilter')
-            ->setConstructorArgs(array(array($line)))
+            ->setConstructorArgs([[$line]])
             ->setMethods(null)
             ->getMock();
         $class->setFilter($startOfLine);
@@ -55,12 +54,12 @@ class StartOfLineFilterTest extends TestCase
 
     public function providerTestApplyFilter()
     {
-        return array(
-            array('', 'full line', true),
-            array('start', 'start=result', true),
-            array('notexist', 'start=result', false),
-            array(';', ';COMMENTS', true),
-            array(';', 'just text', false),
-        );
+        return [
+            ['', 'full line', true],
+            ['start', 'start=result', true],
+            ['notexist', 'start=result', false],
+            [';', ';COMMENTS', true],
+            [';', 'just text', false],
+        ];
     }
 }

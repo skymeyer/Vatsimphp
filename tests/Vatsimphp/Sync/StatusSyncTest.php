@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
 class StatusSyncTest extends TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -38,8 +37,8 @@ class StatusSyncTest extends TestCase
     }
 
     /**
+     * Test defaults.
      *
-     * Test defaults
      * @covers Vatsimphp\Sync\StatusSync::setDefaults
      */
     public function testSetDefaults()
@@ -47,20 +46,20 @@ class StatusSyncTest extends TestCase
         $class = $this->getMockStatusSync();
         $class->setDefaults();
         $this->assertSame(
-            array('http://status.vatsim.net/status.txt'),
+            ['http://status.vatsim.net/status.txt'],
             $class->getUrls()
         );
     }
 
     /**
-     *
-     * Return mock for StatusSync
+     * Return mock for StatusSync.
      */
     protected function getMockStatusSync()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\StatusSync')
             ->setMethods(null)
             ->getMock();
+
         return $class;
     }
 }
