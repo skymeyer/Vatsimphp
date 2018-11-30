@@ -33,7 +33,7 @@ About
 Requirements
 ------------
 
-- From PHP 5.3.29 and above
+- From PHP 5.6 and above
 - PHPUnit 5.1 or higher for test suite execution
 
 Bugs and feature requests
