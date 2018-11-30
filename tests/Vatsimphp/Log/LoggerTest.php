@@ -22,8 +22,9 @@
 namespace Vatsimphp;
 
 use Vatsimphp\Log\Logger;
+use PHPUnit\Framework\TestCase;
 
-class LoggerTest extends \PHPUnit_Framework_TestCase
+class LoggerTest extends TestCase
 {
     protected function setUp()
     {

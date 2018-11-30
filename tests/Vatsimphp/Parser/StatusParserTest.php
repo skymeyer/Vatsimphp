@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class StatusParserTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class StatusParserTest extends TestCase
 {
     /**
      *

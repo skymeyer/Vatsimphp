@@ -27,8 +27,9 @@ use Vatsimphp\Filter\Iterator;
 use Vatsimphp\VatsimData;
 use Vatsimphp\Result\ResultContainer;
 use Vatsimphp\Sync\AbstractSync;
+use PHPUnit\Framework\TestCase;
 
-class VatsimDataTest extends \PHPUnit_Framework_TestCase
+class VatsimDataTest extends TestCase
 {
     /**
      *

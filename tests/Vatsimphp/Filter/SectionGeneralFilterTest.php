@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class SectionGeneralFilterTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SectionGeneralFilterTest extends TestCase
 {
     /**
      *

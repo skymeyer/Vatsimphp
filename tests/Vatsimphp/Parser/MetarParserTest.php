@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class MetarParserTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class MetarParserTest extends TestCase
 {
     /**
      *

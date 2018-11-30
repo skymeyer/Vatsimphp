@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class AbstractSyncTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AbstractSyncTest extends TestCase
 {
     protected function setUp()
     {

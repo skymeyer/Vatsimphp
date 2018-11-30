@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class AbstractFilterTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AbstractFilterTest extends TestCase
 {
     /**
      *

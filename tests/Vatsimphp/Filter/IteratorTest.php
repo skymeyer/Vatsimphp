@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class IteratorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class IteratorTest extends TestCase
 {
     /**
      *

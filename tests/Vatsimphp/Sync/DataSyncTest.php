@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class DataSyncTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DataSyncTest extends TestCase
 {
     /**
      *

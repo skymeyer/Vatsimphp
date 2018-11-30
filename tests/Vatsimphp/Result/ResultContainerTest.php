@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class ResultContainerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ResultContainerTest extends TestCase
 {
     protected $resultClass = 'Vatsimphp\Filter\Iterator';
 

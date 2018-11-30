@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class StartOfLineFilterTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class StartOfLineFilterTest extends TestCase
 {
     /**
      *

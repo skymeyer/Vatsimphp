@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class LoggerFactoryTest extends TestCase
 {
     /**
      *

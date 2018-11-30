@@ -21,7 +21,9 @@
 
 namespace Vatsimphp;
 
-class SyncExceptionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SyncExceptionTest extends TestCase
 {
 
     public function testSyncException()
