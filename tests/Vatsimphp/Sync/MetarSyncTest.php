@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class MetarSyncTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,8 +35,8 @@ class MetarSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test defaults.
      *
-     * Test defaults
      * @covers Vatsimphp\Sync\MetarSync::setDefaults
      */
     public function testSetDefaults()
@@ -48,8 +47,8 @@ class MetarSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test set airport and url override.
      *
-     * Test set airport and url override
      * @dataProvider providerTestSync
      * @covers Vatsimphp\Sync\MetarSync::setAirport
      * @covers Vatsimphp\Sync\MetarSync::overrideUrl
@@ -70,7 +69,7 @@ class MetarSyncTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("metar-{$expected}.txt", $cache->getValue($sync));
 
         // url override
-        $testUrl = "http://foo.bar/test.html";
+        $testUrl = 'http://foo.bar/test.html';
         $expctedUrl = "{$testUrl}?id={$expected}";
         $override = new \ReflectionMethod($sync, 'overrideUrl');
         $override->setAccessible(true);
@@ -79,15 +78,14 @@ class MetarSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestSync()
     {
-        return array(
-            array('ksfo', 'KSFO'),
-            array('KsFo', 'KSFO'),
-            array('KSFO', 'KSFO'),
-        );
+        return [
+            ['ksfo', 'KSFO'],
+            ['KsFo', 'KSFO'],
+            ['KSFO', 'KSFO'],
+        ];
     }
 
     /**
-     *
      * @dataProvider providerTestAirportException
      * @covers Vatsimphp\Sync\MetarSync::setAirport
      * @expectedException        Vatsimphp\Exception\RuntimeException
@@ -101,21 +99,21 @@ class MetarSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestAirportException()
     {
-        return array(
-            array('123'),
-            array('12345'),
-        );
+        return [
+            ['123'],
+            ['12345'],
+        ];
     }
 
     /**
-     *
-     * Return mock for DataSync
+     * Return mock for DataSync.
      */
     protected function getMockMetarSync($setMethods = null)
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\MetarSync')
             ->setMethods($setMethods)
             ->getMock();
+
         return $class;
     }
 }

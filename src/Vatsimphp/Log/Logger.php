@@ -26,27 +26,25 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger as BaseLogger;
 
 /**
- *
- * Simple base logger
- *
+ * Simple base logger.
  */
 class Logger extends BaseLogger
 {
     const FORMAT = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
 
     /**
+     * Shared stream handler.
      *
-     * Shared stream handler
      * @var \Monolog\Handler\StreamHandler
      */
     protected static $handler;
 
     /**
+     * Ctor.
      *
-     * Ctor
      * @param string $name
      * @param string $file
-     * @param integer $level
+     * @param int    $level
      */
     public function __construct($name, $file, $level)
     {
@@ -55,10 +53,11 @@ class Logger extends BaseLogger
     }
 
     /**
+     * Get streamhandler.
      *
-     * Get streamhandler
      * @param string $file
-     * @param integer $level
+     * @param int    $level
+     *
      * @return \Monolog\Handler\StreamHandler
      */
     protected function getHandler($file, $level)
@@ -68,12 +67,13 @@ class Logger extends BaseLogger
             $handler->setFormatter($this->getCustomFormatter());
             self::$handler = $handler;
         }
+
         return self::$handler;
     }
 
     /**
+     * Get formatter.
      *
-     * Get formatter
      * @return \Monolog\Formatter\LineFormatter
      */
     protected function getCustomFormatter()
@@ -82,8 +82,8 @@ class Logger extends BaseLogger
     }
 
     /**
+     * Reset handler.
      *
-     * Reset handler
      * @codeCoverageIgnore
      */
     public static function resetHandler()

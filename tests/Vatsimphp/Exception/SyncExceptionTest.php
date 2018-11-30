@@ -23,13 +23,12 @@ namespace Vatsimphp;
 
 class SyncExceptionTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testSyncException()
     {
         $msg = 'something went wrong';
-        $errors = array('err1' => 'doh1', 'err2' => 'doh2');
+        $errors = ['err1' => 'doh1', 'err2' => 'doh2'];
         $exception = $this->getMockBuilder('Vatsimphp\Exception\SyncException')
-            ->setConstructorArgs(array($msg, $errors))
+            ->setConstructorArgs([$msg, $errors])
             ->setMethods(null)
             ->getMock();
         $this->assertInstanceOf('Vatsimphp\Exception\ExceptionInterface', $exception);

@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class HeaderFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,14 +35,14 @@ class HeaderFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Filter test.
      *
-     * Filter test
      * @covers Vatsimphp\Filter\HeaderFilter::setFilter
      */
     public function testFilter()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\HeaderFilter')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 
@@ -58,19 +57,18 @@ class HeaderFilterTest extends \PHPUnit_Framework_TestCase
         $skipProp = new \ReflectionProperty($class, 'skipComments');
         $skipProp->setAccessible(true);
         $this->assertFalse($skipProp->getValue($class));
-
     }
 
     /**
+     * Current test.
      *
-     * Current test
      * @dataProvider providerTestCurrent
      * @covers Vatsimphp\Filter\HeaderFilter::current
      */
     public function testCurrent($data, $expectedResult)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\HeaderFilter')
-            ->setConstructorArgs(array(array($data)))
+            ->setConstructorArgs([[$data]])
             ->setMethods(null)
             ->getMock();
 
@@ -81,19 +79,19 @@ class HeaderFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestCurrent()
     {
-        return array(
-            array(
+        return [
+            [
                 '; !CLIENTS section - callsign:cid:realname:',
-                array('callsign', 'cid', 'realname'),
-            ),
-            array(
+                ['callsign', 'cid', 'realname'],
+            ],
+            [
                 '; !CLIENTS section - callsign:cid:realname',
-                array('callsign', 'cid', 'realname'),
-            ),
-            array(
+                ['callsign', 'cid', 'realname'],
+            ],
+            [
                 '; !CLIENTS section - callsign',
-                array('callsign'),
-            ),
-        );
+                ['callsign'],
+            ],
+        ];
     }
 }

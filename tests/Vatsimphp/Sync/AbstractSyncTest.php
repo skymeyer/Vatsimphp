@@ -43,8 +43,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -55,8 +54,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test default settings.
      *
-     * Test default settings
      * @covers Vatsimphp\Sync\AbstractSync::__construct
      */
     public function testDefaults()
@@ -66,7 +65,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         // protected urls
         $propUrls = new \ReflectionProperty($class, 'urls');
         $propUrls->setAccessible(true);
-        $this->assertSame(array(), $propUrls->getValue($class));
+        $this->assertSame([], $propUrls->getValue($class));
 
         // public properties
         $this->assertFalse($class->forceRefresh);
@@ -74,8 +73,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test setting parser.
      *
-     * Test setting parser
      * @covers Vatsimphp\Sync\AbstractSync::setParser
      */
     public function testSetParser()
@@ -91,8 +90,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test setting invalid parser.
      *
-     * Test setting invalid parser
      * @covers Vatsimphp\Sync\AbstractSync::setParser
      * @expectedException Vatsimphp\Exception\RuntimeException
      */
@@ -103,8 +102,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test url setter/getter.
      *
-     * Test url setter/getter
      * @dataProvider providerTestRegisterUrl
      * @covers Vatsimphp\Sync\AbstractSync::registerUrl
      * @covers Vatsimphp\Sync\AbstractSync::getUrls
@@ -114,7 +113,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         $class = $this->getMockAbstractySync();
 
         // set base urls for flush test
-        $base = array('http://link0');
+        $base = ['http://link0'];
         $urlProp = new \ReflectionProperty($class, 'urls');
         $urlProp->setAccessible(true);
         $urlProp->setValue($class, $base);
@@ -132,25 +131,25 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestRegisterUrl()
     {
-        return array(
-            array(
+        return [
+            [
                 'http://link1',
-                array('http://link1'),
-            ),
-            array(
-                array('http://link1'),
-                array('http://link1'),
-            ),
-            array(
-                array('http://link1', 'http://link2'),
-                array('http://link1', 'http://link2'),
-            ),
-        );
+                ['http://link1'],
+            ],
+            [
+                ['http://link1'],
+                ['http://link1'],
+            ],
+            [
+                ['http://link1', 'http://link2'],
+                ['http://link1', 'http://link2'],
+            ],
+        ];
     }
 
     /**
+     * Curl resource test.
      *
-     * Curl resource test
      * @covers Vatsimphp\Sync\AbstractSync::initCurl
      */
     public function testInitCurl()
@@ -158,7 +157,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         $class = $this->getMockAbstractySync();
         $init = new \ReflectionMethod($class, 'initCurl');
         $init->setAccessible(true);
-        $init->invoke($class, array());
+        $init->invoke($class, []);
 
         $curl = new \ReflectionProperty($class, 'curl');
         $curl->setAccessible(true);
@@ -166,14 +165,14 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test get data.
      *
-     * Test get data
      * @covers Vatsimphp\Sync\AbstractSync::getData
      */
     public function testGetData()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->setMethods(array('loadFromUrl', 'loadFromCache'))
+            ->setMethods(['loadFromUrl', 'loadFromCache'])
             ->getMockForAbstractClass();
 
         // stub loadFromUrl
@@ -195,14 +194,14 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test valid data report from parser.
      *
-     * Test valid data report from parser
      * @covers Vatsimphp\Sync\AbstractSync::isDataValid
      */
     public function testIsDataValid()
     {
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
-            ->setMethods(array('isValid'))
+            ->setMethods(['isValid'])
             ->getMockForAbstractClass();
 
         // stub valid check
@@ -224,8 +223,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test save cache file content.
      *
-     * Test save cache file content
      * @dataProvider providerTestSaveToCache
      * @covers Vatsimphp\Sync\AbstractSync::saveToCache
      */
@@ -249,14 +248,14 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestSaveToCache()
     {
-        return array(
-            array(array('save1', 'save2'))
-        );
+        return [
+            [['save1', 'save2']],
+        ];
     }
 
     /**
+     * Test cache expired.
      *
-     * Test cache expired
      * @dataProvider providerTestIsCacheExpired
      * @covers Vatsimphp\Sync\AbstractSync::isCacheExpired
      */
@@ -292,17 +291,17 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestIsCacheExpired()
     {
-        return array(
-            array(0, false, true),
-            array(30, false, false),
-            array(0, true, false),
-            array(30, true, false),
-        );
+        return [
+            [0, false, true],
+            [30, false, false],
+            [0, true, false],
+            [30, true, false],
+        ];
     }
 
     /**
+     * Test config validation (valid).
      *
-     * Test config validation (valid)
      * @dataProvider providerTestValidateConfig
      * @covers Vatsimphp\Sync\AbstractSync::validateConfig
      * @covers Vatsimphp\Sync\AbstractSync::validateUrls
@@ -324,7 +323,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
         $sut = new \ReflectionMethod($class, 'validateConfig');
         $sut->setAccessible(true);
-        $this->assertTrue($sut->invoke($class, array()));
+        $this->assertTrue($sut->invoke($class, []));
     }
 
     public function providerTestValidateConfig()
@@ -332,31 +331,31 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
             ->getMockForAbstractClass();
 
-        return array(
-            array(
-                array(
-                    'urls' => array('http://link'),
+        return [
+            [
+                [
+                    'urls'            => ['http://link'],
                     'refreshInterval' => 30,
-                    'cacheFile' => 'notempty',
-                    'filePath' => 'build/tests/writeable.test',
-                    'parser' => $parser,
-                ),
-            ),
-            array(
-                array(
-                    'urls' => array('http://link'),
+                    'cacheFile'       => 'notempty',
+                    'filePath'        => 'build/tests/writeable.test',
+                    'parser'          => $parser,
+                ],
+            ],
+            [
+                [
+                    'urls'            => ['http://link'],
                     'refreshInterval' => 30,
-                    'cacheFile' => 'notempty',
-                    'filePath' => 'build/tests/newwriteable.test',
-                    'parser' => $parser,
-                ),
-            ),
-        );
+                    'cacheFile'       => 'notempty',
+                    'filePath'        => 'build/tests/newwriteable.test',
+                    'parser'          => $parser,
+                ],
+            ],
+        ];
     }
 
     /**
+     * Test config validation - UnexpectedValueException.
      *
-     * Test config validation - UnexpectedValueException
      * @dataProvider providerTestValidateConfigUnexpectedValue
      * @covers Vatsimphp\Sync\AbstractSync::validateUrls
      * @covers Vatsimphp\Sync\AbstractSync::validateRefreshInterval
@@ -373,24 +372,24 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         $propReflect->setValue($class, $value);
 
         // access protected method
-        $validationMethod = "validate" . ucfirst($property);
+        $validationMethod = 'validate'.ucfirst($property);
         $sut = new \ReflectionMethod($class, $validationMethod);
         $sut->setAccessible(true);
-        $sut->invoke($class, array());
+        $sut->invoke($class, []);
     }
 
     public function providerTestValidateConfigUnexpectedValue()
     {
-        return array(
-            array('urls', null),
-            array('refreshInterval', 'bogus'),
-            array('cacheFile', ''),
-        );
+        return [
+            ['urls', null],
+            ['refreshInterval', 'bogus'],
+            ['cacheFile', ''],
+        ];
     }
 
     /**
+     * Test config validation - RuntimeException.
      *
-     * Test config validation - RuntimeException
      * @dataProvider providerTestValidateConfigRuntime
      * @covers Vatsimphp\Sync\AbstractSync::validateFilePath
      * @covers Vatsimphp\Sync\AbstractSync::validateParser
@@ -406,24 +405,24 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
         $propReflect->setValue($class, $value);
 
         // access protected method
-        $validationMethod = "validate" . ucfirst($property);
+        $validationMethod = 'validate'.ucfirst($property);
         $sut = new \ReflectionMethod($class, $validationMethod);
         $sut->setAccessible(true);
-        $sut->invoke($class, array());
+        $sut->invoke($class, []);
     }
 
     public function providerTestValidateConfigRuntime()
     {
-        return array(
-            array('filePath', '/bogus/noexist.test'),
-            array('filePath', 'build/tests/unwriteable.test'),
-            array('parser', null),
-        );
+        return [
+            ['filePath', '/bogus/noexist.test'],
+            ['filePath', 'build/tests/unwriteable.test'],
+            ['parser', null],
+        ];
     }
 
     /**
+     * Test load data - no locations available.
      *
-     * Test load data - no locations available
      * @covers Vatsimphp\Sync\AbstractSync::loadData
      * @expectedException Vatsimphp\Exception\SyncException
      * @expectedExceptionMessage No location(s) available to sync from
@@ -431,7 +430,7 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function testLoadDataNoLocations()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->setMethods(array('validateConfig'))
+            ->setMethods(['validateConfig'])
             ->getMockForAbstractClass();
 
         $class->cacheDir = 'build/tests';
@@ -440,8 +439,8 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test load data - no valid data.
      *
-     * Test load data - no valid data
      * @covers Vatsimphp\Sync\AbstractSync::loadData
      * @expectedException Vatsimphp\Exception\SyncException
      * @expectedExceptionMessage Unable to download data or data invalid
@@ -449,11 +448,11 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     public function testLoadDataNoDownload()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->setMethods(array('validateConfig', 'getData'))
+            ->setMethods(['validateConfig', 'getData'])
             ->getMockForAbstractClass();
 
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
-            ->setMethods(array('isValid'))
+            ->setMethods(['isValid'])
             ->getMockForAbstractClass();
 
         $parserProp = new \ReflectionProperty($class, 'parser');
@@ -467,25 +466,25 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test load data.
      *
-     * Test load data
      * @dataProvider providerTestLoadData
      * @covers Vatsimphp\Sync\AbstractSync::loadData
      */
     public function testLoadData($cacheDir, $cacheFile, $urls)
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
-            ->setMethods(array('validateConfig', 'getData'))
+            ->setMethods(['validateConfig', 'getData'])
             ->getMockForAbstractClass();
 
-         // stub getData
+        // stub getData
         $class->expects($this->any())
             ->method('getData')
             ->will($this->returnValue(true));
 
         // parser mock
         $parser = $this->getMockBuilder('Vatsimphp\Parser\AbstractParser')
-            ->setMethods(array('isValid', 'getParsedData'))
+            ->setMethods(['isValid', 'getParsedData'])
             ->getMockForAbstractClass();
 
         // stub isValid
@@ -512,16 +511,16 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestLoadData()
     {
-        return array(
-            array('build/tests', 'notexist', array('http://link')),
-            array('build/tests', 'notexist', array('http://link1', 'http://link2')),
-            array('build/tests', 'writeable.test', array('http://link1', 'http://link2')),
-        );
+        return [
+            ['build/tests', 'notexist', ['http://link']],
+            ['build/tests', 'notexist', ['http://link1', 'http://link2']],
+            ['build/tests', 'writeable.test', ['http://link1', 'http://link2']],
+        ];
     }
 
     /**
+     * Test prepare urls.
      *
-     * Test prepare urls
      * @dataProvider providerTestPrepareUrls
      * @covers Vatsimphp\Sync\AbstractSync::prepareUrls
      */
@@ -536,77 +535,77 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestPrepareUrls()
     {
-        return array(
+        return [
             // invalid cache file, one link
-            array(
+            [
                 'build/tests/notexist',
-                array('http://link'),
+                ['http://link'],
                 false,
                 false,
-                array('http://link'),
-            ),
+                ['http://link'],
+            ],
             // invalid cache file, multi link
-            array(
+            [
                 'build/tests/notexist',
-                array('http://link1', 'http://link2'),
+                ['http://link1', 'http://link2'],
                 false,
                 false,
-                array('http://link1', 'http://link2'),
-            ),
+                ['http://link1', 'http://link2'],
+            ],
             // valid cache file, multi link
-            array(
+            [
                 'build/tests/writeable.test',
-                array('http://link1', 'http://link2'),
+                ['http://link1', 'http://link2'],
                 false,
                 false,
-                array('build/tests/writeable.test', 'http://link1', 'http://link2'),
-            ),
+                ['build/tests/writeable.test', 'http://link1', 'http://link2'],
+            ],
             // valid cache file, multi link - forceRefresh
-            array(
+            [
                 'build/tests/writeable.test',
-                array('http://link1', 'http://link2'),
+                ['http://link1', 'http://link2'],
                 true,
                 false,
-                array('http://link1', 'http://link2'),
-            ),
+                ['http://link1', 'http://link2'],
+            ],
             // valid cache file, multi link - cacheOnly
-            array(
+            [
                 'build/tests/writeable.test',
-                array('http://link1', 'http://link2'),
+                ['http://link1', 'http://link2'],
                 false,
                 true,
-                array('build/tests/writeable.test'),
-            ),
+                ['build/tests/writeable.test'],
+            ],
             // valid cache file, multi link - forceRefresh/cacheOnly
-            array(
+            [
                 'build/tests/writeable.test',
-                array('http://link1', 'http://link2'),
+                ['http://link1', 'http://link2'],
                 true,
                 true,
-                array('build/tests/writeable.test'),
-            ),
+                ['build/tests/writeable.test'],
+            ],
             // invalid cache file, multi link - cacheOnly
-            array(
+            [
                 'build/tests/notexist',
-                array('http://link1', 'http://link2'),
+                ['http://link1', 'http://link2'],
                 false,
                 true,
-                array(),
-            ),
+                [],
+            ],
             // invalid cache file, multi link - forceRefresh/cacheOnly
-            array(
+            [
                 'build/tests/notexist',
-                array('http://link1', 'http://link2'),
+                ['http://link1', 'http://link2'],
                 true,
                 true,
-                array(),
-            ),
-        );
+                [],
+            ],
+        ];
     }
 
     /**
+     * Test load from url.
      *
-     * Test load from url
      * @dataProvider providerTestLoadFromUrl
      * @covers Vatsimphp\Sync\AbstractSync::loadFromUrl
      * @covers Vatsimphp\Sync\AbstractSync::getErrors
@@ -614,11 +613,11 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadFromUrl($curlData, $valid, $expected, $errorCount)
     {
-        $mockedMethods = array(
+        $mockedMethods = [
             'getDataFromCurl',
             'isDataValid',
             'saveToCache',
-        );
+        ];
         $sync = $this->getMockAbstractySync($mockedMethods);
 
         // mock getDataFromCurl
@@ -645,27 +644,27 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestLoadFromUrl()
     {
-        return array(
-            array('dataok', true, true, 0),
-            array(false, false, false, 0), // error count still 0 because mocked curl
-            array('dataok', false, false, 1),
-        );
+        return [
+            ['dataok', true, true, 0],
+            [false, false, false, 0], // error count still 0 because mocked curl
+            ['dataok', false, false, 1],
+        ];
     }
 
     /**
+     * Test load from cache.
      *
-     * Test load from cache
      * @dataProvider providerTestLoadFromCache
      * @covers Vatsimphp\Sync\AbstractSync::loadFromCache
      * @covers Vatsimphp\Sync\AbstractSync::getErrors
      */
     public function testLoadFromCache($fileData, $valid, $expired, $expected, $errorCount)
     {
-        $mockedMethods = array(
+        $mockedMethods = [
             'getDataFromFile',
             'isDataValid',
             'isCacheExpired',
-        );
+        ];
         $sync = $this->getMockAbstractySync($mockedMethods);
 
         // mock getDataFromFile
@@ -692,16 +691,17 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestLoadFromCache()
     {
-        return array(
-            array('dataok',  true, false,  true, 0), // normal
-            array('dataok',  true,  true, false, 1), // expired valid content
-            array(false,    false, false, false, 1), // not valid not expired
-            array(false,    false,  true, false, 1), // not valid and expired
-        );
+        return [
+            ['dataok',  true, false,  true, 0], // normal
+            ['dataok',  true,  true, false, 1], // expired valid content
+            [false,    false, false, false, 1], // not valid not expired
+            [false,    false,  true, false, 1], // not valid and expired
+        ];
     }
 
     /**
-     * Override url provider for extension classes
+     * Override url provider for extension classes.
+     *
      * @covers Vatsimphp\Sync\AbstractSync::overrideUrl
      */
     public function testOverrideUrl()
@@ -713,14 +713,14 @@ class AbstractSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
-     * Return mocked AbstractSync
+     * Return mocked AbstractSync.
      */
-    protected function getMockAbstractySync($setMethods = array())
+    protected function getMockAbstractySync($setMethods = [])
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\AbstractSync')
             ->setMethods($setMethods)
             ->getMockForAbstractClass();
+
         return $class;
     }
 }

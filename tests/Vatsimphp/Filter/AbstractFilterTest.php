@@ -24,8 +24,8 @@ namespace Vatsimphp;
 class AbstractFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Setter/getter filter.
      *
-     * Setter/getter filter
      * @dataProvider providerTestSetGetFilter
      * @covers Vatsimphp\Filter\AbstractFilter::setFilter
      */
@@ -44,16 +44,15 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestSetGetFilter()
     {
-        return array(
-            array('filter1', 'filter1'),
-            array('filter 2', 'filter 2'),
-            array(array(), ''),
-        );
+        return [
+            ['filter1', 'filter1'],
+            ['filter 2', 'filter 2'],
+            [[], ''],
+        ];
     }
 
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -66,8 +65,8 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Iterator test.
      *
-     * Iterator test
      * @dataProvider providerTestIterator
      * @covers Vatsimphp\Filter\AbstractFilter::__construct
      * @covers Vatsimphp\Filter\AbstractFilter::count
@@ -77,8 +76,8 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
     public function testIterator($data, $negate, $skip, $count)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\AbstractFilter')
-            ->setConstructorArgs(array($data))
-            ->setMethods(array('applyFilter'))
+            ->setConstructorArgs([$data])
+            ->setMethods(['applyFilter'])
             ->getMockForAbstractClass();
 
         // stub applyFilter
@@ -101,24 +100,25 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestIterator()
     {
-        return array(
+        return [
             // no negation
-            array(array(),              false, false, 0),
-            array(array(1, 't'),        false, false, 2),
-            array(array(1, 't', ';3'),  false, false, 3),
+            [[],              false, false, 0],
+            [[1, 't'],        false, false, 2],
+            [[1, 't', ';3'],  false, false, 3],
             // negation
-            array(array(),              true, false, 0),
-            array(array(1, 't'),        true, false, 0),
-            array(array(1, 't', ';3'),  true, false, 0),
+            [[],              true, false, 0],
+            [[1, 't'],        true, false, 0],
+            [[1, 't', ';3'],  true, false, 0],
             // skip comments
-            array(array(),              false, true, 0),
-            array(array(1, 't'),        false, true, 2),
-            array(array(1, 't', ';3'),  false, true, 2),
-        );
+            [[],              false, true, 0],
+            [[1, 't'],        false, true, 2],
+            [[1, 't', ';3'],  false, true, 2],
+        ];
     }
 
     /**
-     * String to array helper
+     * String to array helper.
+     *
      * @dataProvider providerTestConvertToArray
      * @covers Vatsimphp\Filter\AbstractFilter::convertToArray
      */
@@ -136,59 +136,60 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestConvertToArray()
     {
-        return array(
-            array(
+        return [
+            [
                 'SWA3437:123456:Jelle Vink KSJC:PILOT::34.45314:-108.27796:',
                 ':',
-                array(
+                [
                     'SWA3437',
                     '123456',
                     'Jelle Vink KSJC',
                     'PILOT',
                     '',
                     '34.45314',
-                    '-108.27796'
-                ),
-            ),
-            array(
+                    '-108.27796',
+                ],
+            ],
+            [
                 'SWA3437:123456:Jelle Vink KSJC:PILOT::34.45314:-108.27796',
                 ':',
-                array(
+                [
                     'SWA3437',
                     '123456',
                     'Jelle Vink KSJC',
                     'PILOT',
                     '',
                     '34.45314',
-                    '-108.27796'
-                ),
-            ),
-            array(
+                    '-108.27796',
+                ],
+            ],
+            [
                 ':123456:Jelle Vink KSJC:PILOT::34.45314:-108.27796:',
                 ':',
-                array(
+                [
                     '',
                     '123456',
                     'Jelle Vink KSJC',
                     'PILOT',
                     '',
                     '34.45314',
-                    '-108.27796'
-                ),
-            ),
-        );
+                    '-108.27796',
+                ],
+            ],
+        ];
     }
 
     /**
-     * Iterator to array
+     * Iterator to array.
+     *
      * @dataProvider providerTestIteratorToArray
      * @covers Vatsimphp\Filter\AbstractFilter::toArray
      */
     public function testIteratorToArray($data, $retainKeys, $expectedResult)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\AbstractFilter')
-            ->setConstructorArgs(array($data))
-            ->setMethods(array('applyFilter'))
+            ->setConstructorArgs([$data])
+            ->setMethods(['applyFilter'])
             ->getMockForAbstractClass();
 
         // stub applyFilter
@@ -201,41 +202,42 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestIteratorToArray()
     {
-        $data = array(
+        $data = [
              0  => 'zero',
-             1  => array('one'),
+             1  => ['one'],
             '2' => null,
              3  => false,
             '4' => 0,
             'f' => 'five',
-        );
+        ];
 
-        return array(
-             array($data, true,
-                array(
+        return [
+             [$data, true,
+                [
                      0  => 'zero',
-                     1  => array('one'),
+                     1  => ['one'],
                     '2' => null,
                      3  => false,
                     '4' => 0,
                     'f' => 'five',
-                )
-            ),
-             array($data, false,
-                array(
+                ],
+            ],
+             [$data, false,
+                [
                      0  => 'zero',
-                     1  => array('one'),
+                     1  => ['one'],
                      2  => null,
                      3  => false,
                      4  => 0,
-                     5 => 'five',
-                )
-            ),
-        );
+                     5  => 'five',
+                ],
+            ],
+        ];
     }
 
     /**
-     * Test comments
+     * Test comments.
+     *
      * @dataProvider providerTestComments
      * @covers Vatsimphp\Filter\AbstractFilter::isComment
      */
@@ -254,15 +256,15 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestComments()
     {
-        return array(
-            array(';comment', true),
-            array('nocomment', false),
-        );
+        return [
+            [';comment', true],
+            ['nocomment', false],
+        ];
     }
 
     /**
+     * Test default value properties.
      *
-     * Test default value properties
      * @dataProvider providerTestProperties
      */
     public function testProperties($property, $value)
@@ -279,10 +281,10 @@ class AbstractFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestProperties()
     {
-        return array(
-            array('filter', ''),
-            array('skipComments', true),
-            array('negate', false),
-        );
+        return [
+            ['filter', ''],
+            ['skipComments', true],
+            ['negate', false],
+        ];
     }
 }

@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class BaseSyncTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,8 +35,8 @@ class BaseSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test url registration through status object.
      *
-     * Test url registration through status object
      * @dataProvider providerTestRegisterUrlFromStatus
      * @covers Vatsimphp\Sync\BaseSync::registerUrlFromStatus
      */
@@ -51,24 +50,24 @@ class BaseSyncTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestRegisterUrlFromStatus()
     {
-        return array(
-            array(
+        return [
+            [
                 'url0',
-                array(
+                [
                     'http://link1',
-                ),
+                ],
                 'url1',
-                array(
+                [
                     'http://link1',
                     'http://link2',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
+     * Test url registration through status object.
      *
-     * Test url registration through status object
      * @covers Vatsimphp\Sync\BaseSync::registerUrlFromStatus
      * @expectedException Vatsimphp\Exception\RuntimeException
      * @expectedExceptionMessage Error loading urls from StatusSync
@@ -81,25 +80,24 @@ class BaseSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
-     * Return mock for abstract BaseSync
+     * Return mock for abstract BaseSync.
      */
     protected function getMockBaseSync()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\BaseSync')
             ->getMockForAbstractClass();
+
         return $class;
     }
 
     /**
-     *
-     * Get mocked StatusSync
+     * Get mocked StatusSync.
      */
     protected function getMockStatusSync($dataName = false, $data = null)
     {
         $status = $this->getMockBuilder('Vatsimphp\Sync\StatusSync')
             ->disableOriginalConstructor()
-            ->setMethods(array('loadData'))
+            ->setMethods(['loadData'])
             ->getMock();
 
         // mocked result set

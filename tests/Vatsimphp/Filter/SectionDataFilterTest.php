@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class SectionDataFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,38 +35,38 @@ class SectionDataFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Set header test.
      *
-     * Set header test
      * @covers Vatsimphp\Filter\SectionDataFilter::setHeader
      */
     public function testSetHeader()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\SectionDataFilter')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 
         // protected header
         $headerProp = new \ReflectionProperty($class, 'header');
         $headerProp->setAccessible(true);
-        $this->assertSame(array(), $headerProp->getValue($class));
+        $this->assertSame([], $headerProp->getValue($class));
 
         // update header
-        $newHeader = array('head1' => array('data'));
+        $newHeader = ['head1' => ['data']];
         $class->setHeader($newHeader);
         $this->assertSame($newHeader, $headerProp->getValue($class));
     }
 
     /**
+     * Fix data test.
      *
-     * Fix data test
      * @dataProvider providerTestFixData
      * @covers Vatsimphp\Filter\SectionDataFilter::fixData
      */
     public function testFixData($header, $data)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\SectionDataFilter')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 
@@ -83,28 +82,28 @@ class SectionDataFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestFixData()
     {
-        return array(
-            array(
-                array('callsign', 'cid', 'realname'),
-                array('SWA3437', '123456', 'Jelle Vink'),
-            ),
-            array(
-                array('callsign', 'cid', 'realname'),
-                array('SWA3437', '123456'),
-            ),
-        );
+        return [
+            [
+                ['callsign', 'cid', 'realname'],
+                ['SWA3437', '123456', 'Jelle Vink'],
+            ],
+            [
+                ['callsign', 'cid', 'realname'],
+                ['SWA3437', '123456'],
+            ],
+        ];
     }
 
     /**
+     * Current test.
      *
-     * Current test
      * @dataProvider providerTestCurrent
      * @covers Vatsimphp\Filter\SectionDataFilter::current
      */
     public function testCurrent($section, $header, $data, $expectedResult)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\SectionDataFilter')
-            ->setConstructorArgs(array($data))
+            ->setConstructorArgs([$data])
             ->setMethods(null)
             ->getMock();
 
@@ -116,57 +115,57 @@ class SectionDataFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestCurrent()
     {
-        return array(
-            array(
+        return [
+            [
                 'clients',
-                array(
+                [
                     'callsign',
                     'cid',
                     'realname',
-                ),
-                array(
+                ],
+                [
                     ';comment',
                     '!CLIENTS:',
                     'SWA3437:123456:Jelle Vink KSJC:',
-                   ),
-                array(
+                   ],
+                [
                     'callsign' => 'SWA3437',
-                    'cid' => '123456',
+                    'cid'      => '123456',
                     'realname' => 'Jelle Vink KSJC',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'clients',
-                array(
+                [
                     'callsign',
                     'cid',
                     'realname',
-                ),
-                array(
+                ],
+                [
                     ';comment',
                     '!CLIENTS:',
                     'SWA3437:123456:Jelle Vink KSJC:toomuch:',
-                ),
+                ],
                 false,
-            ),
-            array(
+            ],
+            [
                 'clients',
-                array(
+                [
                     'callsign',
                     'cid',
                     'realname',
-                ),
-                array(
+                ],
+                [
                     ';comment',
                     '!CLIENTS:',
                     'SWA3437:fixnext',
-                   ),
-                array(
+                   ],
+                [
                     'callsign' => 'SWA3437',
-                    'cid' => 'fixnext',
+                    'cid'      => 'fixnext',
                     'realname' => '',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

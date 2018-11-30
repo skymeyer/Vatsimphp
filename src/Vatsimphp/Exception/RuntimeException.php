@@ -22,9 +22,7 @@
 namespace Vatsimphp\Exception;
 
 /**
- *
- * Runtime exception
- *
+ * Runtime exception.
  */
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {

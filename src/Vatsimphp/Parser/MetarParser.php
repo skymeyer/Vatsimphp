@@ -21,7 +21,7 @@
 
 namespace Vatsimphp\Parser;
 
-/**
+/*
  *
  * Parser for metar data
  *
@@ -33,12 +33,11 @@ class MetarParser extends AbstractParser
     const INVALID = 'No METAR available';
 
     /**
-     *
      * @see Vatsimphp\Parser.ParserInterface::parseData()
      */
     public function parseData()
     {
-        $metar = trim(implode(" ", $this->rawData));
+        $metar = trim(implode(' ', $this->rawData));
         if (stripos($metar, self::INVALID) === false) {
             $result = new StartOfLineFilter($this->rawData);
             $this->results->append('metar', $result);

@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class DataSyncTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,8 +35,8 @@ class DataSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test defaults.
      *
-     * Test defaults
      * @covers Vatsimphp\Sync\DataSync::setDefaults
      */
     public function testSetDefaults()
@@ -48,8 +47,8 @@ class DataSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test data validation based on expire setting.
      *
-     * Test data validation based on expire setting
      * @dataProvider providerTestIsDataValid
      * @covers Vatsimphp\Sync\DataSync::isDataValid
      */
@@ -61,7 +60,7 @@ class DataSyncTest extends \PHPUnit_Framework_TestCase
         // attach mocked parser objects
         $parser = $this->getMockBuilder('Vatsimphp\Parser\DataParser')
             ->disableOriginalConstructor()
-            ->setMethods(array('setData', 'parseData'))
+            ->setMethods(['setData', 'parseData'])
             ->getMock();
 
         $parserProp = new \ReflectionProperty($class, 'parser');
@@ -74,27 +73,26 @@ class DataSyncTest extends \PHPUnit_Framework_TestCase
 
         // expire flag should be passed to parser
         $this->assertEquals($expire, $parserProp->getValue($class)->dataExpire);
-
     }
 
     public function providerTestIsDataValid()
     {
-        return array(
-            array(0),
-            array(1),
-            array(999),
-        );
+        return [
+            [0],
+            [1],
+            [999],
+        ];
     }
 
     /**
-     *
-     * Return mock for DataSync
+     * Return mock for DataSync.
      */
     protected function getMockDataSync()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\DataSync')
             ->setMethods(null)
             ->getMock();
+
         return $class;
     }
 }

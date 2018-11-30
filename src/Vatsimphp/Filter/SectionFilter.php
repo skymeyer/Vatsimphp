@@ -22,30 +22,26 @@
 namespace Vatsimphp\Filter;
 
 /**
- *
- * Filter all lines for a given section
- *
+ * Filter all lines for a given section.
  */
 class SectionFilter extends AbstractFilter
 {
     /**
+     * Flag when we have reached the section.
      *
-     * Flag when we have reached the section
-     * @var boolean
+     * @var bool
      */
     protected $inSection = false;
 
     /**
-     *
      * @see Vatsimphp\Filter.AbstractFilter::setFilter()
      */
     public function setFilter($section)
     {
-        $this->filter = "!".strtoupper($section).":";
+        $this->filter = '!'.strtoupper($section).':';
     }
 
     /**
-     *
      * @see Vatsimphp\Filter.FilterInterface::applyFilter()
      */
     public function applyFilter()
@@ -60,6 +56,7 @@ class SectionFilter extends AbstractFilter
         // mark begin of section
         if (substr($line, 0, strlen($this->filter)) == $this->filter) {
             $this->inSection = true;
+
             return false;
         }
 

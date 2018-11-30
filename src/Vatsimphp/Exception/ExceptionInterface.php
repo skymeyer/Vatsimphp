@@ -22,9 +22,7 @@
 namespace Vatsimphp\Exception;
 
 /**
- *
- * Exception interface
- *
+ * Exception interface.
  */
 interface ExceptionInterface
 {

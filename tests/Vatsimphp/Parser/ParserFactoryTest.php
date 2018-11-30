@@ -24,8 +24,8 @@ namespace Vatsimphp;
 class ParserFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Base factory.
      *
-     * Base factory
      * @covers Vatsimphp\Parser\ParserFactory::getParser
      */
     public function testGetParser()
@@ -39,8 +39,8 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Invalid parser.
      *
-     * Invalid parser
      * @expectedException Vatsimphp\Exception\RuntimeException
      * @covers Vatsimphp\Parser\ParserFactory::getParser
      */
