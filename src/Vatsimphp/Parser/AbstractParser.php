@@ -21,54 +21,51 @@
 
 namespace Vatsimphp\Parser;
 
-use Vatsimphp\Result\ResultContainer;
 use Vatsimphp\Log\LoggerFactory;
+use Vatsimphp\Result\ResultContainer;
 
 /**
- *
- * Abstract class for data parsers
- *
+ * Abstract class for data parsers.
  */
 abstract class AbstractParser implements ParserInterface
 {
     /**
+     * Raw data.
      *
-     * Raw data
      * @var array
      */
     protected $rawData;
 
     /**
+     * Flag to indicate valid data.
      *
-     * Flag to indicate valid data
-     * @var boolean
+     * @var bool
      */
     protected $valid = false;
 
     /**
+     * Results.
      *
-     * Results
      * @var \Vatsimphp\Result\ResultContainer
      */
     protected $results;
 
     /**
+     * Version hash of raw data.
      *
-     * Version hash of raw data
      * @var string
      */
     protected $hash;
 
     /**
+     * Logger.
      *
-     * Logger
      * @var \Psr\Log\LoggerInterface
      */
     protected $log;
 
     /**
-     *
-     * Ctor
+     * Ctor.
      */
     public function __construct()
     {
@@ -77,8 +74,8 @@ abstract class AbstractParser implements ParserInterface
     }
 
     /**
+     * Set raw data.
      *
-     * Set raw data
      * @param string $data
      */
     public function setData($data)
@@ -89,9 +86,9 @@ abstract class AbstractParser implements ParserInterface
     }
 
     /**
+     * Return validation state.
      *
-     * Return validation state
-     * @return boolean
+     * @return bool
      */
     public function isValid()
     {
@@ -99,8 +96,8 @@ abstract class AbstractParser implements ParserInterface
     }
 
     /**
+     * Return parsed data.
      *
-     * Return parsed data
      * @return \Vatsimphp\Result\ResultContainer
      */
     public function getParsedData()
@@ -109,8 +106,8 @@ abstract class AbstractParser implements ParserInterface
     }
 
     /**
+     * Return raw data.
      *
-     * Return raw data
      * @return array
      */
     public function getRawData()
@@ -119,8 +116,8 @@ abstract class AbstractParser implements ParserInterface
     }
 
     /**
+     * Return the hash (version).
      *
-     * Return the hash (version)
      * @return string
      */
     public function getHash()

@@ -22,24 +22,22 @@
 namespace Vatsimphp\Exception;
 
 /**
- *
- * Synchronisation exception
- *
+ * Synchronisation exception.
  */
 class SyncException extends \RuntimeException implements ExceptionInterface
 {
     /**
+     * Errors.
      *
-     * Errors
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
+     * Ctor.
      *
-     * Ctor
      * @param string $msg
-     * @param array $errors
+     * @param array  $errors
      */
     public function __construct($msg, array $errors)
     {
@@ -48,8 +46,8 @@ class SyncException extends \RuntimeException implements ExceptionInterface
     }
 
     /**
+     * Return reported errors.
      *
-     * Return reported errors
      * @return array
      */
     public function getErrors()

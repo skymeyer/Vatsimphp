@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
 class SectionFilterTest extends TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -38,14 +37,14 @@ class SectionFilterTest extends TestCase
     }
 
     /**
+     * Filter test.
      *
-     * Filter test
      * @covers Vatsimphp\Filter\SectionFilter::setFilter
      */
     public function testFilter()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\SectionFilter')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 
@@ -60,19 +59,18 @@ class SectionFilterTest extends TestCase
         $skipProp = new \ReflectionProperty($class, 'inSection');
         $skipProp->setAccessible(true);
         $this->assertFalse($skipProp->getValue($class));
-
     }
 
     /**
+     * Test filter section.
      *
-     * Test filter section
      * @dataProvider providerTestApplyFilter
      * @covers Vatsimphp\Filter\SectionFilter::applyFilter
      */
     public function testApplyFilter($section, $data, $expectedResult)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\SectionFilter')
-            ->setConstructorArgs(array($data))
+            ->setConstructorArgs([$data])
             ->setMethods(null)
             ->getMock();
 
@@ -82,7 +80,7 @@ class SectionFilterTest extends TestCase
 
     public function providerTestApplyFilter()
     {
-        $baseData = array(
+        $baseData = [
             ';comment line',
             ';',
             '!CLIENTS:',
@@ -93,22 +91,22 @@ class SectionFilterTest extends TestCase
             'rw.liveatc.net:North America, USA, California:Liveatc:1:R:',
             '',
             ';',
-        );
+        ];
 
-        return array(
-            array(
+        return [
+            [
                 'clients', $baseData,
-                array(
+                [
                     'SWA3437:1234567:Jelle Vink KSJC:',
                     'BWA3892:8901234:Jelle Vink EBBR:',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'voice servers', $baseData,
-                array(
+                [
                     'rw.liveatc.net:North America, USA, California:Liveatc:1:R:',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

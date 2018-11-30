@@ -22,14 +22,11 @@
 namespace Vatsimphp\Filter;
 
 /**
- *
- * Retrieve data lines for GENERAL section
- *
+ * Retrieve data lines for GENERAL section.
  */
 class SectionGeneralFilter extends SectionFilter
 {
     /**
-     *
      * @see Vatsimphp\Filter.AbstractFilter::__construct()
      */
     public function __construct($iterator)

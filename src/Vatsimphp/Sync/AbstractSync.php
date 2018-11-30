@@ -21,125 +21,122 @@
 
 namespace Vatsimphp\Sync;
 
-use Vatsimphp\Parser\ParserFactory;
 use Vatsimphp\Exception\RuntimeException;
-use Vatsimphp\Exception\UnexpectedValueException;
 use Vatsimphp\Exception\SyncException;
+use Vatsimphp\Exception\UnexpectedValueException;
 use Vatsimphp\Log\LoggerFactory;
+use Vatsimphp\Parser\ParserFactory;
 
 /**
- *
  * Synchronisation base class supporting local cache and
  * multiple url sources. Using the cache and refresh timers
  * external calls are only issued when needed.
- *
  */
 abstract class AbstractSync implements SyncInterface
 {
     /**
+     * Cache directory.
      *
-     * Cache directory
      * @var string
      */
     public $cacheDir = '';
 
     /**
+     * Cache file.
      *
-     * Cache file
      * @var string
      */
     public $cacheFile = '';
 
     /**
-     *
      * When set ignore local cache file
-     * even if it's not expired
-     * @var boolean
+     * even if it's not expired.
+     *
+     * @var bool
      */
     public $forceRefresh = false;
 
     /**
+     * Expire interval in seconds for local cache.
      *
-     * Expire interval in seconds for local cache
-     * @var integer
+     * @var int
      */
     public $refreshInterval = 60;
 
     /**
-     *
      * If set only local file cache will be used and
      * download urls are ignored
-     * TODO: implement behavior
-     * @var boolean
+     * TODO: implement behavior.
+     *
+     * @var bool
      */
     public $cacheOnly = false;
 
     /**
+     * List of urls.
      *
-     * List of urls
      * @var array
      */
-    protected $urls = array();
+    protected $urls = [];
 
     /**
+     * Cache file full path.
      *
-     * Cache file full path
      * @var string
      */
     protected $filePath;
 
     /**
+     * Parser object.
      *
-     * Parser object
      * @var \Vatsimphp\Parser\AbstractParser
      */
     protected $parser;
 
     /**
+     * Sync error array returned on SyncException.
      *
-     * Sync error array returned on SyncException
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
+     * Curl resource.
      *
-     * Curl resource
      * @var resource
      */
     protected $curl;
 
     /**
+     * Curl options.
      *
-     * Curl options
      * @var array
      */
-    protected $curlOpts = array(
+    protected $curlOpts = [
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADER => false,
+        CURLOPT_HEADER         => false,
         CURLOPT_SSL_VERIFYPEER => false,
-    );
+    ];
 
     /**
+     * Logger.
      *
-     * Logger
      * @var \Psr\Log\LoggerInterface
      */
     protected $log;
 
     /**
-     *
-     * Ctor
+     * Ctor.
      */
     public function __construct()
     {
         $this->log = LoggerFactory::get($this);
-        $this->cacheDir = __DIR__ . '/../../../app/cache';
+        $this->cacheDir = __DIR__.'/../../../app/cache';
     }
 
     /**
+     * Set parser.
      *
-     * Set parser
      * @param string $parserName
      */
     public function setParser($parserName)
@@ -148,30 +145,29 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
+     * Add url(s).
      *
-     * Add url(s)
      * @param string|array $url
-     * @param boolean $flush
+     * @param bool         $flush
      */
     public function registerUrl($url, $flush = false)
     {
         if ($flush) {
-            $this->urls = array();
+            $this->urls = [];
         }
 
         if (is_array($url)) {
-            $this->log->debug("Registered urls", $url);
+            $this->log->debug('Registered urls', $url);
             $this->urls = array_merge($this->urls, $url);
         } else {
             $this->log->debug("Registered url -> $url");
             $this->urls[] = $url;
         }
-
     }
 
     /**
+     * Urls getter.
      *
-     * Urls getter
      * @return array
      */
     public function getUrls()
@@ -180,9 +176,10 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
+     * Return parsed data.
      *
-     * Return parsed data
      * @throws SyncException
+     *
      * @return \Vatsimphp\Result\ResultContainer
      */
     public function loadData()
@@ -194,7 +191,7 @@ abstract class AbstractSync implements SyncInterface
         // we need at least one location
         if (!count($urls)) {
             throw new SyncException(
-                "No location(s) available to sync from",
+                'No location(s) available to sync from',
                 $this->errors
             );
         }
@@ -208,9 +205,9 @@ abstract class AbstractSync implements SyncInterface
         }
 
         // we should have valid data at this point
-        if (! $this->parser->isValid() || empty($validData)) {
+        if (!$this->parser->isValid() || empty($validData)) {
             throw new SyncException(
-                "Unable to download data or data invalid",
+                'Unable to download data or data invalid',
                 $this->errors
             );
         }
@@ -219,8 +216,8 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
+     * Return error stack.
      *
-     * Return error stack
      * @return array
      */
     public function getErrors()
@@ -229,58 +226,63 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
+     * Add an error to the stack.
      *
-     * Add an error to the stack
      * @param string $url
      * @param string $msg
      */
     protected function addError($url, $msg)
     {
-        $this->errors[] = array(
+        $this->errors[] = [
             'url' => $url,
             'msg' => $msg,
-        );
+        ];
     }
 
     /**
+     * Prepare order/list of urls for loadData.
      *
-     * Prepare order/list of urls for loadData
      * @param string $filePath
-     * @param array $urls
-     * @param boolean $forceRefresh
-     * @param boolean $cacheOnly
-     * @param boolean $shuffle
+     * @param array  $urls
+     * @param bool   $forceRefresh
+     * @param bool   $cacheOnly
+     * @param bool   $shuffle
+     *
      * @return array
      */
-    protected function prepareUrls($filePath, array $urls = array(), $forceRefresh = false, $cacheOnly = false, $shuffle = true)
+    protected function prepareUrls($filePath, array $urls = [], $forceRefresh = false, $cacheOnly = false, $shuffle = true)
     {
         $fileExists = file_exists($filePath);
 
         if ($cacheOnly) {
             if (!$fileExists) {
                 $this->log->debug("Cache only mode enabled, but $filePath does not exist !");
-                return array();
+
+                return [];
             }
             $this->log->debug("Cache only mode enabled, only loading content from $filePath");
-            return array($filePath);
 
+            return [$filePath];
         } else {
-            if ($shuffle) shuffle($urls);
+            if ($shuffle) {
+                shuffle($urls);
+            }
 
             if ($forceRefresh) {
                 $this->log->debug("Refresh forced, skipping cached content from $filePath");
+
                 return $urls;
             }
             if ($fileExists) {
                 array_unshift($urls, $filePath);
             }
+
             return $urls;
         }
     }
 
     /**
-     *
-     * Validate config wrapper
+     * Validate config wrapper.
      */
     protected function validateConfig()
     {
@@ -289,54 +291,55 @@ abstract class AbstractSync implements SyncInterface
         $this->validateCacheFile();
         $this->validateFilePath();
         $this->validateParser();
+
         return true;
     }
 
     /**
+     * Validate urls.
      *
-     * Validate urls
      * @throws UnexpectedValueException
      */
     protected function validateUrls()
     {
         if (!is_array($this->urls)) {
             throw new UnexpectedValueException(
-                "Invalid url format, expecting array"
+                'Invalid url format, expecting array'
             );
         }
     }
 
     /**
+     * Validate refreshInterval.
      *
-     * Validate refreshInterval
      * @throws UnexpectedValueException
      */
     protected function validateRefreshInterval()
     {
         if (!is_int($this->refreshInterval)) {
             throw new UnexpectedValueException(
-                "Invalid refresh interval, expecting integer"
+                'Invalid refresh interval, expecting integer'
             );
         }
     }
 
     /**
+     * Validate cacheFile.
      *
-     * Validate cacheFile
      * @throws UnexpectedValueException
      */
     protected function validateCacheFile()
     {
         if (empty($this->cacheFile)) {
             throw new UnexpectedValueException(
-                "Cache file name not specified"
+                'Cache file name not specified'
             );
         }
     }
 
     /**
+     * Validate filePath.
      *
-     * Validate filePath
      * @throws RuntimeException
      */
     protected function validateFilePath()
@@ -357,37 +360,37 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
+     * Validate parser.
      *
-     * Validate parser
      * @throws RuntimeException
      */
     protected function validateParser()
     {
         if (!$this->parser instanceof \Vatsimphp\Parser\AbstractParser) {
             throw new RuntimeException(
-                "No valid parser object set"
+                'No valid parser object set'
             );
         }
     }
 
     /**
-     *
-     * Initialize curl resource
+     * Initialize curl resource.
      */
     protected function initCurl()
     {
         if (empty($this->curl)) {
             $this->curl = curl_init();
             curl_setopt_array($this->curl, $this->curlOpts);
-            $this->log->debug("cURL object initialized", $this->curlOpts);
+            $this->log->debug('cURL object initialized', $this->curlOpts);
         }
     }
 
     /**
+     * Wrapper to load data from url or file.
      *
-     * Wrapper to load data from url or file
      * @param string $location
-     * @return boolean
+     *
+     * @return bool
      */
     protected function getData($location)
     {
@@ -399,11 +402,12 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
-     *
      * Load data from url and pass it to the parser
-     * If successful save raw data to cache
+     * If successful save raw data to cache.
+     *
      * @param string $url
-     * @return boolean
+     *
+     * @return bool
      */
     protected function loadFromUrl($url)
     {
@@ -411,7 +415,7 @@ abstract class AbstractSync implements SyncInterface
         $this->log->debug("Load from url $url");
         $this->initCurl();
         curl_setopt($this->curl, CURLOPT_URL, $url);
-        if (! $data = $this->getDataFromCurl()) {
+        if (!$data = $this->getDataFromCurl()) {
             return false;
         }
 
@@ -421,18 +425,21 @@ abstract class AbstractSync implements SyncInterface
         // validate data through parser
         if (!$this->isDataValid($data)) {
             $this->addError($url, 'Data not valid according to parser');
+
             return false;
         }
 
         // save result to disk
         $this->saveToCache($data);
+
         return true;
     }
 
     /**
+     * Load data from curl resource.
      *
-     * Load data from curl resource
      * @codeCoverageIgnore
+     *
      * @return false|string
      */
     protected function getDataFromCurl()
@@ -440,16 +447,18 @@ abstract class AbstractSync implements SyncInterface
         $data = curl_exec($this->curl);
         if (curl_errno($this->curl)) {
             $this->addError(curl_getinfo($this->curl, CURLINFO_EFFECTIVE_URL), curl_error($this->curl));
+
             return false;
         }
+
         return $data;
     }
 
     /**
-     *
      * Load data from file and pass it to the parser
-     * Fails if content is expired
-     * @return boolean
+     * Fails if content is expired.
+     *
+     * @return bool
      */
     protected function loadFromCache()
     {
@@ -462,22 +471,26 @@ abstract class AbstractSync implements SyncInterface
         // validate data through parser
         if (!$this->isDataValid($data)) {
             $this->addError($this->filePath, 'Data not valid according to parser');
+
             return false;
         }
 
         // verify if local cache is expired
         if ($this->isCacheExpired()) {
             $this->addError($this->filePath, 'Local cache is expired');
+
             return false;
         }
+
         return true;
     }
 
     /**
+     * Load data from file resource.
      *
-     * Load data from file resource
      * @codeCoverageIgnore
-     * @return boolean|string
+     *
+     * @return bool|string
      */
     protected function getDataFromFile()
     {
@@ -485,21 +498,23 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
+     * Validate the raw data using parser object.
      *
-     * Validate the raw data using parser object
      * @param string $data
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isDataValid($data)
     {
         $this->parser->setData($data);
         $this->parser->parseData();
+
         return $this->parser->isValid();
     }
 
     /**
+     * Atomic save raw data to cache file.
      *
-     * Atomic save raw data to cache file
      * @param string $data
      */
     protected function saveToCache($data)
@@ -514,25 +529,28 @@ abstract class AbstractSync implements SyncInterface
     }
 
     /**
-     *
      * Verify if file content is outdated based on
-     * the file last modification timestamp
-     * @return boolean
+     * the file last modification timestamp.
+     *
+     * @return bool
      */
     protected function isCacheExpired()
     {
         $ts = filemtime($this->filePath);
         if (!$this->cacheOnly && time() - $ts >= $this->refreshInterval) {
             $this->log->debug("Cache content {$this->filePath} expired ({$this->refreshInterval})");
+
             return true;
         }
+
         return false;
     }
 
     /**
+     * Provide url override for extension class.
      *
-     * Provide url override for extension class
      * @param string $url
+     *
      * @return string
      */
     protected function overrideUrl($url)

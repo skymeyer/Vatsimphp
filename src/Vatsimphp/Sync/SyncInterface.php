@@ -22,15 +22,12 @@
 namespace Vatsimphp\Sync;
 
 /**
- *
- * Sync interface
- *
+ * Sync interface.
  */
 interface SyncInterface
 {
     /**
-     *
-     * Set defaults
+     * Set defaults.
      */
     public function setDefaults();
 }

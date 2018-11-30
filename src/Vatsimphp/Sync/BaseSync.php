@@ -21,24 +21,23 @@
 
 namespace Vatsimphp\Sync;
 
-use \Vatsimphp\Exception\RuntimeException;
+use Vatsimphp\Exception\RuntimeException;
 
 /**
- *
  * Base synchronization class for all secondary data
  * implementations. The primary synchronization happens
  * using StatusSync to get the available data urls
  * during the secondary phase.
- *
  */
 abstract class BaseSync extends AbstractSync
 {
     /**
-     *
      * Use StatusSync to dynamically add the available
-     * data urls to poll new data from
+     * data urls to poll new data from.
+     *
      * @param \Vatsimphp\Sync\StatusSync $sync
-     * @param string $type - the type of urls to use (ie dataUrls)
+     * @param string                     $type - the type of urls to use (ie dataUrls)
+     *
      * @throws \Vatsimphp\Exception\RuntimeException
      */
     public function registerUrlFromStatus(\Vatsimphp\Sync\StatusSync $sync, $type)
@@ -50,6 +49,7 @@ abstract class BaseSync extends AbstractSync
             );
         }
         $this->registerUrl($urls, true);
+
         return true;
     }
 }

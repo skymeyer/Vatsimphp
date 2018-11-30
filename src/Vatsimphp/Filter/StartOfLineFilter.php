@@ -22,14 +22,11 @@
 namespace Vatsimphp\Filter;
 
 /**
- *
- * Filter class matching a string at the start of a line
- *
+ * Filter class matching a string at the start of a line.
  */
 class StartOfLineFilter extends AbstractFilter
 {
     /**
-     *
      * @see Vatsimphp\Filter.FilterInterface::applyFilter()
      */
     public function applyFilter()
@@ -38,6 +35,7 @@ class StartOfLineFilter extends AbstractFilter
         if (substr($line, 0, strlen($this->filter)) == $this->filter) {
             return true;
         }
+
         return false;
     }
 }

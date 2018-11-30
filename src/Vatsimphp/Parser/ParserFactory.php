@@ -24,25 +24,26 @@ namespace Vatsimphp\Parser;
 use Vatsimphp\Exception\RuntimeException;
 
 /**
- *
- * Factory class for Parsers
- *
+ * Factory class for Parsers.
  */
 class ParserFactory
 {
     /**
+     * Return new parser object.
      *
-     * Return new parser object
      * @param string $name
+     *
      * @throws RuntimeException
+     *
      * @return \Vatsimphp\Parser\AbstractParser
      */
     public static function getParser($name)
     {
-        $className = "\Vatsimphp\Parser\\" . $name . "Parser";
+        $className = "\Vatsimphp\Parser\\".$name.'Parser';
         if (!class_exists($className, true)) {
             throw new RuntimeException("Unable to load parser '{$name}'");
         }
+
         return new $className();
     }
 }

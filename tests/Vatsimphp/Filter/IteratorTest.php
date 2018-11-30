@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
 class IteratorTest extends TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -38,14 +37,14 @@ class IteratorTest extends TestCase
     }
 
     /**
+     * Constructor test.
      *
-     * Constructor test
      * @covers Vatsimphp\Filter\Iterator::__construct
      */
     public function testCtor()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\Iterator')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 
@@ -56,14 +55,14 @@ class IteratorTest extends TestCase
     }
 
     /**
+     * applyFilter test.
      *
-     * applyFilter test
      * @covers Vatsimphp\Filter\Iterator::applyFilter
      */
     public function testApplyFilter()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\Iterator')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
         $this->assertTrue($class->applyFilter());

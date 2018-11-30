@@ -26,47 +26,44 @@ use Vatsimphp\Filter\SectionDataFilter;
 use Vatsimphp\Filter\SectionGeneralFilter;
 
 /**
- *
- * Parser for vatsim-data.txt
- *
+ * Parser for vatsim-data.txt.
  */
 class DataParser extends AbstractParser
 {
     /**
-     *
      * Expire time in seconds to consider data file timestamp
      * invalid. Set to zero to disable this check.
-     * @var integer
+     *
+     * @var int
      */
     public $dataExpire = 0;
 
     /**
+     * Parsable sections in the data file.
      *
-     * Parsable sections in the data file
      * @var array
      */
-    protected $sections = array(
-        'clients' => false,
-        'prefile' => false,
-        'servers' => false,
+    protected $sections = [
+        'clients'       => false,
+        'prefile'       => false,
+        'servers'       => false,
         'voice servers' => false,
-    );
+    ];
 
     /**
+     * Key/value pairs in the general section.
      *
-     * Key/value pairs in the general section
      * @var array
      */
-    protected $general = array(
-        'version' => false,
-        'reload' => false,
-        'update' => false,
-        'atis_allow_min' => false,
+    protected $general = [
+        'version'           => false,
+        'reload'            => false,
+        'update'            => false,
+        'atis_allow_min'    => false,
         'connected_clients' => false,
-    );
+    ];
 
     /**
-     *
      * @see Vatsimphp\Parser.ParserInterface::parseData()
      */
     public function parseData()
@@ -92,10 +89,11 @@ class DataParser extends AbstractParser
     }
 
     /**
+     * Check if given timestamp is expired.
      *
-     * Check if given timestamp is expired
-     * @param integer $ts
-     * @return boolean
+     * @param int $ts
+     *
+     * @return bool
      */
     protected function timestampHasExpired($ts, $expire)
     {
@@ -106,12 +104,12 @@ class DataParser extends AbstractParser
         if ($diff > $expire) {
             return true;
         }
+
         return false;
     }
 
     /**
-     *
-     * Parse data sections
+     * Parse data sections.
      */
     protected function parseSections()
     {
@@ -148,9 +146,8 @@ class DataParser extends AbstractParser
     }
 
     /**
-     *
      * Parse GENERAL section parameters and transform
-     * them into proper key/value pairs
+     * them into proper key/value pairs.
      */
     protected function parseGeneral()
     {
@@ -160,7 +157,7 @@ class DataParser extends AbstractParser
         foreach ($data as $entry) {
 
             // grab key/values from iterator
-            $params = explode(" = ", $entry);
+            $params = explode(' = ', $entry);
             if (count($params) != 2) {
                 continue;
             }
@@ -180,9 +177,10 @@ class DataParser extends AbstractParser
     }
 
     /**
+     * Array key formatter.
      *
-     * Array key formatter
-     * @param  string $key
+     * @param string $key
+     *
      * @return string
      */
     protected function scrubKey($key)
@@ -191,27 +189,29 @@ class DataParser extends AbstractParser
     }
 
     /**
+     * Timestamp convertor to unix time.
      *
-     * Timestamp convertor to unix time
-     * @param  string $str
-     * @return integer
+     * @param string $str
+     *
+     * @return int
      */
     protected function convertTs($str)
     {
         if (empty($str) || strlen($str) != 14) {
             return false;
         }
-        $y = (int)substr($str, 0, 4);
-        $m = (int)substr($str, 4, 2);
-        $d = (int)substr($str, 6, 2);
-        $h = (int)substr($str, 8, 2);
-        $i = (int)substr($str, 10, 2);
-        $s = (int)substr($str, 12, 2);
+        $y = (int) substr($str, 0, 4);
+        $m = (int) substr($str, 4, 2);
+        $d = (int) substr($str, 6, 2);
+        $h = (int) substr($str, 8, 2);
+        $i = (int) substr($str, 10, 2);
+        $s = (int) substr($str, 12, 2);
 
         $dt = new \DateTime();
         $dt->setTimezone(new \DateTimeZone('UTC'));
         $dt->setDate($y, $m, $d);
         $dt->setTime($h, $i, $s);
+
         return $dt->getTimestamp();
     }
 }

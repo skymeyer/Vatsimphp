@@ -22,9 +22,7 @@
 namespace Vatsimphp\Exception;
 
 /**
- *
- * Unexpected Value Exception
- *
+ * Unexpected Value Exception.
  */
 class UnexpectedValueException extends \UnexpectedValueException implements ExceptionInterface
 {

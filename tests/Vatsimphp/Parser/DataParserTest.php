@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
 class DataParserTest extends TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -38,8 +37,8 @@ class DataParserTest extends TestCase
     }
 
     /**
+     * Parse data test.
      *
-     * Parse data test
      * @dataProvider providerTestParseData
      * @covers Vatsimphp\Parser\DataParser::parseData
      * @covers Vatsimphp\Parser\DataParser::parseSections
@@ -78,21 +77,21 @@ class DataParserTest extends TestCase
 
     public function providerTestParseData()
     {
-        $general  = "!GENERAL:\n";
+        $general = "!GENERAL:\n";
         $general .= "VERSION = 1\nRELOAD = 2\nUPDATE = 19990601000000\n";
         $general .= "ATIS ALLOW MIN = 5\nCONNECTED CLIENTS = 1";
 
-        $generalInvalid  = "!GENERAL:\n";
+        $generalInvalid = "!GENERAL:\n";
         $generalInvalid .= "VERSION = 1\nRELOAD\n";
         $generalInvalid .= "ATIS ALLOW MIN = 5\nCONNECTED CLIENTS = 1";
 
         $clientsHead = "\n; !CLIENTS section -         callsign:cid:realname:\n";
-        $clients  = "!CLIENTS:\n";
-        $clients .= "SWA3437:123456:Jelle Vink KSJC:";
+        $clients = "!CLIENTS:\n";
+        $clients .= 'SWA3437:123456:Jelle Vink KSJC:';
 
         $voiceHead = "\n; !VOICE SERVERS section -   hostname_or_IP:location:\n";
-        $voice  = "!VOICE SERVERS:\n";
-        $voice .= "rw.liveatc.net:North America, USA, California:";
+        $voice = "!VOICE SERVERS:\n";
+        $voice .= 'rw.liveatc.net:North America, USA, California:';
 
         // valid (normal) data
         $validData = $general.$clientsHead.$clients.$voiceHead.$voice;
@@ -103,48 +102,48 @@ class DataParserTest extends TestCase
         // with invalid general section
         $invalidData2 = $generalInvalid.$clientsHead.$clients.$voiceHead.$voice;
 
-        return array(
-            array(
+        return [
+            [
                 $validData,
                 true,
-                array(
-                    'clients' => array(
-                        array(
+                [
+                    'clients' => [
+                        [
                             'callsign' => 'SWA3437',
-                            'cid' => '123456',
+                            'cid'      => '123456',
                             'realname' => 'Jelle Vink KSJC',
-                        ),
-                    ),
-                    'voice_servers' => array(
-                        array(
+                        ],
+                    ],
+                    'voice_servers' => [
+                        [
                             'hostname_or_IP' => 'rw.liveatc.net',
-                            'location' => 'North America, USA, California',
-                        ),
-                    ),
-                ),
-            ),
-            array(
+                            'location'       => 'North America, USA, California',
+                        ],
+                    ],
+                ],
+            ],
+            [
                 $invalidData1,
                 false,
-                array(),
-            ),
-            array(
+                [],
+            ],
+            [
                 $invalidData2,
                 false,
-                array(),
-            ),
-            array(
+                [],
+            ],
+            [
                 $validData,
                 false,
-                array(),
+                [],
                 300,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
+     * Test scrub key.
      *
-     * Test scrub key
      * @dataProvider providerTestScrubKey
      * @covers Vatsimphp\Parser\DataParser::scrubKey
      */
@@ -158,15 +157,15 @@ class DataParserTest extends TestCase
 
     public function providerTestScrubKey()
     {
-        return array(
-            array('voice server', 'voice_server'),
-            array('VoIcE SeRvEr', 'voice_server'),
-        );
+        return [
+            ['voice server', 'voice_server'],
+            ['VoIcE SeRvEr', 'voice_server'],
+        ];
     }
 
     /**
+     * Test convert timestamp.
      *
-     * Test convert timestamp
      * @dataProvider providerTestConvertTs
      * @covers Vatsimphp\Parser\DataParser::convertTs
      */
@@ -180,16 +179,16 @@ class DataParserTest extends TestCase
 
     public function providerTestConvertTs()
     {
-        return array(
-            array('20130601000000', 1370044800),
-            array('', false),
-            array('123456789012345', false),
-        );
+        return [
+            ['20130601000000', 1370044800],
+            ['', false],
+            ['123456789012345', false],
+        ];
     }
 
     /**
+     * Test timestamp expire.
      *
-     * Test timestamp expire
      * @dataProvider providerTestTimestampHasExpired
      * @covers Vatsimphp\Parser\DataParser::timestampHasExpired
      */
@@ -204,39 +203,39 @@ class DataParserTest extends TestCase
 
     public function providerTestTimestampHasExpired()
     {
-        return array(
-            array(
+        return [
+            [
                 time() - 9999,
                 30,
                 true,
-            ),
-            array(
+            ],
+            [
                 time() - 99,
                 300,
                 false,
-            ),
-            array(
+            ],
+            [
                 time() - 9999,
                 0,
                 false,
-            ),
-            array(
+            ],
+            [
                 time() + 9999,
                 0,
                 false,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
-     *
-     * Mock parser object
+     * Mock parser object.
      */
     protected function getMockParser($name)
     {
         $class = $this->getMockBuilder('Vatsimphp\Parser\\'.$name.'Parser')
             ->setMethods(null)
             ->getMock();
+
         return $class;
     }
 }

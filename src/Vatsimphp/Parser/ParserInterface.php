@@ -22,15 +22,12 @@
 namespace Vatsimphp\Parser;
 
 /**
- *
- * Parser interface
- *
+ * Parser interface.
  */
 interface ParserInterface
 {
     /**
-     *
-     * Parse rawData and populate results on container
+     * Parse rawData and populate results on container.
      */
     public function parseData();
 }
