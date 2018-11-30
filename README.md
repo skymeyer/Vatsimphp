@@ -1,10 +1,9 @@
-# Vatsimphp [![Build Status](https://img.shields.io/travis/skymeyer/Vatsimphp.svg)](https://travis-ci.org/skymeyer/Vatsimphp) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master) [![Code Quality](https://img.shields.io/scrutinizer/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master)
+# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://img.shields.io/travis/skymeyer/Vatsimphp.svg)](https://travis-ci.org/skymeyer/Vatsimphp) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master) [![Code Quality](https://img.shields.io/scrutinizer/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master)
 
-[![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp)
-[![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp)
-[![Dependency Status](https://img.shields.io/versioneye/d/php/skymeyer:vatsimphp.svg)](https://www.versioneye.com/php/skymeyer:vatsimphp/dev-master)
-[![Join the chat at https://gitter.im/skymeyer/Vatsimphp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/skymeyer/Vatsimphp)
 
+<aside class="notice">
+For Vatsimphp v1.x (stable) documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/1.x/README.md).
+</aside>
 
 Vatsimphp collects and parses the publically available statistics
 from the [VATSIM.net](http://www.vatsim.net) network. It provides
@@ -31,15 +30,14 @@ Documentation
 - [Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md)
 - [Browse examples](https://github.com/skymeyer/Vatsimphp/tree/master/examples)
 
-
 About
 =====
 
 Requirements
 ------------
 
-- From PHP 5.3.29 and above
-- PHPUnit 3.7 or higher for test suite execution
+- From PHP 7.1 and above
+- PHPUnit 7.4 or higher for test suite execution
 
 Bugs and feature requests
 -------------------------
