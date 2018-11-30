@@ -191,8 +191,11 @@ class VatsimDataTest extends TestCase
             ->method('get')
             ->with($this->equalTo('general'));
         $data = $this->attachContainer($this->getDataMock(), $container);
-        $data->getIterator('general');
-        $data->general;
+
+        $it1 = $data->getIterator('general');
+        $it2 = $data->general;
+
+        $this->assertSame($it1, $it2);
     }
 
     /**
