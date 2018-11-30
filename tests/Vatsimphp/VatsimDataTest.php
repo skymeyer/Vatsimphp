@@ -190,8 +190,11 @@ class VatsimDataTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->equalTo('general'));
         $data = $this->attachContainer($this->getDataMock(), $container);
-        $data->getIterator('general');
-        $data->general;
+
+        $it1 = $data->getIterator('general');
+        $it2 = $data->general;
+
+        $this->assertSame($it1, $it2);
     }
 
     /**
