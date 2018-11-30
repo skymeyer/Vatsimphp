@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class SectionGeneralFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,14 +35,14 @@ class SectionGeneralFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Filter test.
      *
-     * Filter test
      * @covers Vatsimphp\Filter\SectionGeneralFilter::__construct
      */
     public function testCtor()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\SectionGeneralFilter')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 

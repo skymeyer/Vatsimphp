@@ -21,47 +21,44 @@
 
 namespace Vatsimphp\Log;
 
-use Vatsimphp\Exception\RuntimeException;
-
 /**
- *
- * Logger factory
- *
+ * Logger factory.
  */
 class LoggerFactory
 {
     /**
+     * Key for default logger.
      *
-     * Key for default logger
      * @var unknown_type
      */
     const DEFAULT_LOGGER = '_DEFAULT_';
 
     /**
+     * Logger objects.
      *
-     * Logger objects
      * @var array
      */
-    protected static $loggers = array();
+    protected static $loggers = [];
 
     /**
+     * Log level.
      *
-     * Log level
-     * @var integer
+     * @var int
      */
     public static $level = Logger::DEBUG;
 
     /**
+     * Log file name.
      *
-     * Log file name
      * @var string
      */
     public static $file;
 
     /**
+     * Load logger object.
      *
-     * Load logger object
      * @param string|object $channel
+     *
      * @return \Psr\Log\LoggerInterface
      */
     public static function get($channel)
@@ -79,55 +76,63 @@ class LoggerFactory
             if (self::channelExists(self::DEFAULT_LOGGER)) {
                 self::$loggers[$channel] = self::$loggers[self::DEFAULT_LOGGER];
             } else {
-                $file = empty(self::$file) ? __DIR__ . '/../../../app/logs/vatsimphp.log' : self::$file;
+                $file = empty(self::$file) ? __DIR__.'/../../../app/logs/vatsimphp.log' : self::$file;
                 self::$loggers[$channel] = new Logger($channel, $file, self::$level);
             }
         }
+
         return self::$loggers[$channel];
     }
 
     /**
+     * Register log object for given channel.
      *
-     * Register log object for given channel
-     * @param string $channel
+     * @param string                  $channel
      * @param \Psr\Log\AbstractLogger $logger
      */
     public static function register($channel, \Psr\Log\LoggerInterface $logger)
     {
         self::$loggers[$channel] = $logger;
+
         return $logger;
     }
 
     /**
+     * Deregister log objects (or given channel).
      *
-     * Deregister log objects (or given channel)
      * @param string $channel
-     * @return boolean
+     *
+     * @return bool
      */
     public static function deregister($channel = null)
     {
         if (empty($channel)) {
-            self::$loggers = array();
+            self::$loggers = [];
+
             return true;
         }
         if (isset(self::$loggers[$channel])) {
             unset(self::$loggers[$channel]);
+
             return true;
         }
+
         return false;
     }
 
     /**
+     * Verify if channel exists.
      *
-     * Verify if channel exists
      * @param string $channel
-     * @return boolean
+     *
+     * @return bool
      */
     public static function channelExists($channel)
     {
         if (isset(self::$loggers[$channel])) {
             return true;
         }
+
         return false;
     }
 }

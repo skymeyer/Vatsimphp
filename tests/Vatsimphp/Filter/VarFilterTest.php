@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class VarFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,14 +35,14 @@ class VarFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Filter test.
      *
-     * Filter test
      * @covers Vatsimphp\Filter\VarFilter::setFilter
      */
     public function testFilter()
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\VarFilter')
-            ->setConstructorArgs(array(array()))
+            ->setConstructorArgs([[]])
             ->setMethods(null)
             ->getMock();
 
@@ -51,19 +50,19 @@ class VarFilterTest extends \PHPUnit_Framework_TestCase
 
         $filterProp = new \ReflectionProperty($class, 'filter');
         $filterProp->setAccessible(true);
-        $this->assertEquals("myfilter=", $filterProp->getValue($class));
+        $this->assertEquals('myfilter=', $filterProp->getValue($class));
     }
 
     /**
+     * Iterator test.
      *
-     * Iterator test
      * @dataProvider providerTestIterator
      * @covers Vatsimphp\Filter\VarFilter::current
      */
     public function testIterator($filter, $data, $expectedResult)
     {
         $class = $this->getMockBuilder('Vatsimphp\Filter\VarFilter')
-            ->setConstructorArgs(array($data))
+            ->setConstructorArgs([$data])
             ->setMethods(null)
             ->getMock();
 
@@ -73,29 +72,30 @@ class VarFilterTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestIterator()
     {
-        $data = array(
+        $data = [
             'url0=http://www.pcflyer.net/DataFeed/vatsim-data.txt',
             'url1=http://fsproshop.com/servinfo/vatsim-servers.txt',
             'url0=http://www.klain.net/sidata/vatsim-data.txt     ',
             'metar0=http://metar.vatsim.net/metar.php',
-        );
-        return array(
-            array(
-                'url0', $data, array(
+        ];
+
+        return [
+            [
+                'url0', $data, [
                     0 => 'http://www.pcflyer.net/DataFeed/vatsim-data.txt',
                     2 => 'http://www.klain.net/sidata/vatsim-data.txt',
-                )
-            ),
-            array(
-                'url1', $data, array(
+                ],
+            ],
+            [
+                'url1', $data, [
                     1 => 'http://fsproshop.com/servinfo/vatsim-servers.txt',
-                )
-            ),
-            array(
-                'metar0', $data, array(
+                ],
+            ],
+            [
+                'metar0', $data, [
                     3 => 'http://metar.vatsim.net/metar.php',
-                )
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

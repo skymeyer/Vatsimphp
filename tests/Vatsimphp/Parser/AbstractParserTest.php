@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class AbstractParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,8 +35,8 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test default settings.
      *
-     * Test default settings
      * @covers Vatsimphp\Parser\AbstractParser::__construct
      */
     public function testDefaults()
@@ -59,11 +58,9 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase
         $propLog = new \ReflectionProperty($class, 'results');
         $propLog->setAccessible(true);
         $this->assertInstanceOf('Vatsimphp\Result\ResultContainer', $propLog->getValue($class));
-
     }
 
     /**
-     *
      * @covers Vatsimphp\Parser\AbstractParser::setData
      * @covers Vatsimphp\Parser\AbstractParser::getHash
      * @covers Vatsimphp\Parser\AbstractParser::getRawData
@@ -76,9 +73,9 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass();
 
         $data = 'line1'.PHP_EOL.'line2'.PHP_EOL.'line3';
-        $expectedData = array(
+        $expectedData = [
             'line1', 'line2', 'line3',
-        );
+        ];
         $class->setData($data);
 
         $this->assertEquals(md5($data, false), $class->getHash());
@@ -86,6 +83,5 @@ class AbstractParserTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($class->isValid());
         $this->assertInstanceOf('Vatsimphp\Result\ResultContainer', $class->getParsedData());
         $this->assertCount(0, $class->getParsedData());
-
     }
 }

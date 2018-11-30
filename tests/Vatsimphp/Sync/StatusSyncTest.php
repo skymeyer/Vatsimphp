@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class StatusSyncTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,8 +35,8 @@ class StatusSyncTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test defaults.
      *
-     * Test defaults
      * @covers Vatsimphp\Sync\StatusSync::setDefaults
      */
     public function testSetDefaults()
@@ -45,20 +44,20 @@ class StatusSyncTest extends \PHPUnit_Framework_TestCase
         $class = $this->getMockStatusSync();
         $class->setDefaults();
         $this->assertSame(
-            array('http://status.vatsim.net/status.txt'),
+            ['http://status.vatsim.net/status.txt'],
             $class->getUrls()
         );
     }
 
     /**
-     *
-     * Return mock for StatusSync
+     * Return mock for StatusSync.
      */
     protected function getMockStatusSync()
     {
         $class = $this->getMockBuilder('Vatsimphp\Sync\StatusSync')
             ->setMethods(null)
             ->getMock();
+
         return $class;
     }
 }

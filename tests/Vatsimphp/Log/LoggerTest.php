@@ -40,8 +40,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -52,7 +51,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @covers Vatsimphp\Log\Logger::__construct
      * @covers Vatsimphp\Log\Logger::getHandler
      * @covers Vatsimphp\Log\Logger::getCustomFormatter
@@ -60,7 +58,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     public function testLogger()
     {
         $logger = $this->getMockBuilder('Vatsimphp\Log\Logger')
-            ->setConstructorArgs(array('foo', 'build/tests/file.log', Logger::CRITICAL))
+            ->setConstructorArgs(['foo', 'build/tests/file.log', Logger::CRITICAL])
             ->setMethods(null)
             ->getMock();
         $this->assertEquals('foo', $logger->getName());

@@ -24,8 +24,7 @@ namespace Vatsimphp;
 class MetarParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
-     * Test inheritance
+     * Test inheritance.
      */
     public function testImplements()
     {
@@ -36,8 +35,8 @@ class MetarParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Parse data test.
      *
-     * Parse data test
      * @dataProvider providerTestParseData
      */
     public function testParseData($data, $expectedStatus, $expectedData)
@@ -55,27 +54,28 @@ class MetarParserTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestParseData()
     {
-        $validData1 = "KSFO 071056Z 00000KT 10SM SCT150 15/M01 A2997 RMK AO2 SLP148 T01501006 $";
+        $validData1 = 'KSFO 071056Z 00000KT 10SM SCT150 15/M01 A2997 RMK AO2 SLP148 T01501006 $';
         $validData2 = "\n{$validData1}\n";
-        $invalidData1 = "No METAR available for ZZZZ";
+        $invalidData1 = 'No METAR available for ZZZZ';
         $invalidData2 = "\n{$invalidData1}\n";
-        return array(
-            array($validData1, true, $validData1),
-            array($validData2, true, $validData1),
-            array($invalidData1, false, ''),
-            array($invalidData2, false, ''),
-        );
+
+        return [
+            [$validData1, true, $validData1],
+            [$validData2, true, $validData1],
+            [$invalidData1, false, ''],
+            [$invalidData2, false, ''],
+        ];
     }
 
     /**
-     *
-     * Mock parser object with silent Logger
+     * Mock parser object with silent Logger.
      */
     protected function getMockParser($name)
     {
         $class = $this->getMockBuilder('Vatsimphp\Parser\\'.$name.'Parser')
             ->setMethods(null)
             ->getMock();
+
         return $class;
     }
 }

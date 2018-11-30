@@ -22,35 +22,32 @@
 namespace Vatsimphp\Filter;
 
 /**
- *
  * Filter iterator to retrieve the field header information
- * from a vatsim-data source like:
+ * from a vatsim-data source like:.
  *
  * !CLIENTS section - callsign:cid:realname:...
  *
  * Those data headers are used in the result sets and used
  * by the query functionality.
- *
  */
 class HeaderFilter extends StartOfLineFilter
 {
     /**
-     *
      * @see Vatsimphp\Filter.AbstractFilter::setFilter()
      */
     public function setFilter($section)
     {
         $this->skipComments = false;
-        $this->filter = "; !".strtoupper($section)." section - ";
+        $this->filter = '; !'.strtoupper($section).' section - ';
     }
 
     /**
-     *
      * @see Vatsimphp\Filter.AbstractFilter::current()
      */
     public function current()
     {
         $value = trim(substr(parent::current(), strlen($this->filter)));
+
         return $this->convertToArray($value, ':');
     }
 }

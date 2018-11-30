@@ -22,14 +22,11 @@
 namespace Vatsimphp\Filter;
 
 /**
- *
- * Iterator without applying filtering
- *
+ * Iterator without applying filtering.
  */
 class Iterator extends AbstractFilter
 {
     /**
-     *
      * @see Vatsimphp\Filter.AbstractFilter::__construct()
      */
     public function __construct($iterator)
@@ -39,7 +36,6 @@ class Iterator extends AbstractFilter
     }
 
     /**
-     *
      * @see Vatsimphp\Filter.FilterInterface::applyFilter()
      */
     public function applyFilter()

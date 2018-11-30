@@ -21,16 +21,16 @@
 
 namespace Vatsimphp;
 
-use Vatsimphp\Result\ResultContainer;
 use Vatsimphp\Filter\Iterator;
+use Vatsimphp\Result\ResultContainer;
 
 class ResultContainerTest extends \PHPUnit_Framework_TestCase
 {
     protected $resultClass = 'Vatsimphp\Filter\Iterator';
 
     /**
+     * Empty/countable interface.
      *
-     * Empty/countable interface
      * @covers Vatsimphp\Result\ResultContainer::__construct
      * @covers Vatsimphp\Result\ResultContainer::count
      */
@@ -41,8 +41,8 @@ class ResultContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Access non-existing results.
      *
-     * Access non-existing results
      * @covers Vatsimphp\Result\ResultContainer::get
      * @covers Vatsimphp\Result\ResultContainer::__get
      */
@@ -54,8 +54,8 @@ class ResultContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Append/overwrite test results.
      *
-     * Append/overwrite test results
      * @dataProvider providerTestAppendArray
      * @covers Vatsimphp\Result\ResultContainer::get
      * @covers Vatsimphp\Result\ResultContainer::__get
@@ -79,29 +79,30 @@ class ResultContainerTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestAppendArray()
     {
-        return array(
-            array(
+        return [
+            [
                 'test1',
-                array('column1' => 'value1'),
+                ['column1' => 'value1'],
                 'test2',
-                new Iterator(array('column2' => 'value2')),
+                new Iterator(['column2' => 'value2']),
                 2,
-                array('test1', 'test2'),
-            ),
-            array(
+                ['test1', 'test2'],
+            ],
+            [
                 'test3',
-                array('column3' => 'value3'),
+                ['column3' => 'value3'],
                 'test3',
-                array('column3' => 'value3'),
+                ['column3' => 'value3'],
                 1,
-                array('test3'),
-            ),
+                ['test3'],
+            ],
 
-        );
+        ];
     }
 
     /**
-     * Test serach interface
+     * Test serach interface.
+     *
      * @dataProvider providerTestSearch
      * @covers Vatsimphp\Result\ResultContainer::search
      */
@@ -116,77 +117,77 @@ class ResultContainerTest extends \PHPUnit_Framework_TestCase
         $resultIterator = $class->search('test', $query);
         $this->assertInstanceOf('Vatsimphp\Filter\Iterator', $resultIterator);
         $this->assertEquals($expectedResult, $resultIterator->toArray());
-
     }
 
     public function providerTestSearch()
     {
         // default test header/data
-        $header =  array('cid', 'callsign', 'realname');
-        $data = array(
-            array(
-                'cid' => '123456',
+        $header = ['cid', 'callsign', 'realname'];
+        $data = [
+            [
+                'cid'      => '123456',
                 'callsign' => 'SWA3437',
-                'realname' => 'Jelle Vink - KSJC'
-            ),
-            array(
-                'cid' => '7890',
+                'realname' => 'Jelle Vink - KSJC',
+            ],
+            [
+                'cid'      => '7890',
                 'callsign' => 'AAL123',
-                'realname' => 'Foo Vink - EBBR'
-            ),
-        );
+                'realname' => 'Foo Vink - EBBR',
+            ],
+        ];
 
-        return array(
+        return [
             // full field match
-            array(
+            [
                 $header,
                 $data,
-                array('cid' => '123456'),
-                array(
-                    array(
-                        'cid' => '123456',
+                ['cid' => '123456'],
+                [
+                    [
+                        'cid'      => '123456',
                         'callsign' => 'SWA3437',
-                        'realname' => 'Jelle Vink - KSJC'
-                    ),
-                ),
-            ),
+                        'realname' => 'Jelle Vink - KSJC',
+                    ],
+                ],
+            ],
             // partial field match
-            array(
+            [
                 $header,
                 $data,
-                array('realname' => 'Vink'),
-                array(
-                    array(
-                        'cid' => '123456',
+                ['realname' => 'Vink'],
+                [
+                    [
+                        'cid'      => '123456',
                         'callsign' => 'SWA3437',
-                        'realname' => 'Jelle Vink - KSJC'
-                    ),
-                    array(
-                        'cid' => '7890',
+                        'realname' => 'Jelle Vink - KSJC',
+                    ],
+                    [
+                        'cid'      => '7890',
                         'callsign' => 'AAL123',
-                        'realname' => 'Foo Vink - EBBR'
-                    ),
-                ),
-            ),
+                        'realname' => 'Foo Vink - EBBR',
+                    ],
+                ],
+            ],
             // no field match
-            array(
+            [
                 $header,
                 $data,
-                array('realname' => 'NotExist'),
-                array(),
-            ),
+                ['realname' => 'NotExist'],
+                [],
+            ],
             // invalid column
-            array(
+            [
                 $header,
                 $data,
-                array('notexist' => '345'),
-                array(),
-            ),
-        );
+                ['notexist' => '345'],
+                [],
+            ],
+        ];
     }
 
     /**
-     * Test if an object is searchable - needs matching _header object
+     * Test if an object is searchable - needs matching _header object.
+     *
      * @dataProvider providerTestIsSearchable
      * @covers Vatsimphp\Result\ResultContainer::isSearchable
      */
@@ -212,9 +213,9 @@ class ResultContainerTest extends \PHPUnit_Framework_TestCase
 
     public function providerTestIsSearchable()
     {
-        return array(
-            array(array('col1', 'col2'), array('data1', 'data2')),
-            array(false, array('data1', 'data2')),
-        );
+        return [
+            [['col1', 'col2'], ['data1', 'data2']],
+            [false, ['data1', 'data2']],
+        ];
     }
 }

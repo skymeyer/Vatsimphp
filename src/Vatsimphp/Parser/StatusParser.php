@@ -24,27 +24,24 @@ namespace Vatsimphp\Parser;
 use Vatsimphp\Filter\VarFilter;
 
 /**
- *
  * Parser for status.txt:
- * Contains all published urls from the VATSIM network to gather info
- *
+ * Contains all published urls from the VATSIM network to gather info.
  */
 class StatusParser extends AbstractParser
 {
     /**
+     * Possible published url endpoints.
      *
-     * Possible published url endpoints
      * @var array
      */
-    protected $endpoints = array(
-        'url0' => 'dataUrls',
-        'url1' => 'serverUrls',
+    protected $endpoints = [
+        'url0'   => 'dataUrls',
+        'url1'   => 'serverUrls',
         'metar0' => 'metarUrls',
-        'atis0' => 'atisUrls',
-    );
+        'atis0'  => 'atisUrls',
+    ];
 
     /**
-     *
      * @see Vatsimphp\Parser.ParserInterface::parseData()
      */
     public function parseData()
@@ -58,7 +55,7 @@ class StatusParser extends AbstractParser
 
         // validate info if at least one dataUrl is present
         if (count($this->results->get('dataUrls')->toArray())) {
-            $this->log->debug("Data validated - dataUrls available");
+            $this->log->debug('Data validated - dataUrls available');
             $this->valid = true;
         }
     }

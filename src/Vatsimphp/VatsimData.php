@@ -21,17 +21,15 @@
 
 namespace Vatsimphp;
 
-use Vatsimphp\Sync\StatusSync;
-use Vatsimphp\Sync\DataSync;
-use Vatsimphp\Sync\MetarSync;
 use Vatsimphp\Log\Logger;
 use Vatsimphp\Log\LoggerFactory;
+use Vatsimphp\Sync\DataSync;
+use Vatsimphp\Sync\MetarSync;
+use Vatsimphp\Sync\StatusSync;
 
 /**
- *
  * Main consumer class to retrieve and
- * query data from the VATSIM network
- *
+ * query data from the VATSIM network.
  */
 class VatsimData
 {
@@ -49,78 +47,76 @@ class VatsimData
     const CLIENT_TYPE_ATC = 'ATC';
 
     /**
+     * Default configuration.
      *
-     * Default configuration
      * @var array
      */
-    protected $config = array(
+    protected $config = [
 
         // log settings
-        'logFile' => '',
+        'logFile'  => '',
         'logLevel' => Logger::DEBUG,
 
         // cache settings
-        'cacheDir' => '',
+        'cacheDir'  => '',
         'cacheOnly' => false,
 
         // vatsim status file
-        'statusUrl' => '',
+        'statusUrl'     => '',
         'statusRefresh' => 86400,
 
         // vatsim data file
-        'dataRefresh' => 180,
-        'dataExpire' => 3600,
+        'dataRefresh'      => 180,
+        'dataExpire'       => 3600,
         'forceDataRefresh' => false,
 
         // metar settings
-        'metarRefresh' => 600,
+        'metarRefresh'      => 600,
         'forceMetarRefresh' => false,
-    );
+    ];
 
     /**
+     * Result iterator.
      *
-     * Result iterator
      * @var \Vatsimphp\Result\ResultContainer
      */
     protected $results;
 
     /**
+     * Exception stack.
      *
-     * Exception stack
      * @var array
      */
-    protected $exceptionStack = array();
+    protected $exceptionStack = [];
 
     /**
+     * Status Sync object.
      *
-     * Status Sync object
      * @var \Vatsimphp\Sync\StatusSync
      */
     protected $statusSync;
 
     /**
+     * Metar Sync object.
      *
-     * Metar Sync object
      * @var \Vatsimphp\Sync\MetarSync
      */
     protected $metarSync;
 
     /**
-     *
-     * Constructor - default log and cache path
+     * Constructor - default log and cache path.
      */
     public function __construct()
     {
-        $this->setConfig('logFile', __DIR__ . '/../../app/logs/vatsimphp.log');
-        $this->setConfig('cacheDir', __DIR__ . '/../../app/cache');
+        $this->setConfig('logFile', __DIR__.'/../../app/logs/vatsimphp.log');
+        $this->setConfig('cacheDir', __DIR__.'/../../app/cache');
     }
-
 
     /*** EASY API ***/
 
     /**
+     * General section from vatsim-data.txt.
      *
-     * General section from vatsim-data.txt
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getGeneralInfo()
@@ -129,28 +125,28 @@ class VatsimData
     }
 
     /**
+     * Return all online pilots.
      *
-     * Return all online pilots
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getPilots()
     {
-        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_TYPE => self::CLIENT_TYPE_PILOT));
+        return $this->search(self::OBJ_CLIENT, [self::HEADER_CLIENT_TYPE => self::CLIENT_TYPE_PILOT]);
     }
 
     /**
+     * Return all online controllers.
      *
-     * Return all online controllers
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getControllers()
     {
-        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_TYPE => self::CLIENT_TYPE_ATC));
+        return $this->search(self::OBJ_CLIENT, [self::HEADER_CLIENT_TYPE => self::CLIENT_TYPE_ATC]);
     }
 
     /**
+     * Return all online clients (pilots + controllers).
      *
-     * Return all online clients (pilots + controllers)
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getClients()
@@ -159,8 +155,8 @@ class VatsimData
     }
 
     /**
+     * Return current server list.
      *
-     * Return current server list
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getServers()
@@ -169,8 +165,8 @@ class VatsimData
     }
 
     /**
+     * Return current voice server list.
      *
-     * Return current voice server list
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getVoiceServers()
@@ -179,8 +175,8 @@ class VatsimData
     }
 
     /**
+     * Return all prefile entries.
      *
-     * Return all prefile entries
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getPrefile()
@@ -189,31 +185,34 @@ class VatsimData
     }
 
     /**
+     * Search for a callsign.
      *
-     * Search for a callsign
      * @param string $callsign
+     *
      * @return \Vatsimphp\Filter\Iterator
      */
     public function searchCallsign($callsign)
     {
-        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_CALLSIGN => $callsign));
+        return $this->search(self::OBJ_CLIENT, [self::HEADER_CLIENT_CALLSIGN => $callsign]);
     }
 
     /**
+     * Search for given vatsim ID.
      *
-     * Search for given vatsim ID
      * @param string $cid
+     *
      * @return \Vatsimphp\Filter\Iterator
      */
     public function searchVatsimId($cid)
     {
-        return $this->search(self::OBJ_CLIENT, array(self::HEADER_CLIENT_CID => $cid));
+        return $this->search(self::OBJ_CLIENT, [self::HEADER_CLIENT_CID => $cid]);
     }
 
     /**
+     * Get METAR.
      *
-     * Get METAR
      * @param string $icao
+     *
      * @return string
      */
     public function getMetar($icao)
@@ -221,16 +220,16 @@ class VatsimData
         if ($this->loadMetar($icao)) {
             $metar = $this->getArray('metar');
         }
+
         return (empty($metar)) ? '' : array_shift($metar);
     }
-
 
     /*** ADVANCED API ***/
 
     /**
+     * Load data from Vatsim network.
      *
-     * Load data from Vatsim network
-     * @return boolean
+     * @return bool
      */
     public function loadData()
     {
@@ -252,19 +251,21 @@ class VatsimData
             }
 
             $this->results = $data->loadData();
-
         } catch (\Exception $e) {
             $this->exceptionStack[] = $e;
+
             return false;
         }
+
         return true;
     }
 
     /**
+     * Load METAR data for given airport.
      *
-     * Load METAR data for given airport
      * @param string $icao
-     * @return boolean
+     *
+     * @return bool
      */
     public function loadMetar($icao)
     {
@@ -274,16 +275,18 @@ class VatsimData
             $this->results = $metar->loadData();
         } catch (\Exception $e) {
             $this->exceptionStack[] = $e;
+
             return false;
         }
+
         return true;
     }
 
     /**
+     * Expose search on result container.
      *
-     * Expose search on result container
      * @param string $objectType
-     * @param array $query
+     * @param array  $query
      */
     public function search($objectType, $query)
     {
@@ -291,8 +294,8 @@ class VatsimData
     }
 
     /**
+     * Wrapper returning available data objects.
      *
-     * Wrapper returning available data objects
      * @return array
      */
     public function getObjectTypes()
@@ -301,9 +304,10 @@ class VatsimData
     }
 
     /**
+     * Overload method to access data objects directly.
      *
-     * Overload method to access data objects directly
      * @param string $objectType
+     *
      * @return \Vatsimphp\Filter\Iterator
      */
     public function __get($objectType)
@@ -312,9 +316,10 @@ class VatsimData
     }
 
     /**
+     * Access data object.
      *
-     * Access data object
      * @param string $objectType
+     *
      * @return array
      */
     public function getArray($objectType)
@@ -323,9 +328,10 @@ class VatsimData
     }
 
     /**
+     * Access data object.
      *
-     * Access data object
      * @param string $objectType
+     *
      * @return \Vatsimphp\Filter\Iterator
      */
     public function getIterator($objectType)
@@ -334,8 +340,8 @@ class VatsimData
     }
 
     /**
+     * Return exception stack.
      *
-     * Return exception stack
      * @return array
      */
     public function getExceptionStack()
@@ -344,10 +350,10 @@ class VatsimData
     }
 
     /**
+     * Override default config settings.
      *
-     * Override default config settings
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function setConfig($key, $value)
     {
@@ -357,9 +363,10 @@ class VatsimData
     }
 
     /**
+     * Return config key.
      *
-     * Return config key
      * @param string $key
+     *
      * @return mixed
      */
     public function getConfig($key = null)
@@ -372,17 +379,16 @@ class VatsimData
         }
     }
 
-
     /*** INTERNAL METHODS ***/
 
     /**
+     * Prepare StatusSync object for reusage.
      *
-     * Prepare StatusSync object for reusage
      * @return StatusSync
      */
     protected function prepareSync()
     {
-        if (! empty($this->statusSync)) {
+        if (!empty($this->statusSync)) {
             return $this->statusSync;
         }
         LoggerFactory::$file = $this->config['logFile'];
@@ -394,17 +400,18 @@ class VatsimData
         if (!empty($this->config['statusUrl'])) {
             $this->statusSync->registerUrl($this->config['statusUrl'], true);
         }
+
         return $this->statusSync;
     }
 
     /**
+     * Prepare MetarSync object for reusage.
      *
-     * Prepare MetarSync object for reusage
      * @return MetarSync
      */
     protected function prepareMetarSync()
     {
-        if (! empty($this->metarSync)) {
+        if (!empty($this->metarSync)) {
             return $this->metarSync;
         }
         LoggerFactory::$file = $this->config['logFile'];
@@ -416,6 +423,7 @@ class VatsimData
         $this->metarSync->refreshInterval = $this->config['metarRefresh'];
         $this->metarSync->forceRefresh = $this->config['forceMetarRefresh'];
         $this->metarSync->registerUrlFromStatus($this->prepareSync(), 'metarUrls');
+
         return $this->metarSync;
     }
 

@@ -22,14 +22,11 @@
 namespace Vatsimphp\Sync;
 
 /**
- *
- * Load available data endpoints from VATSIM
- *
+ * Load available data endpoints from VATSIM.
  */
 class StatusSync extends AbstractSync
 {
     /**
-     *
      * @see Vatsimphp\Sync.SyncInterface::setDefaults()
      */
     public function setDefaults()
