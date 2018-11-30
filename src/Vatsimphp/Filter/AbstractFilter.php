@@ -21,12 +21,15 @@
 
 namespace Vatsimphp\Filter;
 
+use FilterIterator;
+use Countable;
+
 /**
  *
  * Abstract filter class based on SPL FilterIterator
  *
  */
-abstract class AbstractFilter extends \FilterIterator implements FilterInterface, \Countable
+abstract class AbstractFilter extends FilterIterator implements FilterInterface, Countable
 {
     /**
      *

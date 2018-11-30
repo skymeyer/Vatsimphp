@@ -21,8 +21,15 @@
 
 namespace Vatsimphp;
 
+use Vatsimphp\Log\LoggerFactory;
+
 class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    protected function tearDown()
+    {
+        LoggerFactory::deregister();
+    }
+
     /**
      *
      * Base factory test using built-in logger
@@ -32,24 +39,17 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testBaseFactory($channel, $expectedPrefix)
     {
-        $factory = $this->getMockFactory();
-        $logger = $factory::get($channel);
+        $logger = LoggerFactory::get($channel);
         $this->assertInstanceOf('Vatsimphp\Log\Logger', $logger);
-        $this->assertTrue($factory::channelExists($expectedPrefix));
+        $this->assertTrue(LoggerFactory::channelExists($expectedPrefix));
     }
 
     public function providerTestBaseFactory()
     {
-        $class1 = new \stdClass();
-        $class2 = $this->getMockBuilder('Vatsimphp\Filter\Iterator')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         return array(
             array('', ''),
             array('channel1', 'channel1'),
-            array($class1, 'stdClass'),
-            array($class2, get_class($class2)),
+            array(new \stdClass(), 'stdClass'),
         );
     }
 
@@ -60,8 +60,7 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testChannelNotExists()
     {
-        $factory = $this->getMockFactory();
-        $this->assertFalse($factory::channelExists('bogus'));
+        $this->assertFalse(LoggerFactory::channelExists('bogus'));
     }
 
     /**
@@ -73,12 +72,10 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterDeregister($channel, $logger)
     {
-        $factory = $this->getMockFactory();
-
-        $factory::register($channel, $logger);
-        $this->assertTrue($factory::channelExists($channel));
-        $factory::deregister($channel);
-        $this->assertFalse($factory::channelExists($channel));
+        LoggerFactory::register($channel, $logger);
+        $this->assertTrue(LoggerFactory::channelExists($channel));
+        LoggerFactory::deregister($channel);
+        $this->assertFalse(LoggerFactory::channelExists($channel));
     }
 
     public function providerTestRegisterChannel()
@@ -98,16 +95,15 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterCustomDefault($class)
     {
-        $factory = $this->getMockFactory();
-        $factory::deregister();
+        LoggerFactory::deregister();
 
-        $this->assertFalse($factory::channelExists($factory::DEFAULT_LOGGER));
+        $this->assertFalse(LoggerFactory::channelExists(LoggerFactory::DEFAULT_LOGGER));
         $default = $this->getMockLog($class);
 
-        $factory::register($factory::DEFAULT_LOGGER, $default);
-        $this->assertTrue($factory::channelExists($factory::DEFAULT_LOGGER));
+        LoggerFactory::register(LoggerFactory::DEFAULT_LOGGER, $default);
+        $this->assertTrue(LoggerFactory::channelExists(LoggerFactory::DEFAULT_LOGGER));
 
-        $new = $factory::get('new');
+        $new = LoggerFactory::get('new');
         $this->assertInstanceOf($class, $new);
     }
 
@@ -126,8 +122,7 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeregisterAll()
     {
-        $factory = $this->getMockFactory();
-        $this->assertTrue($factory::deregister());
+        $this->assertTrue(LoggerFactory::deregister());
     }
 
     /**
@@ -137,21 +132,9 @@ class LoggerFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeregiserNonExisting()
     {
-        $factory = $this->getMockFactory();
-        $this->assertFalse($factory::deregister('bogus'));
+        $this->assertFalse(LoggerFactory::deregister('bogus'));
     }
 
-    /**
-     *
-     * Return mocked factory
-     * @return \Vatsimphp\Log\LoggerFactory
-     */
-    protected function getMockFactory()
-    {
-        return $this->getMockBuilder('Vatsimphp\Log\LoggerFactory')
-            ->setMethods(null)
-            ->getMock();
-    }
     /**
      *
      * Return mocked logger object
