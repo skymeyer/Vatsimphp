@@ -417,9 +417,7 @@ A few notes when doing this:
 
 ## Getting in touch
 
-Did you spot a bug ? Do you want a new feature to be added ? You can use our [issues page](https://github.com/skymeyer/Vatsimphp/issues?state=open) to report whatever you would like. This will be our primary channel of communication. 
-
-There is also a [HipChat room](https://www.hipchat.com/gcbN8D1yF) where you can find us - however no warranties given on "online support" :-) Feel free to let us know if you are using vatsimphp or are interested to contribute to this project.
+Did you spot a bug ? Do you want a new feature to be added ? You can use our [issues page](https://github.com/skymeyer/Vatsimphp/issues?state=open) to report whatever you would like. This will be our primary channel of communication.
 
 ## Final words
 

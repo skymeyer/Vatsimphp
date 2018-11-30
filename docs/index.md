@@ -6,7 +6,7 @@ Vatsimphp Documentation
 Assuming you have already installed composer, run:
 
 ``` bash
-$ composer require skymeyer/vatsimphp 1.0.*
+$ composer require skymeyer/vatsimphp ^1.0
 ```
 
 Or add vatsimphp manually to your composer.json of your current project:
@@ -14,7 +14,7 @@ Or add vatsimphp manually to your composer.json of your current project:
 ``` json
 {
     "require": {
-        "skymeyer/vatsimphp": "1.0.*"
+        "skymeyer/vatsimphp": "^1.0"
     }
 }
 ```
@@ -35,11 +35,3 @@ The *easy API* is mostly covered in the above tutorial. For a reference checkout
 ## Advanced usage
 
 - [Custom logger example](https://github.com/skymeyer/Vatsimphp/blob/master/examples/custom_logger.php)
-- [Custom url mangler - coming for v1.1.0]()
-
-
-## Additional resources
-
-- [API documentation](http://vatsimphp.skymeyer.be/api/index.html)
-
-
