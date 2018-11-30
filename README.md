@@ -1,4 +1,4 @@
-# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://img.shields.io/travis/skymeyer/Vatsimphp.svg)](https://travis-ci.org/skymeyer/Vatsimphp) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master) [![Code Quality](https://img.shields.io/scrutinizer/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=master)
+# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://img.shields.io/travis/skymeyer/Vatsimphp.svg)](https://travis-ci.org/skymeyer/Vatsimphp) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=1.x) [![Code Quality](https://img.shields.io/scrutinizer/g/skymeyer/Vatsimphp.svg)](https://scrutinizer-ci.com/g/skymeyer/Vatsimphp/?branch=1.x)
 
 
 Vatsimphp collects and parses the publically available statistics
@@ -23,8 +23,8 @@ backend of your choice.
 Documentation
 -------------
 
-- [Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md)
-- [Browse examples](https://github.com/skymeyer/Vatsimphp/tree/master/examples)
+- [Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/1.x/docs/index.md)
+- [Browse examples](https://github.com/skymeyer/Vatsimphp/tree/1.x/examples)
 
 
 About
@@ -44,7 +44,7 @@ Bugs and feature request can be filed on the [issues](https://github.com/skymeye
 Contributing
 ------------
 
-Contributions are welcome in respect of the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+Contributions are welcome in respect of the [PSR-2](https://github.com/php-fig/fig-standards/blob/1.x/accepted/PSR-2-coding-style-guide.md)
 coding style and unit test coverage.
 
 Changelog

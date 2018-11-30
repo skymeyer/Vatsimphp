@@ -1,6 +1,6 @@
 # Vatsimphp newbie tutorial
 
-This tutorial will show you how to easily create an HTML page showing online pilots from the VATSIM network. The vatsimphp library has much more functionality than described in this tutorial. For full details consult our [documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md).
+This tutorial will show you how to easily create an HTML page showing online pilots from the VATSIM network. The vatsimphp library has much more functionality than described in this tutorial. For full details consult our [documentation](https://github.com/skymeyer/Vatsimphp/blob/1.x/docs/index.md).
 
 I tried to make this tutorial as easy as possible as not everybody is a hard core PHP coder and system administrator. The main target audience for this tutorial are novice users.
 
@@ -323,7 +323,7 @@ To make life easy, we have provided what we call our *easy API* calls. These are
 > * searchVatsimId
 > * getMetar
 >
->Please consult the following [examples](https://github.com/skymeyer/Vatsimphp/blob/master/examples/easy_api_examples.php) for the *easy API* calls. 
+>Please consult the following [examples](https://github.com/skymeyer/Vatsimphp/blob/1.x/examples/easy_api_examples.php) for the *easy API* calls.
 
 If you are not familiar with *iterators* you can always convert them into
 normal array by call *toArray()* on them. However I do not see a real reason in doing
@@ -341,7 +341,7 @@ var_dump($vatsim->getGeneralInfo()->toArray());
 
 ## Advanced calls
 
-There are more public methods available on the VatsimData object, but these are out of scope of this tutorial. Consult our [documentation page](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md) for more information.
+There are more public methods available on the VatsimData object, but these are out of scope of this tutorial. Consult our [documentation page](https://github.com/skymeyer/Vatsimphp/blob/1.x/docs/index.md) for more information.
 
 > List of other public API methods:
 > * search
