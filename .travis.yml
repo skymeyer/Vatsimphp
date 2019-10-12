@@ -7,7 +7,6 @@ language: php
 
 php:
   - 5.6
-  - hhvm
   - 7.0
   - 7.1
   - 7.2
@@ -28,10 +27,6 @@ script:
   - mkdir -p build/logs
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - make test-examples
-
-after_success:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
 notifications:
   email: false
