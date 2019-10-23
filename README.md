@@ -1,4 +1,4 @@
-# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://img.shields.io/travis/skymeyer/Vatsimphp.svg)](https://travis-ci.org/skymeyer/Vatsimphp)
+# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.com/skymeyer/Vatsimphp.svg?branch=master)](https://travis-ci.com/skymeyer/Vatsimphp)
 
 
 **For Vatsimphp v1.x (stable) documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/1.x/README.md).**
