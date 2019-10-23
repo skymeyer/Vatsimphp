@@ -1,4 +1,4 @@
-# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://img.shields.io/travis/skymeyer/Vatsimphp.svg)](https://travis-ci.org/skymeyer/Vatsimphp)
+# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.com/skymeyer/Vatsimphp.svg?branch=1.x)](https://travis-ci.com/skymeyer/Vatsimphp)
 
 
 Vatsimphp collects and parses the publically available statistics
