@@ -1,14 +1,18 @@
-**This is a development branch. For Vatsimphp v1.x (stable) documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/1.x/README.md).**
-
 Vatsimphp Documentation
 =======================
+
+## Requirements
+
+Vatsimphp requires PHP 7.2 or above. If you are running an older PHP version you can use Vatsimphp `^1.0` instead.
+However we highly recommend you upgrade your PHP environment to a [support PHP version](https://www.php.net/supported-versions.php).
+Vatsimphp will note make any bug fixes related to the usage of an unsupported PHP version.
 
 ## Installation
 
 Assuming you have already installed composer, run:
 
 ``` bash
-$ composer require skymeyer/vatsimphp dev-master
+$ composer require skymeyer/vatsimphp ^2.0
 ```
 
 Or add vatsimphp manually to your composer.json of your current project:
@@ -16,7 +20,7 @@ Or add vatsimphp manually to your composer.json of your current project:
 ``` json
 {
     "require": {
-        "skymeyer/vatsimphp": "dev-master"
+        "skymeyer/vatsimphp": "^2.0"
     }
 }
 ```
