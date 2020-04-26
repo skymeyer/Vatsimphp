@@ -1,5 +1,6 @@
 # Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.com/skymeyer/Vatsimphp.svg?branch=1.x)](https://travis-ci.com/skymeyer/Vatsimphp)
 
+**For Vatsimphp v2.x documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/master/README.md).**
 
 Vatsimphp collects and parses the publically available statistics
 from the [VATSIM.net](http://www.vatsim.net) network. It provides

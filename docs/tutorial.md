@@ -1,3 +1,5 @@
+**For Vatsimphp v2.x documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/master/README.md).**
+
 # Vatsimphp newbie tutorial
 
 This tutorial will show you how to easily create an HTML page showing online pilots from the VATSIM network. The vatsimphp library has much more functionality than described in this tutorial. For full details consult our [documentation](https://github.com/skymeyer/Vatsimphp/blob/1.x/docs/index.md).

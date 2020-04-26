@@ -1,3 +1,5 @@
+**For Vatsimphp v2.x documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/master/README.md).**
+
 Vatsimphp Documentation
 =======================
 

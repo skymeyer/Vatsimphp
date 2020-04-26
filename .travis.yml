@@ -1,6 +1,5 @@
 branches:
   only:
-    - master
     - 1.x
 
 language: php
@@ -11,16 +10,13 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - nightly
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: nightly
 
 before_script:
   - composer self-update
-  - composer install --dev --prefer-source
+  - composer install --prefer-dist
 
 script:
   - mkdir -p build/logs

@@ -1,24 +1,32 @@
-SHELL := /bin/bash
 
-.PHONY: all
-all: install test test-examples
+all: update test test-examples
 
-.PHONY: install
-install:
-	composer install
+update:
+	composer update
 
-.PHONY: test
 test:
 	vendor/bin/phpunit
 
-.PHONY: test-examples
 test-examples:
-	rm -rf app/cache/*.txt
-	rm -rf app/logs/*.log
-	cd examples && php easy_api_examples.php
-	test -f app/cache/status.txt
-	test -f app/cache/vatsim-data.txt
-	test -f app/cache/metar-KSFO.txt
-	test -f app/logs/vatsimphp.log
-	cd examples && php custom_logger.php
-	test -f app/logs/vatsimphp_custom.log
+	build/run.sh test-examples
+
+docker-all: docker-update docker-test docker-test-examples
+
+docker-update:
+	build/run.sh docker::composer update
+
+docker-test:
+	export PHP_VERSION=7.2 && build/run.sh docker::run vendor/bin/phpunit
+	export PHP_VERSION=7.3 && build/run.sh docker::run vendor/bin/phpunit
+	export PHP_VERSION=7.4 && build/run.sh docker::run vendor/bin/phpunit
+
+docker-test-examples:
+	export PHP_VERSION=7.2 && build/run.sh docker::run build/run.sh test-examples keep
+	export PHP_VERSION=7.3 && build/run.sh docker::run build/run.sh test-examples keep
+	export PHP_VERSION=7.4 && build/run.sh docker::run build/run.sh test-examples keep
+
+docker-shell:
+	build/run.sh docker::run /bin/bash
+
+.PHONY: all update test test-examples
+.PHONY: docker-all docker-update docker-test docker-test-examples docker-shell
