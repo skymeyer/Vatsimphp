@@ -1,3 +1,5 @@
+**This is a development branch. For Vatsimphp v1.x (stable) documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/1.x/README.md).**
+
 Vatsimphp Documentation
 =======================
 
@@ -6,7 +8,7 @@ Vatsimphp Documentation
 Assuming you have already installed composer, run:
 
 ``` bash
-$ composer require skymeyer/vatsimphp ^1.0
+$ composer require skymeyer/vatsimphp dev-master
 ```
 
 Or add vatsimphp manually to your composer.json of your current project:
@@ -14,7 +16,7 @@ Or add vatsimphp manually to your composer.json of your current project:
 ``` json
 {
     "require": {
-        "skymeyer/vatsimphp": "^1.0"
+        "skymeyer/vatsimphp": "dev-master"
     }
 }
 ```
