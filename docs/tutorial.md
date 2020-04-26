@@ -1,3 +1,5 @@
+**This is a development branch. For Vatsimphp v1.x (stable) documentation, [go here](https://github.com/skymeyer/Vatsimphp/blob/1.x/README.md).**
+
 # Vatsimphp newbie tutorial
 
 This tutorial will show you how to easily create an HTML page showing online pilots from the VATSIM network. The vatsimphp library has much more functionality than described in this tutorial. For full details consult our [documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md).
@@ -6,9 +8,9 @@ I tried to make this tutorial as easy as possible as not everybody is a hard cor
 
 ## Prerequisites
 
-This tutorial assumes you have base knowledge of PHP and have a web server available with at least PHP 5.3 available. A database is optional. All examples are based on Linux, but can be easily interpretted for on a Windows environment too. This tutorial will not explain how to setup and manage a LAMP or WAMP stack. It speaks for itself that an Internet connection is also required.
+This tutorial assumes you have base knowledge of PHP and have a web server available with at least PHP 7.2 available. A database is optional. All examples are based on Linux, but can be easily interpretted for on a Windows environment too. This tutorial will not explain how to setup and manage a LAMP or WAMP stack. It speaks for itself that an Internet connection is also required.
 
-> Make sure you have a PHP 5.3+ environment available on your local machine. I have not
+> Make sure you have a PHP 7.2 environment available on your local machine. I have not
 > performed any tests yet on a Windows environment. If you find a problem, please use the [issues page](https://github.com/skymeyer/Vatsimphp/issues?state=open) to file a bug and
 > we will address it as soon as possible.
 
@@ -73,7 +75,7 @@ We are not going into details on the different functionalities of *composer* and
 
 ```bash
 $ cd /home/batman/demo
-$ composer require skymeyer/vatsimphp 1.0.*
+$ composer require skymeyer/vatsimphp dev-master
 ...
 Writing lock file
 Generating autoload files
@@ -409,7 +411,7 @@ Once your the VATSIM data is available in the database, you can use plain SQL co
 Once you have create your code it's time to upload everything to a web server. You can zip everything up from you working directory (in my case */home/batman/demo*) and upload it to it's final destination.
 
 A few notes when doing this:
-* Make sure your web server has PHP 5.3+ installed
+* Make sure your web server has PHP 7.2 or higher installed
 * Make sure you zip *ALL* files, including the vendor directory (the composer.json and composer.lock file are not required)
 * Enable the cron job properly
 * Make sure your cache directory is writable (*vendor/skymeyer/vatsimphp/app/cache*)
