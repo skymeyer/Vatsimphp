@@ -62,6 +62,6 @@ class LoggerTest extends TestCase
             ->setMethods(null)
             ->getMock();
         $this->assertEquals('foo', $logger->getName());
-        $this->assertTrue($logger->critical('logthis'));
+        $this->assertNull($logger->critical('logthis'));
     }
 }
