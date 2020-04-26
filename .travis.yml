@@ -1,7 +1,6 @@
 branches:
   only:
     - master
-    - 1.x
 
 language: php
 
@@ -18,7 +17,7 @@ matrix:
 
 before_script:
   - composer self-update
-  - composer install --dev --prefer-source
+  - composer install --prefer-dist
 
 script:
   - mkdir -p build/logs

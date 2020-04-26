@@ -27,7 +27,7 @@ use Monolog\Logger;
 use Vatsimphp\Log\LoggerFactory;
 use Vatsimphp\VatsimData;
 
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 // Create custom logger based on Monolog (note: every PSR-3 compliant logger will work)
 // see https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md

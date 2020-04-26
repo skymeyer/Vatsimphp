@@ -1,4 +1,4 @@
-build
+build/tests
 vendor
 .idea
 coverage
