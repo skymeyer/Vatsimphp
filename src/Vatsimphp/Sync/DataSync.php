@@ -39,9 +39,12 @@ class DataSync extends BaseSync
      */
     public function setDefaults()
     {
-        $this->setParser('Data');
-        $this->cacheFile = 'vatsim-data.txt';
-        $this->refreshInterval = 180;
+        $this->setParser('DataV3Compat');
+        $this->cacheFile = 'vatsim-data.json';
+        // As per https://forums.vatsim.net/blogs/entry/1-vatsim-tech-blog-q4-2020/
+        // Updated more frequently (at present, a minute but we are looking to
+        // bring this down to 30, possibly even every 15 seconds!)
+        $this->refreshInterval = 90;
     }
 
     /**

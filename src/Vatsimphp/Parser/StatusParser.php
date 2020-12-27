@@ -34,7 +34,7 @@ class StatusParser extends AbstractParser
      * @var array
      */
     protected $endpoints = [
-        'url0'   => 'dataUrls',
+        'json3'   => 'dataUrls',
         'url1'   => 'serverUrls',
         'metar0' => 'metarUrls',
         'atis0'  => 'atisUrls',
