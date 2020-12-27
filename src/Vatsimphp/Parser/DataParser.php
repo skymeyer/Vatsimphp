@@ -63,6 +63,45 @@ class DataParser extends AbstractParser
     ];
 
     /**
+     * Section headers to be used when not explicitly defined in the data file. Seems the data
+     * file only sends the CLIENTS header information and omits all the rest recently.
+     * Adding this as a reference to ensure existing implementations which rely on this
+     * continue to behave as expected.
+     *
+     * @var array
+     */
+    protected $sectionsHeaders = [
+        'clients' => [
+            'callsign', 'cid', 'realname', 'clienttype', 'frequency', 'latitude',
+            'longitude', 'altitude', 'groundspeed', 'planned_aircraft', 'planned_tascruise',
+            'planned_depairport', 'planned_altitude', 'planned_destairport', 'server',
+            'protrevision', 'rating', 'transponder', 'facilitytype', 'visualrange',
+            'planned_revision', 'planned_flighttype', 'planned_deptime', 'planned_actdeptime',
+            'planned_hrsenroute', 'planned_minenroute', 'planned_hrsfuel', 'planned_minfuel',
+            'planned_altairport', 'planned_remarks', 'planned_route', 'planned_depairport_lat',
+            'planned_depairport_lon', 'planned_destairport_lat', 'planned_destairport_lon',
+            'atis_message', 'time_last_atis_received', 'time_logon', 'heading', 'QNH_iHg','QNH_Mb',
+        ],
+        'prefile' => [
+            'callsign', 'cid', 'realname', 'clienttype', 'frequency', 'latitude', 'longitude',
+            'altitude', 'groundspeed', 'planned_aircraft', 'planned_tascruise', 'planned_depairport',
+            'planned_altitude', 'planned_destairport', 'server', 'protrevision', 'rating',
+            'transponder', 'facilitytype', 'visualrange', 'planned_revision', 'planned_flighttype',
+            'planned_deptime', 'planned_actdeptime', 'planned_hrsenroute', 'planned_minenroute',
+            'planned_hrsfuel', 'planned_minfuel', 'planned_altairport', 'planned_remarks',
+            'planned_route', 'planned_depairport_lat', 'planned_depairport_lon',
+            'planned_destairport_lat', 'planned_destairport_lon', 'atis_message',
+            'time_last_atis_received', 'time_logon', 'heading', 'QNH_iHg', 'QNH_Mb',
+        ],
+        'servers' => [
+            'ident', 'hostname_or_IP', 'location', 'name', 'clients_connection_allowed',
+        ],
+        'voice servers' => [
+            'hostname_or_IP', 'location', 'name', 'clients_connection_allowed', 'type_of_voice_server',
+        ],
+    ];
+
+    /**
      * @see Vatsimphp\Parser.ParserInterface::parseData()
      */
     public function parseData()
@@ -122,8 +161,13 @@ class DataParser extends AbstractParser
 
             // skip section if no headers found
             if (empty($headerData)) {
-                $this->log->debug("No header for section $section");
-                continue;
+                if (isset($this->sectionsHeaders[$section])) {
+                    $headerData = $this->sectionsHeaders[$section];
+                    $this->log->debug("Fallback to built-in headers for section $section");
+                } else {
+                    $this->log->debug("No header for section $section");
+                    continue;
+                }
             }
 
             // save header separately

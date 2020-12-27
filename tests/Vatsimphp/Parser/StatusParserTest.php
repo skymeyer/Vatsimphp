@@ -72,7 +72,7 @@ class StatusParserTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                "url0=aaa\nurl0=bbb\nurl1=ccc\nmetar0=ddd\natis0=eee",
+                "json3=aaa\njson3=bbb\nurl1=ccc\nmetar0=ddd\natis0=eee",
                 true,
                 [
                     'dataUrls'   => ['aaa', 'bbb'],
