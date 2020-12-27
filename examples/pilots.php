@@ -3,7 +3,7 @@
 /*
  * This file is part of the Vatsimphp package
  *
- * Copyright 2018 - Jelle Vink <jelle.vink@gmail.com>
+ * Copyright 2020 - Jelle Vink <jelle.vink@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,21 +25,16 @@ require_once 'vendor/autoload.php';
  * https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md
  **/
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Vatsimphp\Log\LoggerFactory;
-use Vatsimphp\VatsimData;
+$callSign = 'BAW';
 
-// Create custom logger based on Monolog (note: every PSR-3 compliant logger will work)
-// see https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
-$logFile = __DIR__.'/../app/logs/vatsimphp_custom.log';
-$logger = new Logger('vatsimphp');
-$logger->pushHandler(new StreamHandler($logFile, Logger::DEBUG));
+$vatsim = new \Vatsimphp\VatsimData();
+$vatsim->setConfig('cacheOnly', true);
 
-// Register custom logger
-LoggerFactory::register('_DEFAULT_', $logger);
-
-$vatsim = new VatsimData();
-$vatsim->loadData();
-
-// see app/logs/vatsimphp_custom.log for the result
+if ($vatsim->loadData()) {
+    $pilots = $vatsim->searchCallsign($callSign);
+    foreach ($pilots as $pilot) {
+        echo "{$pilot['callsign']} => {$pilot['realname']}\n";
+    }
+} else {
+    echo "Data could not be loaded \n";
+}
