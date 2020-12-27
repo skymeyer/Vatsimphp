@@ -65,7 +65,7 @@ class VatsimData
         'statusRefresh' => 86400,
 
         // vatsim data file
-        'dataRefresh'      => 180,
+        'dataRefresh'      => 90,
         'dataExpire'       => 3600,
         'forceDataRefresh' => false,
 
@@ -167,6 +167,7 @@ class VatsimData
      * Return current voice server list.
      *
      * @return \Vatsimphp\Filter\Iterator
+     * @deprecated Voice servers are no longer supplied
      */
     public function getVoiceServers()
     {
