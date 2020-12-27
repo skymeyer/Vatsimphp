@@ -44,7 +44,7 @@ class DataSyncTest extends TestCase
     {
         $class = $this->getMockDataSync();
         $class->setDefaults();
-        $this->assertSame(180, $class->refreshInterval);
+        $this->assertSame(90, $class->refreshInterval);
     }
 
     /**
