@@ -28,5 +28,11 @@ docker-test-examples:
 docker-shell:
 	build/run.sh docker::run /bin/bash
 
+docker-pull:
+	docker pull composer:2
+	docker pull php:7.2-cli
+	docker pull php:7.3-cli
+	docker pull php:7.4-cli
+
 .PHONY: all update test test-examples
-.PHONY: docker-all docker-update docker-test docker-test-examples docker-shell
+.PHONY: docker-all docker-update docker-test docker-test-examples docker-shell docker-pull

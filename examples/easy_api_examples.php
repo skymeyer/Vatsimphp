@@ -18,34 +18,34 @@
  * limitations under the License.
  */
 
-/**
- * Consult the documentation for more details at:
- * https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md.
- */
-use Vatsimphp\VatsimData;
-
 require_once 'vendor/autoload.php';
 
-$vatsim = new VatsimData();
+/**
+ * Consult the documentation for more details at:
+ * https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md
+ */
+
+$vatsim = new \Vatsimphp\VatsimData();
+$vatsim->setConfig('cacheOnly', true);
 $vatsim->loadData();
 
 // General vatsim statistics
 $general = $vatsim->getGeneralInfo()->toArray();
+echo sprintf("General info: %s\n", var_export($general, true));
 
 // List all pilots
 $pilots = $vatsim->getPilots()->toArray();
+echo sprintf("Found %d pilots online\n", count($pilots));
 
 // List all controllers
 $controllers = $vatsim->getControllers()->toArray();
+echo sprintf("Found %d controllers online\n", count($controllers));
 
 // List all clients (pilots and controllers)
 $clients = $vatsim->getClients()->toArray();
 
 // List all servers
 $servers = $vatsim->getServers()->toArray();
-
-// List all voice servers
-$voice = $vatsim->getVoiceServers()->toArray();
 
 // List all prefile registrations
 $prefile = $vatsim->getPrefile()->toArray();
@@ -54,7 +54,8 @@ $prefile = $vatsim->getPrefile()->toArray();
 $aal = $vatsim->searchCallsign('AAL')->toArray();
 
 // Search clients based on vatsim id
-$user = $vatsim->searchVatsimId('1165529')->toArray();
+$users = $vatsim->searchVatsimId($pilots[0]['cid'])->toArray();
+echo sprintf("Callsign from vatsim id: %s\n", var_export($users[0]['callsign'], true));
 
 // Get the METAR for KSFO
 $ksfo = $vatsim->getMetar('KSFO');

@@ -17,7 +17,7 @@ docker::composer() {
     docker run --rm -it -u $(id -u):$(id -g) \
         --volume ${REPO_ROOT}:/app \
         --volume ${COMPOSER_HOME:-$HOME/.composer}:/tmp \
-        composer ${cmd}
+        composer:2 ${cmd}
 }
 
 # Execute command in PHP container.
@@ -37,14 +37,20 @@ test-examples() {
     fi
 
     printf '%0.s=' {1..80}; echo
+    echo "Testing cron.php"
+    printf '%0.s=' {1..80}; echo
+
+    php examples/cron.php
+    test -f app/cache/vatsim-data.json
+    cat app/logs/vatsimphp.log
+    printf '%0.s=' {1..80}; echo
+    cat app/cache/status.txt
+
+    printf '%0.s=' {1..80}; echo
     echo "Testing easy_api_examples.php"
     printf '%0.s=' {1..80}; echo
 
     php examples/easy_api_examples.php
-    test -f app/cache/vatsim-data.txt
-    cat app/logs/vatsimphp.log
-    printf '%0.s=' {1..80}; echo
-    cat app/cache/status.txt
     printf '%0.s=' {1..80}; echo
     cat app/cache/metar-KSFO.txt
     echo
@@ -55,6 +61,12 @@ test-examples() {
 
     php examples/custom_logger.php
     cat app/logs/vatsimphp_custom.log
+
+    printf '%0.s=' {1..80}; echo
+    echo "Testing pilots.php"
+    printf '%0.s=' {1..80}; echo
+
+    php examples/pilots.php
 }
 
 "${@}"
