@@ -32,7 +32,7 @@ Requirements
 ------------
 
 - From PHP 7.2 and above
-- PHPUnit 7.4 or higher for test suite execution
+- PHPUnit 8.5 or higher for test suite execution
 
 Bugs and feature requests
 -------------------------
