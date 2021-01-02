@@ -25,15 +25,13 @@ require_once 'vendor/autoload.php';
  * https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md
  **/
 
-$callSign = 'BAW';
-
 $vatsim = new \Vatsimphp\VatsimData();
 $vatsim->setConfig('cacheOnly', true);
 
 if ($vatsim->loadData()) {
-    $pilots = $vatsim->searchCallsign($callSign);
-    foreach ($pilots as $pilot) {
-        echo "{$pilot['callsign']} => {$pilot['realname']} [{$pilot['time_logon']}] \n";
+    $controllers = $vatsim->getControllers();
+    foreach ($controllers as $controller) {
+        echo "{$controller['callsign']} => {$controller['realname']} [{$controller['time_logon']}] \n";
     }
 } else {
     echo "Data could not be loaded \n";

@@ -67,6 +67,12 @@ test-examples() {
     printf '%0.s=' {1..80}; echo
 
     php examples/pilots.php
+
+    printf '%0.s=' {1..80}; echo
+    echo "Testing controllers.php"
+    printf '%0.s=' {1..80}; echo
+
+    php examples/controllers.php
 }
 
 "${@}"
