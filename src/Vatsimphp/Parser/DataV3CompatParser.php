@@ -121,6 +121,16 @@ class DataV3CompatParser extends DataParser
     ];
 
     /**
+     * List of time fields which require legacy convertion.
+     *
+     * @var array
+     */
+    protected $timeFields = [
+        'logon_time',
+        'last_updated',
+    ];
+
+    /**
      * Ctor.
      */
     public function __construct()
@@ -244,13 +254,49 @@ class DataV3CompatParser extends DataParser
     protected function convertToLegacy($data, $map, $base = []) {
         foreach ($map as $legacy => $field) {
             if (isset($data[$field])) {
-                $value = $data[$field];
-                if (is_array($value)) {
-                    $value = implode(" ", $value);
-                }
-                $base[$legacy] = sprintf("%s", $value);
+                $base[$legacy] = $this->massageValue($field, $data[$field]);
             }
         }
         return $base;
+    }
+
+    /**
+     * Massage field values for given new field into legacy format.
+     *
+     * @param string $field The new field
+     * @param mixed $value The new value
+     *
+     * @return string The legacy value
+     */
+    protected function massageValue($field, $value) {
+
+        // Arrays are converted to space delimited strings
+        if (is_array($value)) {
+            $value = implode(" ", $value);
+        }
+
+        // Ensure value is a string
+        $value = sprintf("%s", $value);
+
+        // Convert time into legacy format
+        if (in_array($field, $this->timeFields)) {
+            $value = $this->convertISO8601ToLegacy($value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * ISO8601 timestamp convertor to unix time.
+     *
+     * @param string $str The ISO8601 time representation
+     *
+     * @return int
+     */
+    protected function convertISO8601ToLegacy($str)
+    {
+        $dt = new \DateTime($str);
+        $dt->setTimezone(new \DateTimeZone('UTC'));
+        return $dt->format("YmdHis");
     }
 }
