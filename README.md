@@ -56,7 +56,7 @@ See the `CHANGELOG.md` file for more details.
 Author
 ------
 
-Jelle Vink - <jelle.vink@gmail.com> (<http://skymeyer.be>)
+Jelle Vink - <jelle.vink@gmail.com> (<http://skymeyer.dev>)
 
 License
 -------
