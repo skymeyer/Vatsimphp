@@ -1,4 +1,4 @@
-# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.com/skymeyer/Vatsimphp.svg?branch=master)](https://travis-ci.com/skymeyer/Vatsimphp)
+# Vatsimphp [![Latest Stable Version](https://img.shields.io/github/release/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Total downloads](https://img.shields.io/packagist/dt/skymeyer/vatsimphp.svg)](https://packagist.org/packages/skymeyer/vatsimphp) [![Build Status](https://travis-ci.com/skymeyer/Vatsimphp.svg?branch=2.x)](https://travis-ci.com/skymeyer/Vatsimphp)
 
 Vatsimphp collects and parses the publically available statistics
 from the [VATSIM.net](http://www.vatsim.net) network. It provides
@@ -22,8 +22,8 @@ backend of your choice.
 Documentation
 -------------
 
-- [Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/master/docs/index.md)
-- [Browse examples](https://github.com/skymeyer/Vatsimphp/tree/master/examples)
+- [Browse documentation](https://github.com/skymeyer/Vatsimphp/blob/2.x/docs/index.md)
+- [Browse examples](https://github.com/skymeyer/Vatsimphp/tree/2.x/examples)
 
 About
 =====
@@ -53,7 +53,7 @@ See the `CHANGELOG.md` file for more details.
 Author
 ------
 
-Jelle Vink - <jelle.vink@gmail.com> (<http://skymeyer.be>)
+Jelle Vink - <jelle.vink@gmail.com> (<http://skymeyer.dev>)
 
 License
 -------
