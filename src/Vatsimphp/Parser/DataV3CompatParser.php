@@ -105,6 +105,7 @@ class DataV3CompatParser extends DataParser
         'visualrange' => 'visual_range',
         'atis_message' => 'text_atis',
         'time_logon' => 'logon_time',
+        'time_last_atis_received' => 'last_updated',
     ];
 
     /**
@@ -166,7 +167,7 @@ class DataV3CompatParser extends DataParser
 
         if (isset($this->json['pilots']) && is_array($this->json['pilots'])) {
             foreach ($this->json['pilots'] as $in) {
-                $pilot = $this->convertToLegacy($in, $this->pilotMap);
+                $pilot = $this->convertToLegacy($in, $this->pilotMap, $this->getSectionDefault("clients"));
                 if (isset($in['flight_plan']) && is_array($in['flight_plan'])) {
                     $pilot = $this->convertToLegacy($in['flight_plan'], $this->flightPlanMap, $pilot);
                 }
@@ -177,7 +178,7 @@ class DataV3CompatParser extends DataParser
 
         if (isset($this->json['controllers']) && is_array($this->json['controllers'])) {
             foreach ($this->json['controllers'] as $in) {
-                $controller = $this->convertToLegacy($in, $this->controllerMap);
+                $controller = $this->convertToLegacy($in, $this->controllerMap, $this->getSectionDefault("clients"));
                 $controller[VatsimData::HEADER_CLIENT_TYPE] = VatsimData::CLIENT_TYPE_ATC;
                 $clients[] = $controller;
             }
@@ -193,7 +194,7 @@ class DataV3CompatParser extends DataParser
 
         if (isset($this->json['prefiles']) && is_array($this->json['prefiles'])) {
             foreach ($this->json['prefiles'] as $in) {
-                $prefile = $this->convertToLegacy($in, $this->prefileMap);
+                $prefile = $this->convertToLegacy($in, $this->prefileMap, $this->getSectionDefault("prefile"));
                 if (isset($in['flight_plan']) && is_array($in['flight_plan'])) {
                     $prefile = $this->convertToLegacy($in['flight_plan'], $this->flightPlanMap, $prefile);
                 }
@@ -210,7 +211,7 @@ class DataV3CompatParser extends DataParser
 
         if (isset($this->json['servers']) && is_array($this->json['servers'])) {
             foreach ($this->json['servers'] as $in) {
-                $servers[] = $this->convertToLegacy($in, $this->serverMap);
+                $servers[] = $this->convertToLegacy($in, $this->serverMap, $this->getSectionDefault("servers"));
             }
         }
 
@@ -298,5 +299,24 @@ class DataV3CompatParser extends DataParser
         $dt = new \DateTime($str);
         $dt->setTimezone(new \DateTimeZone('UTC'));
         return $dt->format("YmdHis");
+    }
+
+    /**
+     * Return section default skeleton/values.
+     *
+     * @param string $section The section name as defined in $this->sectionHeaders
+     *
+     * @return array
+     */
+    protected function getSectionDefault($section) {
+        $default = [];
+        if (isset($this->sectionsHeaders[$section])) {
+            foreach ($this->sectionsHeaders[$section] as $header) {
+                // Setting empty string to avoid having per field defaults which is
+                // is out of scope of the compatibility.
+                $default[$header] = "";
+            }
+        }
+        return $default;
     }
 }
