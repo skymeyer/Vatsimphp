@@ -45,7 +45,7 @@ class StatusSyncTest extends TestCase
         $class = $this->getMockStatusSync();
         $class->setDefaults();
         $this->assertSame(
-            ['http://status.vatsim.net/status.txt'],
+            ['https://status.vatsim.net/status.txt'],
             $class->getUrls()
         );
     }
