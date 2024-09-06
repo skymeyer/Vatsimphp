@@ -31,7 +31,7 @@ class StatusSync extends AbstractSync
     public function setDefaults()
     {
         $this->setParser('Status');
-        $this->registerUrl('http://status.vatsim.net/status.txt');
+        $this->registerUrl('https://status.vatsim.net/status.txt');
         $this->cacheFile = 'status.txt';
         $this->refreshInterval = 86400;
     }
