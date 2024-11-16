@@ -39,9 +39,7 @@ class ResultContainer implements \Countable
     /**
      * Ctor.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Append/overwrite a new result set.
@@ -99,7 +97,7 @@ class ResultContainer implements \Countable
     /**
      * @see Countable::count()
      */
-    public function count()
+    public function count(): int
     {
         return count($this->container);
     }

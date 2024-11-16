@@ -95,7 +95,7 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->toArray());
     }
@@ -105,7 +105,7 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
      *
      * @return bool
      */
-    final public function accept()
+    final public function accept(): bool
     {
         // skip comments and empty lines
         $line = $this->getInnerIterator()->current();
@@ -119,7 +119,7 @@ abstract class AbstractFilter extends FilterIterator implements FilterInterface,
     /**
      * @see FilterIterator::current()
      */
-    public function current()
+    public function current(): mixed
     {
         $value = parent::current();
         if (is_string($value)) {

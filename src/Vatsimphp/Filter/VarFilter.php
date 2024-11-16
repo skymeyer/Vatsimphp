@@ -40,7 +40,7 @@ class VarFilter extends StartOfLineFilter
     /**
      * @see Vatsimphp\Filter.AbstractFilter::current()
      */
-    public function current()
+    public function current(): mixed
     {
         $value = parent::current();
 
